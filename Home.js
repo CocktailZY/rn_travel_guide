@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
-import {View, Text, TouchableOpacity, TextInput, Image, StyleSheet, Dimensions, ScrollView} from 'react-native';
+import {View, Text, TouchableOpacity, TextInput, Image, StyleSheet, Dimensions, ScrollView,
+    TouchableHighlight, FlatList, ImageBackground
+} from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icons from 'react-native-vector-icons/Ionicons';
@@ -13,61 +15,93 @@ export default class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            searchText: '',
+            dataTypeSource: [],//分类列表
         }
     }
 
     componentDidMount() {
-
+        this.setState({
+            dataTypeSource: [
+                {name:'古建筑',icon: require('./images/old_build.png')},
+                {name:'公园',icon: require('./images/park.png')},
+                {name:'美食',icon: require('./images/food.png')},
+                {name:'园林',icon: require('./images/yuanlin.png')},
+                {name:'寺庙',icon: require('./images/simiao.png')},
+                {name:'海滩',icon: require('./images/beach.png')},
+                {name:'山川',icon: require('./images/mountain.png')},
+                {name:'游乐园',icon: require('./images/yuole.png')},
+            ]
+        })
     }
 
     _searchView = () => {
         //调模糊查询景点接口
+
     };
 
+    _renderTypeListItem = ({item,index}) => {
+        return (
+            <TouchableHighlight
+                activeOpacity={1}
+                underlayColor='#FFFFFF'
+                style={{
+                    flex:1,
+                    height:80,
+                    marginLeft:10,
+                    marginRight:10,
+                    borderRadius:4,
+                    borderWidth:1,
+                    borderColor:'#d4d4d4',
+                    backgroundColor:'#ffbe76'
+                }}
+                onPress={() => {
+                    this.props.navigation.navigate('ViewList', {
+                        // topicId: item.id//文章详情
+                    });
+                }}>
+                <ImageBackground source={item.icon} style={{flex:1,height:80,justifyContent:'center',alignItems:'center'}}>
+                    <Text style={{color:'#ffffff',fontSize: 20}}>{item.name}</Text>
+                </ImageBackground>
+            </TouchableHighlight>
+        )
+    };
+
+
     render() {
+        const { dataTypeSource } = this.state;
         return (
             <View style={{flex: 1, backgroundColor: '#e5e5e5'}}>
                 {/*搜索框*/}
                 <View style={{
-                    height: 30,
-                    flexDirection: 'row',
-                    margin: 8,
-                    backgroundColor: '#FFFFFF',
-                    borderWidth: 1,
-                    borderRadius: 6,
-                    borderColor: '#CCCCCC'
+                    backgroundColor: '#f0f0f0',
+                    height: 48,
                 }}>
-                    <TextInput
-                        style={{
+
+                    <TouchableOpacity style={{
+                        flex: 1,
+                        flexDirection: 'row',
+                        margin: 8,
+                        backgroundColor: '#FFFFFF',
+                        borderWidth: 1,
+                        borderRadius: 6,
+                        borderColor: '#CCCCCC'
+                    }} onPress={()=>{this.props.navigation.navigate('ViewList')}}>
+
+                        <View style={{
                             flex: 1,
                             height: 30,
+                            flexDirection: 'row',
                             backgroundColor: '#FFFFFF',
                             borderColor: 'transparent',
                             borderWidth: 1,
+                            alignItems: 'center',
+                            justifyContent: 'center',
                             borderRadius: 6,
                             paddingTop: 0,
                             paddingBottom: 0,
-                            paddingLeft: 8,
-                            paddingRight: 8
-                        }}
-                        placeholderTextColor={'#CCCCCC'}
-                        placeholder={'搜索...'}
-                        underlineColorAndroid={'transparent'}
-                        multiline={false}
-                        onChangeText={(text) => {
-                            this.setState({
-                                searchText: text
-                            })
-                        }}
-                        returnKeyType={'search'}
-                        onSubmitEditing={this._searchView}
-                        value={this.state.searchText}
-                    />
-                    <TouchableOpacity onPress={() => {
-                        this._searchView()
-                    }}>
-                        <View style={{width: 25, height: 30, justifyContent: 'center'}}>
+
+                        }}>
+                            <Text style={{color: '#CCCCCC', fontSize: 15, lineHeight: 30, paddingRight: 10}}>{'搜索'}</Text>
                             <Icons name={'ios-search'} size={25} color={'#CCCCCC'}/>
                         </View>
                     </TouchableOpacity>
@@ -140,8 +174,19 @@ export default class Home extends Component {
                                 <Text style={{marginTop: 5}}>{'三日游'}</Text>
                             </View>
                         </TouchableOpacity>
-
                     </View>
+                    <View style={{flex:1,paddingTop:10,paddingBottom:10}}>
+                        <FlatList
+                            keyExtractor={(item, index) => String(index)}
+                            data={dataTypeSource}
+                            renderItem={this._renderTypeListItem}
+                            refreshing={false}
+                            ItemSeparatorComponent={() => <View style={{height:10}}/>}
+                            showsVerticalScrollIndicator={false}
+                            showsHorizontalScrollIndicator={false}
+                        />
+                    </View>
+
                 </ScrollView>
             </View>
         )

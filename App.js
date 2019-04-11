@@ -16,6 +16,7 @@ import My from './My';
 
 import Login from './Login';
 import Regist from './Regist';
+import ViewList from './ViewList';
 
 console.disableYellowBox = true;
 console.warn("YellowBox is disabled.");
@@ -61,7 +62,8 @@ const FootTab = createBottomTabNavigator({
 const RootStack = createStackNavigator({
     Login: { screen: Login },
     Regist: { screen: Regist },
-    FootTab: { screen: FootTab}
+    FootTab: { screen: FootTab},
+    ViewList: { screen: ViewList},
 }, {
     initialRouteName: 'FootTab', // 默认显示界面
     defaultNavigationOptions: {  // 屏幕导航的默认选项, 也可以在组件内用 static navigationOptions 设置(会覆盖此处的设置)
