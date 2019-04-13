@@ -34,10 +34,7 @@ export default class Home extends Component {
         })
     }
 
-    _searchView = () => {
-        //调模糊查询景点接口
-
-    };
+    ViewList
 
     _renderTypeListItem = ({item,index}) => {
         return (
