@@ -28,15 +28,6 @@ export default class ViewList extends Component {
     }
 
     componentDidMount() {
-        if (Platform.OS == "android") {
-            this.keyboardDidShowListener = Keyboard.addListener(
-                "keyboardDidHide",
-                () => {
-                    this._onBlurText();
-                }
-            );
-        }
-
         this.setState({
             views:[
                 {viewName:'颐和园',content:'颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园'},
@@ -51,9 +42,7 @@ export default class ViewList extends Component {
         })
     }
     componentWillUnmount() {
-        if (Platform.OS == "android") {
-            this.keyboardDidShowListener.remove();
-        }
+
     }
 
     _onBlurText = () => {

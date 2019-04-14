@@ -12,12 +12,15 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import Home from './Home';
 import Collection from './Collection';
+import GuideList from './GuideList';
 import My from './My';
 
 import Login from './Login';
 import Regist from './Regist';
 import ViewList from './ViewList';
 import ViewDetail from './ViewDetail';
+import GuidePublish from './GuidePublish';
+
 
 console.disableYellowBox = true;
 console.warn("YellowBox is disabled.");
@@ -29,6 +32,16 @@ const FootTab = createBottomTabNavigator({
             title: "首页",
             tabBarIcon:({ focused, horizontal, tintColor })=>{
                 return <Ionicons name={'ios-home'} size={25} style={{color:tintColor}}/>
+            }
+        }
+    },
+    GuideList: {
+        screen: GuideList,
+        navigationOptions: {
+            title: "攻略",
+            tabBarIcon:({ focused, horizontal, tintColor })=>{
+                let iconName = `book${focused ? '' : '-outline'}`;
+                return <MaterialCommunityIcons name={iconName} size={25} style={{color:tintColor}}/>
             }
         }
     },
@@ -66,8 +79,9 @@ const RootStack = createStackNavigator({
     FootTab: { screen: FootTab},
     ViewList: { screen: ViewList},
     ViewDetail: { screen: ViewDetail},
+    GuidePublish: { screen: GuidePublish},
 }, {
-    initialRouteName: 'ViewDetail', // 默认显示界面
+    initialRouteName: 'GuidePublish', // 默认显示界面
     defaultNavigationOptions: {  // 屏幕导航的默认选项, 也可以在组件内用 static navigationOptions 设置(会覆盖此处的设置)
         // title:'消息',
         header: null,
