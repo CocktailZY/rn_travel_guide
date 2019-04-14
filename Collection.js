@@ -1,13 +1,18 @@
-import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, TextInput, Image, StyleSheet, Dimensions, CheckBox } from 'react-native';
+import React, {Component} from 'react';
+import {View, Text, TouchableOpacity, TextInput, Image, StyleSheet, Dimensions, CheckBox,
+    TouchableWithoutFeedback
+} from 'react-native';
 
 import Icons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 import Global from './util/Global';
+import Header from "./common/Header";
 
 const {height, width} = Dimensions.get('window');
-export default class Collection extends Component{
-    constructor(props){
+export default class Collection extends Component {
+    constructor(props) {
         super(props);
         this.state = {
             searchText: '',
@@ -22,54 +27,63 @@ export default class Collection extends Component{
         //调模糊查询景点接口
     };
 
-    render(){
+    render() {
         return (
-            <View style={{flex:1,backgroundColor: '#e5e5e5'}}>
-                <View style={{backgroundColor: '#F5F5F5'}}>
-                    <View style={{
-                        flexDirection: 'row',
-                        margin: 8,
-                        backgroundColor: '#FFFFFF',
-                        borderWidth: 1,
-                        borderRadius: 6,
-                        borderColor: '#CCCCCC'
-                    }}>
-                        <View style={{flex: 1}}>
-                            <TextInput
-                                style={{
-                                    flex: 1,
-                                    height: 30,
-                                    backgroundColor: '#FFFFFF',
-                                    borderColor: 'transparent',
-                                    borderWidth: 1,
-                                    borderRadius: 6,
-                                    paddingTop: 0,
-                                    paddingBottom: 0,
-                                    paddingLeft: 8,
-                                    paddingRight: 8
-                                }}
-                                placeholderTextColor={'#CCCCCC'}
-                                placeholder={'搜索...'}
-                                underlineColorAndroid={'transparent'}
-                                multiline={false}
-                                onChangeText={(text) => {
-                                    this.setState({
-                                        searchText: text
-                                    })
-                                }}
-                                returnKeyType={'search'}
-                                onSubmitEditing={this._searchView}
-                                value={this.state.searchText}
-                            />
-                        </View>
-                        <TouchableOpacity onPress={() => {
-                            this._searchView()
+            <View style={{flex: 1, backgroundColor: '#ffffff'}}>
+                <Header
+                    headLeftFlag={false}
+                    onPressBackBtn={() => {
+                        this.props.navigation.goBack();
+                    }}
+                    backTitle={'返回'}
+                    title={'我收藏的'}
+                />
+                <View style={{flex:1,padding:10}}>
+                    <TouchableWithoutFeedback
+                        style={{flex: 1, marginTop: 10}}
+                        onPress={() => {
+                            alert('我的收藏')
                         }}>
-                            <View style={{width: 25, height: 30, justifyContent: 'center'}}>
-                                <Icons name={'ios-search'} size={25} color={'#CCCCCC'}/>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
+                        <View style={[styles.jobBtn, {
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            backgroundColor: '#009688',
+                            marginTop: 10
+                        }]}>
+                            <MaterialIcons name={'streetview'} color={'#FFFFFF'} size={30}/>
+                            <Text style={styles.jobBtnText}>我收藏的景点</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback
+                        style={{flex: 1, marginTop: 10}}
+                        onPress={() => {
+                            alert('我的收藏')
+                        }}>
+                        <View style={[styles.jobBtn, {
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            backgroundColor: '#009688',
+                            marginTop: 10
+                        }]}>
+                            <FontAwesome5 name={'podcast'} color={'#FFFFFF'} size={30}/>
+                            <Text style={styles.jobBtnText}>我收藏的攻略</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback
+                        style={{flex: 1, marginTop: 10}}
+                        onPress={() => {
+                            alert('我的收藏')
+                        }}>
+                        <View style={[styles.jobBtn, {
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            backgroundColor: '#009688',
+                            marginTop: 10
+                        }]}>
+                            <FontAwesome5 name={'route'} color={'#FFFFFF'} size={30}/>
+                            <Text style={styles.jobBtnText}>我收藏的路线</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
                 </View>
             </View>
         )
@@ -114,6 +128,17 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 22,
+    },
+    jobBtn: {
+        height: 120,
+        borderRadius: 4,
+        justifyContent: 'center',
+        alignItems: 'center',
+        opacity: 0.8
+    },
+    jobBtnText: {
+        fontSize: 16,
+        color: 'white'
     }
 });
 

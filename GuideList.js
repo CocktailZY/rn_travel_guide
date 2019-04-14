@@ -100,7 +100,7 @@ export default class GuideList extends Component {
         return (
             <View style={styles.container}>
                 <Header
-                    headLeftFlag={true}
+                    headLeftFlag={false}
                     onPressBackBtn={() => {
                         this.props.navigation.goBack();
                     }}
