@@ -20,6 +20,7 @@ import Regist from './Regist';
 import ViewList from './ViewList';
 import ViewDetail from './ViewDetail';
 import GuidePublish from './GuidePublish';
+import GuidePublishDetail from './GuidePublishDetail';
 
 
 console.disableYellowBox = true;
@@ -80,8 +81,9 @@ const RootStack = createStackNavigator({
     ViewList: { screen: ViewList},
     ViewDetail: { screen: ViewDetail},
     GuidePublish: { screen: GuidePublish},
+    GuidePublishDetail: { screen: GuidePublishDetail},
 }, {
-    initialRouteName: 'GuidePublish', // 默认显示界面
+    initialRouteName: 'FootTab', // 默认显示界面
     defaultNavigationOptions: {  // 屏幕导航的默认选项, 也可以在组件内用 static navigationOptions 设置(会覆盖此处的设置)
         // title:'消息',
         header: null,

@@ -115,7 +115,9 @@ export default class GuideList extends Component {
                         />
                     </View>
                     <TouchableOpacity onPress={() => {
-                        alert('确定');
+                        this.props.navigation.navigate("GuidePublishDetail", {
+                            id:'1'
+                        });
                     }} style={styles.btn}>
                         <Text style={{
                             fontSize: 15,
