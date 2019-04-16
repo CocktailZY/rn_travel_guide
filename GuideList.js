@@ -55,7 +55,7 @@ export default class GuideList extends Component {
     }
 
     _onBlurText = () => {
-        this._searchInputBox.blur();
+        // this._searchInputBox.blur();
     };
     _setSearchText = text => {
         this.setState({
