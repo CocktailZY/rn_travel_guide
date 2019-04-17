@@ -38,7 +38,7 @@ export default class GuidePublishDetail extends Component {
         return (
             <View style={styles.upBtn}>
                 <Image
-                    source={require('./images/default_img.png')}
+                    source={require('./images/food.png')}
                     resizeMode={'contain'}
                     style={{width: 80, height: 80}}
                 />

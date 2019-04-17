@@ -9,6 +9,9 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Swiper from 'react-native-swiper';
 
 import Global from './util/Global';
+import FechtUtil from './util/FechtUtil';
+import Config from './util/Config';
+import Constant from './util/Constant';
 
 const {height, width} = Dimensions.get('window');
 export default class Home extends Component {
@@ -20,6 +23,7 @@ export default class Home extends Component {
     }
 
     componentDidMount() {
+        //this._getTypes();
         this.setState({
             dataTypeSource: [
                 {name:'古建筑',icon: require('./images/old_build.png')},
@@ -33,8 +37,16 @@ export default class Home extends Component {
             ]
         })
     }
-
-    ViewList
+    //加载类型
+// _getTypes(){
+//      let url=Config.TYPE
+//     FechtUtil.httpGet(url,null,(data)=>{
+//         this.setState({
+//             dataTypeSource:data
+//         })
+//     })
+// }
+    //ViewList
 
     _renderTypeListItem = ({item,index}) => {
         return (
