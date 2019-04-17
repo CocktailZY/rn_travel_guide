@@ -9,7 +9,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Swiper from 'react-native-swiper';
 
 import Global from './util/Global';
-import FechtUtil from './util/FechtUtil';
+import FetchUtil from './util/FetchUtil';
 import Config from './util/Config';
 import Constant from './util/Constant';
 
@@ -26,26 +26,26 @@ export default class Home extends Component {
         //this._getTypes();
         this.setState({
             dataTypeSource: [
-                {name:'古建筑',icon: require('./images/old_build.png')},
-                {name:'公园',icon: require('./images/park.png')},
-                {name:'美食',icon: require('./images/food.png')},
-                {name:'园林',icon: require('./images/yuanlin.png')},
-                {name:'寺庙',icon: require('./images/simiao.png')},
-                {name:'海滩',icon: require('./images/beach.png')},
-                {name:'山川',icon: require('./images/mountain.png')},
-                {name:'游乐园',icon: require('./images/yuole.png')},
+                {name:'古建筑',icon: require('./images/old_build.png'),id:3},
+                {name:'公园',icon: require('./images/park.png'),id:4},
+                {name:'美食',icon: require('./images/food.png'),id:5},
+                {name:'园林',icon: require('./images/yuanlin.png'),id:6},
+                {name:'寺庙',icon: require('./images/simiao.png'),id:7},
+                {name:'海滩',icon: require('./images/beach.png'),id:8},
+                {name:'山川',icon: require('./images/mountain.png'),id:9},
+                {name:'游乐园',icon: require('./images/yuole.png'),id:10},
             ]
         })
     }
     //加载类型
-// _getTypes(){
-//      let url=Config.TYPE
-//     FechtUtil.httpGet(url,null,(data)=>{
-//         this.setState({
-//             dataTypeSource:data
-//         })
-//     })
-// }
+_getTypes(){
+     let url=Config.TYPE
+    FetchUtil.httpGet(url,null,(data)=>{
+        this.setState({
+            dataTypeSource:data
+        })
+    })
+}
     //ViewList
 
     _renderTypeListItem = ({item,index}) => {
@@ -65,7 +65,7 @@ export default class Home extends Component {
                 }}
                 onPress={() => {
                     this.props.navigation.navigate('ViewList', {
-                        // topicId: item.id//文章详情
+                       typeId: item.id//类型id
                     });
                 }}>
                 <ImageBackground source={item.icon} style={{flex:1,height:80,justifyContent:'center',alignItems:'center'}}>

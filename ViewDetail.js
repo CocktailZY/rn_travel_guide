@@ -8,7 +8,7 @@ import {
     ScrollView
 } from "react-native";
 import Header from './common/Header';
-import FechtUtil from './util/FechtUtil';
+import FetchUtil from './util/FetchUtil';
 import Config from './util/Config';
 import Constant from './util/Constant';
 const {height, width} = Dimensions.get('window');
@@ -28,11 +28,11 @@ export default class ViewDetail extends Component {
         this._getViewById();
     }
     _getViewById(){
-        let url=Config.VIEWSDETAIL+"token=lhy&userId=1";
+        let url=Config.VIEWSDETAIL;
         let param={
             id:this.state.viewSpotId,
         };
-        FechtUtil.httpGet(url,param,(data)=>{
+        FetchUtil.httpGet(url,param,(data)=>{
             this.setState({
                 detailInfo:data
             });

@@ -13,7 +13,7 @@ import {
     Keyboard, FlatList
 } from "react-native";
 import Icons from "react-native-vector-icons/Ionicons";
-import FechtUtil from './util/FechtUtil';
+import FetchUtil from './util/FetchUtil';
 import Config from './util/Config';
 import Constant from './util/Constant';
 let lastPresTime = 1;
@@ -23,6 +23,7 @@ export default class ViewList extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            typeId: this.props.navigation.state.params.typeId,
             views: [],
             searchText: "",
             isSearch: false,
@@ -41,11 +42,12 @@ export default class ViewList extends Component {
 _getViews(){
      let url=Config.VIEWS;
     let param={
+        typeId:this.state.typeId,
          name:this.state.searchText,
          pageNum:this.state.pageNum,
          pageSize:Constant.pageSize
      };
-    FechtUtil.httpGet(url,param,(data)=>{
+    FetchUtil.httpGet(url,param,(data)=>{
         this.setState({
             views:data
         });
@@ -73,7 +75,7 @@ _getViews(){
             <TouchableOpacity
                 onPress={() => {
                     this.props.navigation.navigate("ViewDetail", {
-                        id:'1'
+                        id:item.id
                     });
                 }}
                 style={[
@@ -83,11 +85,8 @@ _getViews(){
                 <Image
                     source={{
                         uri:
-                            Config.PREVIEWIMAGE +
-                            "?token=lhy" +
-                            "&userId=1" +
-                            "&id=" +
-                            item.imageId
+                            Config.PREVIEWIMAGE +"?id=" +item.list[0].imageId
+
                     }}
                     style={styles.headFriend}
                 />
