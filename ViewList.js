@@ -13,6 +13,9 @@ import {
     Keyboard, FlatList
 } from "react-native";
 import Icons from "react-native-vector-icons/Ionicons";
+import FechtUtil from './util/FechtUtil';
+import Config from './util/Config';
+import Constant from './util/Constant';
 let lastPresTime = 1;
 const ITEM_HEIGHT = 100; //item的高度
 const HEADER_HEIGHT = 20; //分组头部的高度
@@ -24,27 +27,30 @@ export default class ViewList extends Component {
             searchText: "",
             isSearch: false,
             searchContent: "", //上次搜索内容记录
+            pageNum:1
         };
     }
 
     componentDidMount() {
-        this.setState({
-            views:[
-                {viewName:'颐和园',content:'颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园'},
-                {viewName:'颐和园',content:'颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园'},
-                {viewName:'颐和园',content:'颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园'},
-                {viewName:'颐和园',content:'颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园'},
-                {viewName:'颐和园',content:'颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园'},
-                {viewName:'颐和园',content:'颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园'},
-                {viewName:'颐和园',content:'颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园'},
-                {viewName:'颐和园',content:'颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园'},
-            ]
-        })
+        this._getViews();
     }
     componentWillUnmount() {
 
     }
-
+    //加载类型
+_getViews(){
+     let url=Config.VIEWS;
+    let param={
+         name:this.state.searchText,
+         pageNum:this.state.pageNum,
+         pageSize:Constant.pageSize
+     };
+    FechtUtil.httpGet(url,param,(data)=>{
+        this.setState({
+            views:data
+        });
+    })
+}
     _onBlurText = () => {
         this._searchInputBox.blur();
     };
@@ -75,32 +81,22 @@ export default class ViewList extends Component {
                 ]}
             >
                 <Image
-                    source={require('./images/food.png')}
-                    // source={{
-                    //     uri:
-                    //         Path.headImgNew +
-                    //         "?uuId=" +
-                    //         this.state.uuid +
-                    //         "&ticket=" +
-                    //         this.state.ticket +
-                    //         "&imageName=" +
-                    //         info.item.photoId +
-                    //         "&userId=" +
-                    //         this.state.basic.userId +
-                    //         "&imageId=" +
-                    //         info.item.photoId +
-                    //         "&sourceType=singleImage&jidNode=" +
-                    //         info.item.jid_node
-                    // }}
-                    //source={{uri: Path.headImg + '?fileName=' + info.item.photoId + '&uuId=' + this.state.uuid + '&userId=' + this.state.basic.userId + '&ticket=' + this.state.ticket}}
+                    source={{
+                        uri:
+                            Config.PREVIEWIMAGE +
+                            "?token=lhy" +
+                            "&userId=1" +
+                            "&id=" +
+                            item.imageId
+                    }}
                     style={styles.headFriend}
                 />
                 <View style={styles.textFriend}>
-                    <Text style={{color: "#333",fontSize:18,marginBottom: 3}} numberOfLines={1}>{item.viewName}</Text>
+                    <Text style={{color: "#333",fontSize:18,marginBottom: 3}} numberOfLines={1}>{item.name}</Text>
                     <Text
                         style={{ color: "#333", fontSize: 15 }}
                         numberOfLines={3}
-                    >{item.content}</Text>
+                    >{item.describle}</Text>
                 </View>
             </TouchableOpacity>
         ); //5C5C5C
