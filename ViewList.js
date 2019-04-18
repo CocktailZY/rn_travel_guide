@@ -40,7 +40,7 @@ export default class ViewList extends Component {
     }
     //加载类型
 _getViews(){
-     let url=Config.VIEWS;
+     let url=Config.VIEWS+"?token=lhy";
     let param={
         typeId:this.state.typeId,
          name:this.state.searchText,
@@ -49,7 +49,7 @@ _getViews(){
      };
     FetchUtil.httpGet(url,param,(data)=>{
         this.setState({
-            views:data
+            views:data.recordList
         });
     })
 }
@@ -59,6 +59,9 @@ _getViews(){
     _setSearchText = text => {
         this.setState({
             searchText: text
+        },()=>{
+            //输入完内容去检索
+            this._getViews();
         });
     };
 
