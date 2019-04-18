@@ -8,7 +8,7 @@ import {
     ScrollView
 } from "react-native";
 import Header from './common/Header';
-import FechtUtil from './util/FechtUtil';
+import FechtUtil from './util/FetchUtil';
 import Config from './util/Config';
 import Constant from './util/Constant';
 const {height, width} = Dimensions.get('window');

@@ -5,12 +5,14 @@ import {
     View,
     Image,
     TouchableOpacity,
-    ScrollView, TextInput,
+    ScrollView, TextInput,Dimensions,
+    WebView,
     FlatList
 } from "react-native";
 import Header from "./common/Header";
 import Slider from "react-native-slider";
 import Icons from 'react-native-vector-icons/Ionicons';
+const {height, width} = Dimensions.get('window');
 
 export default class GuidePublishDetail extends Component {
     constructor(props) {
@@ -58,7 +60,7 @@ export default class GuidePublishDetail extends Component {
                     backTitle={'返回'}
                     title={'填写攻略信息'}
                 />
-                <ScrollView>
+                <ScrollView style={{flex:1}}>
                     <View style={{
                         height: 40,
                         marginTop: 10,
@@ -216,12 +218,23 @@ export default class GuidePublishDetail extends Component {
                         </TouchableOpacity>
                     </View>
                     <View style={{borderTopWidth: 1, borderTopColor: '#d4d4d4', marginTop: 10}}/>
-                    <View style={{padding:10}}>
+                    <View style={{padding:5}}>
                         <Text>{'请在景区地图上标注您的驻留位置'}</Text>
                         {/*地图区域*/}
+                        <TouchableOpacity
+                            style={[styles.btn,{marginTop:5}]}
+                            onPress={()=>{
+                                this.props.navigation.navigate('MapView');
+                            }}
+                        >
+                            <Text style={{
+                                fontSize: 15,
+                                color: '#fff'
+                            }}>{'点击查看景区地图'}</Text>
+                        </TouchableOpacity>
                     </View>
 
-                    <View style={{padding:10}}>
+                    <View style={{padding:5}}>
                         <TouchableOpacity onPress={() => {
                             //点击确定
                         }} style={styles.btn}>

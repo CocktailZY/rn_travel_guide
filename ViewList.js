@@ -13,7 +13,7 @@ import {
     Keyboard, FlatList
 } from "react-native";
 import Icons from "react-native-vector-icons/Ionicons";
-import FechtUtil from './util/FechtUtil';
+import FechtUtil from './util/FetchUtil';
 import Config from './util/Config';
 import Constant from './util/Constant';
 let lastPresTime = 1;
