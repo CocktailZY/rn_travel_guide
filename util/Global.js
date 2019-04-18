@@ -1,3 +1,4 @@
 export default Global = {
-	autoLogin: true
+	autoLogin: true,
+    pageSize:100
 }
