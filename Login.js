@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, TextInput, Image, StyleSheet, Dimensions, CheckBox } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, Image, StyleSheet, Dimensions, CheckBox,Alert } from 'react-native';
 
 import Global from './util/Global';
-
+import FetchUtil from './util/FetchUtil';
+import Config from './util/Config';
+import MD5 from './util/MD5';
 const {height, width} = Dimensions.get('window');
 export default class Login extends Component{
     constructor(props){
@@ -35,9 +37,21 @@ export default class Login extends Component{
             alert('验证不通过');
         }
         else{
-            //调登录接口
+            let url=Config.LOGIN+"?token=lhy";
+            let param={
+                userCode:this.state.userCode,
+                password:MD5.hex_md5(this.state.password)
+            }
+            FetchUtil.httpGet(url,param,(data)=>{
+                if(data.status){
+                    Global['user']=data;
+                    this.props.navigation.navigate('Home')
+                }else{
+                    Alert.alert('提示', '用户名密码错误');
+                }
+            });
             //存全局变量
-            Global.autoLogin = this.state.autoLogin;
+
         }
     };
 

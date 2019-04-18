@@ -21,6 +21,8 @@ import ViewList from './ViewList';
 import ViewDetail from './ViewDetail';
 import GuidePublish from './GuidePublish';
 import GuidePublishDetail from './GuidePublishDetail';
+import ViewCollection from './ViewCollection';
+import PlanCollectionDetail from './PlanCollectionDetail';
 
 
 console.disableYellowBox = true;
@@ -82,6 +84,9 @@ const RootStack = createStackNavigator({
     ViewDetail: { screen: ViewDetail},
     GuidePublish: { screen: GuidePublish},
     GuidePublishDetail: { screen: GuidePublishDetail},
+    ViewCollection: { screen: ViewCollection},
+    PlanCollectionDetail: { screen: PlanCollectionDetail},
+
 }, {
     initialRouteName: 'FootTab', // 默认显示界面
     defaultNavigationOptions: {  // 屏幕导航的默认选项, 也可以在组件内用 static navigationOptions 设置(会覆盖此处的设置)

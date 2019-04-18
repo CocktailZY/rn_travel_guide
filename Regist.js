@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, TextInput, Image, StyleSheet, Dimensions, CheckBox,
-    DatePickerAndroid,
+import {
+    View, Text, TouchableOpacity, TextInput, Image, StyleSheet, Dimensions, CheckBox,
+    DatePickerAndroid, Alert,
 } from 'react-native';
 
 import Global from './util/Global';
+import Config from "./util/Config";
+import MD5 from "./util/MD5";
+import FetchUtil from "./util/FetchUtil";
 
 const {height, width} = Dimensions.get('window');
+//注册页面
 export default class Regist extends Component{
     constructor(props){
         super(props);
@@ -19,6 +24,7 @@ export default class Regist extends Component{
                 qq: '',
                 birth: '',
                 sex: 0,//男 0 ，女 1
+                role:'user',
             }
         }
     }
@@ -42,13 +48,26 @@ export default class Regist extends Component{
         else if(tmp.pwd.trim() == ''){alert('密码不可为空');}
         else if(tmp.pwd.trim() != tmp.confirmPwd.trim()){alert('密码不一致');}
         else if(tmp.phone.trim() == ''){alert('手机不可为空');}
+        else if(tmp.address.trim() == ''){alert('地址不可为空');}
+        else if(tmp.qq.trim() == ''){alert('qq不可为空');}
+        else if(tmp.birth.trim() == ''){alert('生日不可为空');}
+        else if(tmp.sex.trim() == ''){alert('性别不能为空');}
         else{
             //调注册接口
+            let url=Config.REGISTER+"?token=lhy";
+            let param=this.state.userInfo;
+            FetchUtil.httpGet(url,param,(data)=>{
+                if(data.status){
+                    Global['user']=data;
+                    this.props.navigation.navigate('Home');
+                }else{
+                    Alert.alert('提示', '用户名密码错误');
+                }
+            });
             //回调跳转登录页面
-            this.props.navigation.navigate('Login');
+            this.props.navigation.navigate('Home');
         }
     };
-
     render(){
         const { userInfo } = this.state;
         return (
@@ -202,7 +221,7 @@ export default class Regist extends Component{
                     </View>
                 </View>
                 <TouchableOpacity onPress={() => {
-                    this._regist()
+                    this._regist();
                 }} style={styles.btn}>
                     <Text style={{
                         fontSize: 15,

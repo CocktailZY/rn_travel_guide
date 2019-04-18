@@ -12,19 +12,18 @@ import {
     SectionList,
     Keyboard, FlatList
 } from "react-native";
-import Icons from "react-native-vector-icons/Ionicons";
+import {Header, Icon} from 'react-native-elements';
 import FetchUtil from './util/FetchUtil';
 import Config from './util/Config';
-import Constant from './util/Constant';
 import Global from "./util/Global";
 let lastPresTime = 1;
 const ITEM_HEIGHT = 100; //item的高度
 const HEADER_HEIGHT = 20; //分组头部的高度
-export default class ViewList extends Component {
+export default class ViewCollection extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            typeId: this.props.navigation.state.params.typeId,
+            type: this.props.navigation.state.params.type,
             views: [],
             searchText: "",
             isSearch: false,
@@ -34,46 +33,25 @@ export default class ViewList extends Component {
     }
 
     componentDidMount() {
-        this._getViews();
+        this._getViewCollection();
     }
     componentWillUnmount() {
 
     }
     //加载类型
-_getViews(){
-     let url=Config.VIEWS+"?token=lhy";
-    let param={
-        typeId:this.state.typeId,
-         name:this.state.searchText,
-         pageNum:this.state.pageNum,
-         pageSize:Global.pageSize
-     };
-    FetchUtil.httpGet(url,param,(data)=>{
-        this.setState({
-            views:data.recordList
-        });
-    })
-}
-    _onBlurText = () => {
-        this._searchInputBox.blur();
-    };
-    _setSearchText = text => {
-        this.setState({
-            searchText: text
-        },()=>{
-            //输入完内容去检索
-            this._getViews();
-        });
-    };
-
-    _searchFriend = () => {
-        this._searchInputBox.blur();
-        if (this.state.searchText.replace(/(^\s*)|(\s*$)/g, "") == "") {
-            alert('搜索内容不能为空！');
-        }
-        //调接口
-    };
-
+    _getViewCollection(){
+        let url=Config.GET_COLLECTIONS+"?token=lhy&userId="+Global.user.id;
+        let param={
+            type:this.state.typeId,
+            pageNum:this.state.pageNum,
+            pageSize:Global.pageSize
+        };
+        FetchUtil.httpGet(url,param,(data)=>{
+            this.setState({
+                views:data.recordList
+            });
+        })
+    }
     _renderItem = ({item,index}) => {
         return (
             <TouchableOpacity
@@ -107,36 +85,29 @@ _getViews(){
 
 
     render() {
-        const { showAlert, tipMsg } = this.state;
         return (
             <View style={styles.container}>
                 <View style={{ backgroundColor: "#F5F5F5" }}>
-                    <View style={styles.searchBox}>
-                        <View style={{ flex: 1 }}>
-                            <TextInput
-                                ref={TextInput => (this._searchInputBox = TextInput)}
-                                style={styles.searchInputBox}
-                                placeholderTextColor={"#CCCCCC"}
-                                placeholder={"搜索..."}
-                                underlineColorAndroid={"transparent"}
-                                multiline={false}
-                                onChangeText={text => this._setSearchText(text)}
-                                autoFocus={true}
-                                returnKeyType={"search"}
-                                onSubmitEditing={this._searchFriend}
-                                value={this.state.searchText}
+                    <Header
+                        placement="left"
+                        leftComponent={
+                            <Icon
+                                name='arrow-left'
+                                type='font-awesome'
+                                color='#ffffff'
+                                onPress={() => this.props.navigation.goBack()}
                             />
-                        </View>
-                        <TouchableOpacity onPress={this._searchFriend}>
-                            <View style={{ width: 25, height: 30, justifyContent: "center" }}>
-                                <Icons
-                                    name={"ios-search"}
-                                    size={25}
-                                    color={"#CCCCCC"}
-                                />
-                            </View>
-                        </TouchableOpacity>
-                    </View>
+                        }
+                        centerComponent={{text: '收藏景点列表', style: {color: '#fff', fontSize: 18}}}
+                        rightComponent={
+                           {/* <Icon
+                                name='plus'
+                                type='font-awesome'
+                                color='#ffffff'
+                                onPress={() => {this.props.navigation.navigate('TopicPublish')}}
+                            />*/}
+                        }
+                    />
                 </View>
                 <View style={{ flex: 1 }}>
                     <FlatList
