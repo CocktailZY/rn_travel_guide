@@ -270,5 +270,3 @@ const styles = StyleSheet.create({
     commitTime: {flex: 1, marginRight: 10, textAlign: 'right', fontSize: 11, color: '#aaa'},
     replyBtn: {fontSize: 13, color: '#6173ff'},
 });
-
-export default TopicDetail;

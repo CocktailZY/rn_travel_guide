@@ -10,7 +10,7 @@ import {
     BackHandler,
     TextInput,
     SectionList,
-    Keyboard, FlatList
+    Keyboard, FlatList, Dimensions
 } from "react-native";
 import Icons from "react-native-vector-icons/Ionicons";
 import FetchUtil from './util/FetchUtil';
@@ -20,6 +20,7 @@ import Global from "./util/Global";
 let lastPresTime = 1;
 const ITEM_HEIGHT = 100; //item的高度
 const HEADER_HEIGHT = 20; //分组头部的高度
+const {height, width} = Dimensions.get('window');
 export default class ViewList extends Component {
     constructor(props) {
         super(props);
@@ -159,7 +160,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#FFFFFF"
     },
     itemTitleView: {flex: 1, flexDirection: 'row', alignItems: 'center'},
-    itemTitleText: {fontSize: 18, fontWeight: 'bold', marginLeft: 5, width: (width - 30) * 0.9},
+  itemTitleText: {fontSize: 18, fontWeight: 'bold', marginLeft: 5, width: (width - 30) * 0.9},
     itemBottomText: {fontSize: 13, color: '#b5b5b5'},
     friendList: {
         flexDirection: "row",

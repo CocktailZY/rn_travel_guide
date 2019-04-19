@@ -10,7 +10,7 @@ import {
     BackHandler,
     TextInput,
     SectionList,
-    Keyboard, FlatList
+    Keyboard, FlatList, Dimensions
 } from "react-native";
 import {Header, Icon} from 'react-native-elements';
 import FetchUtil from './util/FetchUtil';
@@ -19,6 +19,7 @@ import Global from "./util/Global";
 let lastPresTime = 1;
 const ITEM_HEIGHT = 100; //item的高度
 const HEADER_HEIGHT = 20; //分组头部的高度
+const {height, width} = Dimensions.get('window');
 export default class ViewCollection extends Component {
     constructor(props) {
         super(props);
