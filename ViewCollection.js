@@ -12,10 +12,10 @@ import {
     SectionList,
     Keyboard, FlatList, Dimensions
 } from "react-native";
+import Header from "./common/Header";
 import FetchUtil from './util/FetchUtil';
 import Config from './util/Config';
 import Global from "./util/Global";
-import Header from "./common/Header";
 let lastPresTime = 1;
 const ITEM_HEIGHT = 100; //item的高度
 const HEADER_HEIGHT = 20; //分组头部的高度
@@ -34,22 +34,28 @@ export default class ViewCollection extends Component {
     }
 
     componentDidMount() {
-        this._getViewCollection();
+        // if(Global.user && Global.user.id){
+            this._getViewCollection();
+        // }else{
+        //     this.props.navigation.navigate('Login');
+        // }
+
     }
     componentWillUnmount() {
 
     }
     //加载类型
     _getViewCollection(){
-        let url=Config.GET_COLLECTIONS+"?token=lhy&userId="+Global.user.id;
+        let url=Config.GET_COLLECTIONS+"?token=lhy&userId=1"//+Global.user.id;
         let param={
-            type:this.state.typeId,
+            type:this.state.type,
             pageNum:this.state.pageNum,
             pageSize:Global.pageSize
         };
         FetchUtil.httpGet(url,param,(data)=>{
+            console.log(data);
             this.setState({
-                views:data.recordList
+                views:data
             });
         })
     }
@@ -57,20 +63,26 @@ export default class ViewCollection extends Component {
         return (
             <TouchableOpacity
                 onPress={() => {
-                    this.props.navigation.navigate("ViewDetail", {
-                        id:item.id
-                    });
+
+                    // this.props.navigation.navigate("ViewDetail", {
+                    //     id:item.id
+                    // });
                 }}
                 style={[
                     styles.friendList,
                 ]}
             >
                 <Image
-                    source={{
-                        uri:
-                            Config.PREVIEWIMAGE +"?id=" +item.list[0].imageId
+                    source={
 
-                    }}
+                        item.list.length==0?
+                            require('./images/old_build.png')
+                        :
+                            {
+                                uri:
+                                    Config.PREVIEWIMAGE +"?id=" +item.list[0].imageId
+                            }
+                    }
                     style={styles.headFriend}
                 />
                 <View style={styles.textFriend}>
@@ -89,14 +101,14 @@ export default class ViewCollection extends Component {
         return (
             <View style={styles.container}>
                 <View style={{ backgroundColor: "#F5F5F5" }}>
-					<Header
-						headLeftFlag={true}
-						onPressBackBtn={() => {
-							this.props.navigation.goBack();
-						}}
-						backTitle={'返回'}
-						title={'收藏景点列表'}
-					/>
+                    <Header
+                        headLeftFlag={false}
+                        onPressBackBtn={() => {
+                            this.props.navigation.goBack();
+                        }}
+                        backTitle={'返回'}
+                        title={'收藏景点列表'}
+                    />
                 </View>
                 <View style={{ flex: 1 }}>
                     <FlatList

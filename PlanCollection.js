@@ -1,3 +1,4 @@
+import React, {Component} from 'react';
 import {
     StyleSheet,
     Text,
@@ -9,16 +10,16 @@ import {
     BackHandler,
     TextInput,
     SectionList,
-    Keyboard, FlatList
+    Keyboard, FlatList, Dimensions
 } from "react-native";
+import Header from "./common/Header";
 import FetchUtil from './util/FetchUtil';
 import Config from './util/Config';
 import Global from "./util/Global";
-import Header from "./common/Header";
-import React from "react";
 let lastPresTime = 1;
 const ITEM_HEIGHT = 100; //item的高度
 const HEADER_HEIGHT = 20; //分组头部的高度
+const {height, width} = Dimensions.get('window');
 export default class PlanCollection extends Component {
     constructor(props) {
         super(props);
@@ -40,15 +41,15 @@ export default class PlanCollection extends Component {
     }
     //加载类型
     _getViewCollection(){
-        let url=Config.GET_COLLECTIONS+"?token=lhy&userId="+Global.user.id;
+        let url=Config.GET_COLLECTIONS+"?token=lhy&userId=1";//+Global.user.id;
         let param={
-            type:this.state.typeId,
+            type:this.state.type,
             pageNum:this.state.pageNum,
             pageSize:Global.pageSize
         };
         FetchUtil.httpGet(url,param,(data)=>{
             this.setState({
-                views:data.recordList
+                views:data
             });
         });
     };
@@ -71,7 +72,7 @@ export default class PlanCollection extends Component {
                     <View style={styles.bottomSeparator}></View>
                     <View style={{flexDirection: 'row'}}>
                         <View style={{width: 80}}>
-                            <Text style={styles.itemBottomText} numberOfLines={1}>{${item.createTime}}</Text>
+                            <Text style={styles.itemBottomText} numberOfLines={1}>{item.createTimer}</Text>
                         </View>
                     </View>
                 </View>
@@ -84,14 +85,14 @@ export default class PlanCollection extends Component {
         return (
             <View style={styles.container}>
                 <View style={{ backgroundColor: "#F5F5F5" }}>
-					<Header
-						headLeftFlag={true}
-						onPressBackBtn={() => {
-							this.props.navigation.goBack();
-						}}
-						backTitle={'返回'}
-						title={'收藏线路列表'}
-					/>
+                    <Header
+                        headLeftFlag={false}
+                        onPressBackBtn={() => {
+                            this.props.navigation.goBack();
+                        }}
+                        backTitle={'返回'}
+                        title={'收藏线路列表'}
+                    />
                 </View>
                 <View style={{ flex: 1 }}>
                     <FlatList

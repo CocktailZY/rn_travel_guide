@@ -110,32 +110,8 @@ export  default  class PlanCollectionDetail extends Component {
                                 </View>
                             })
                         }
-                        {this._commentFooter()}
                     </View>
                 </ScrollView>
-                <View style={styles.inviteComment}>
-                    <TextInput
-                        ref={'commentInput'}
-                        style={styles.inviteCommentInput}
-                        multiline={true}
-                        value={this.state.inviteContent}
-                        onChangeText={(text) => this.setState({
-                            inviteContent: text,
-                        })}
-                        onBlur={() => {
-                            this.setState({
-                                inviteContent: '',//评论内容清空
-                                commentPid: 0,
-                            })
-                        }}
-                        placeholder={'请输入评论内容'}
-                        underlineColorAndroid={'transparent'}/>
-                    <TouchableOpacity style={styles.btn} onPress={() => {
-                        this._inviteComment()
-                    }}>
-                        <Text style={{fontSize: 14, color: '#fff'}}>评论</Text>
-                    </TouchableOpacity>
-                </View>
             </View>
         )
     }

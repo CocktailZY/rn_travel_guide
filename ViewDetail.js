@@ -11,6 +11,7 @@ import Header from './common/Header';
 import FetchUtil from './util/FetchUtil';
 import Config from './util/Config';
 import Constant from './util/Constant';
+import Global from "./util/Global";
 const {height, width} = Dimensions.get('window');
 export default class ViewDetail extends Component {
     constructor(props) {
@@ -28,7 +29,7 @@ export default class ViewDetail extends Component {
         this._getViewById();
     }
     _getViewById(){
-        let url=Config.VIEWSDETAIL;
+        let url=Config.VIEWSDETAIL+"?token=lhy";
         let param={
             id:this.state.viewSpotId,
         };
@@ -36,6 +37,19 @@ export default class ViewDetail extends Component {
             this.setState({
                 detailInfo:data
             });
+        });
+    };
+    _saveViewCollection(){
+        let url=Config.SAVE_COLLECTION+"?token=lhy&userId=1"//+Global.user.id;
+        let param={
+            businessId:this.state.viewSpotId,
+            type:1
+        };
+        FetchUtil.httpGet(url,param,(data)=>{
+            if(data){
+                alert("收藏景点成功");
+            }
+
         })
     }
     render(){
@@ -52,12 +66,17 @@ export default class ViewDetail extends Component {
                 <ScrollView>
                     <View style={{flex:2,padding:8,justifyContent: 'center', alignItems: 'center'}}>
                         <Text>{
-                            'okokokokokokokokokokokokokokokokokokokokokokok'
+                            this.state.detailInfo.name
+                        }</Text>
+                    </View>
+                    <View style={{flex:2,padding:8,justifyContent: 'center', alignItems: 'center'}}>
+                        <Text>{
+                            this.state.detailInfo.address
                         }</Text>
                     </View>
                     <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
                         <TouchableOpacity onPress={() => {
-                            alert('收藏');
+                            this._saveViewCollection();
                         }} style={styles.btn}>
                             <Text style={{
                                 fontSize: 15,

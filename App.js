@@ -23,9 +23,7 @@ import GuidePublish from './GuidePublish';
 import GuidePublishDetail from './GuidePublishDetail';
 import ViewCollection from './ViewCollection';
 import PlanCollectionDetail from './PlanCollectionDetail';
-import MapView from './MapView';
-
-
+import PlanCollection from './PlanCollection';
 console.disableYellowBox = true;
 console.warn("YellowBox is disabled.");
 
@@ -86,8 +84,8 @@ const RootStack = createStackNavigator({
     GuidePublish: { screen: GuidePublish},
     GuidePublishDetail: { screen: GuidePublishDetail},
     ViewCollection: { screen: ViewCollection},
+    PlanCollection:{ screen: PlanCollection},
     PlanCollectionDetail: { screen: PlanCollectionDetail},
-	MapView: { screen: MapView},
 
 }, {
     initialRouteName: 'FootTab', // 默认显示界面

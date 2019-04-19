@@ -43,12 +43,21 @@ export default class ViewList extends Component {
     //加载类型
 _getViews(){
      let url=Config.VIEWS+"?token=lhy";
-    let param={
-        typeId:this.state.typeId,
-         name:this.state.searchText,
-         pageNum:this.state.pageNum,
-         pageSize:Global.pageSize
-     };
+    let param={};
+     if(''==this.state.searchText){
+         param={
+             typeId:this.state.typeId,
+             pageNum:this.state.pageNum,
+             pageSize:Global.pageSize
+         };
+     }else{
+         param={
+             typeId:this.state.typeId,
+             name:this.state.searchText,
+             pageNum:this.state.pageNum,
+             pageSize:Global.pageSize
+         };
+     }
     FetchUtil.httpGet(url,param,(data)=>{
         this.setState({
             views:data.recordList
