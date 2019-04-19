@@ -1,0 +1,38 @@
+.bg {
+	background:url(../images/5.jpg) no-repeat fixed;
+	background-size: cover;
+}
+.login-from {
+	padding: 20px;
+	border-radius: 4px;
+	border: 1px solid #d4d4d4;
+	margin-top: 75%;
+	background-color: rgba(0,0,0,0.4);
+}
+.cal-active {
+	background-color: #ee5253;
+}
+.cal-commit {
+	background-color: #ff9f43;
+}
+.table th, .table td {
+	text-align: center;
+	vertical-align: middle!important;
+}
+
+.bg-white {
+	background-color: #fff;
+}
+.test-color-tomato {
+	background-color: tomato;
+}
+.test-color-yellow {
+	background-color: yellow;
+}
+
+.nav>li>a:focus, .nav>li>a {
+	color: #7b7b7b;
+}
+.nav>li>a:focus, .nav>li>a:hover {
+	color: #5cb85c;
+}
