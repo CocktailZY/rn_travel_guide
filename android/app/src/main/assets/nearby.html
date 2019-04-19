@@ -35,11 +35,10 @@
         $("#map").css("min-height",mapHeight);
      })
     var markerArr = [
-        { title: "名称：一课堂", point: "113.301340,40.081720", address: "大同市迎宾街123号", tel: "13626663555" },
-        { title: "名称：新东方", point: "113.306867,40.060785", address: "大同市开源街45号 ", tel: "13626663555" } ,
-        { title: "名称：疯狂英语", point: "113.311871,40.069365", address: "大同市南环路23号 ", tel: "13626663555" }
+        { title: "名称：天安门", point: "116.38,39.9", address: "北京市", detail: '北京市-东城区-长安街'}
     ];
      var map; //Map实例
+	 var marker;
     function map_init() {
         map = new BMap.Map("map");
         //第1步：设置地图中心点，大同市
@@ -68,12 +67,39 @@
         map.addControl(ctrlSca);
 
         //第7步：绘制点
-        /*for (var i = 0; i < markerArr.length; i++) {
-            var p0 = markerArr[i].point.split(",")[0];
-            var p1 = markerArr[i].point.split(",")[1];
-            var maker = addMarker(new window.BMap.Point(p0, p1), i);
-            addInfoWindow(maker, markerArr[i], i);
-        }*/
+        // for (var i = 0; i < markerArr.length; i++) {
+            var p0 = markerArr[0].point.split(",")[0];
+            var p1 = markerArr[0].point.split(",")[1];
+            maker = addMarker(new window.BMap.Point(p0, p1), 0);
+            addInfoWindow(maker, markerArr[0], 0);
+        // }
+		map.addEventListener("click",function(e){
+			// e.domEvent.stopPropagation();
+			var lng = e.point.lng ;
+			var lat =  e.point.lat;
+			//这里是清空所有标记
+			map.removeOverlay(marker);
+			//创建一个新的标记
+			// map.centerAndZoom(e.point, 13);
+			// map.addOverlay(new BMap.Marker(e.point));
+			// $("#labour_lng").val(lng);
+			// $("#labour_lat").val(lat);
+			getLocation(lng,lat,function(localinfo){
+				markerArr = [];
+				markerArr.push({
+                    title: "名称："+localinfo.address,
+                    point: lng+","+lat,
+                    address: localinfo.business,
+                    detail: localinfo.province + "- " /*+ addComp.city + ", "*/ +
+                        localinfo.district + "- " +
+						localinfo.street != '' ? (localinfo.street + "- ") : '' +
+                        localinfo.streetNumber
+				});
+				maker = addMarker(new window.BMap.Point(lng, lat), 0);
+				addInfoWindow(maker, markerArr[0], 0);
+				window.postMessage(lng+","+lat+","+localinfo.address);
+            });
+		});
     }
 
     // 添加标注
@@ -83,7 +109,7 @@
                 offset: new BMap.Size(10, 25),
                 imageOffset: new BMap.Size(0, 0 - index * 25)
             });
-        var marker = new BMap.Marker(point, { icon: myIcon });
+        marker = new BMap.Marker(point, { icon: myIcon });
         map.addOverlay(marker);
         return marker;
     }
@@ -99,17 +125,17 @@
          html.push('<td style="vertical-align:top;line-height:16px">' + poi.address + ' </td>');
          html.push('</tr>');
          html.push('<tr>');
-         html.push('<td style="vertical-align:top;line-height:16px;width:38px;white-space:nowrap;word-break:keep-all">电话:</td>');
-         html.push('<td style="vertical-align:top;line-height:16px">' + poi.tel + ' </td>');
+         html.push('<td style="vertical-align:top;line-height:16px;width:38px;white-space:nowrap;word-break:keep-all">位置:</td>');
+         html.push('<td style="vertical-align:top;line-height:16px">' + poi.detail + ' </td>');
          html.push('</tr>');
          html.push('</tbody></table>');
          var infoWindow = new BMap.InfoWindow(html.join(""), { title: title, width: 200 });
 
-         var openInfoWinFun = function () {
-             marker.openInfoWindow(infoWindow);
-         };
-         marker.addEventListener("click", openInfoWinFun);
-         return openInfoWinFun;
+         // var openInfoWinFun = function () {
+			 marker.openInfoWindow(infoWindow);
+         // };
+         // marker.addEventListener("click", openInfoWinFun);
+         // return openInfoWinFun;
      }
      //异步调用百度js
     function map_load() {
@@ -118,18 +144,26 @@
         document.body.appendChild(load);
     }
 
-     //这里是点击事件
-     map.addEventListener("click",function(e){
-         var lng = e.point.lng ;
-         var lat =  e.point.lat;
-         //这里是清空所有标记
-         deletePoint();
-         //创建一个新的标记
-         map.centerAndZoom(e.point, 13);
-         map.addOverlay(new BMap.Marker(e.point));
-         $("#labour_lng").val(lng);
-         $("#labour_lat").val(lat);
-     });
+     //这里是点击事件获取地址
+     function getLocation(lng,lat,callback){
+		 var geoc = new BMap.Geocoder();
+		 var point = new BMap.Point(lng, lat);
+		 geoc.getLocation(point, function (rs) {
+			 var addComp = rs.addressComponents;
+			 // alert(addComp.province + "- " /*+ addComp.city + ", "*/ + addComp.district + "- " + addComp.street + "- " + addComp.streetNumber);
+			 var location = {
+				 province: addComp.province,
+				 city: addComp.city,
+				 district: addComp.district,
+				 street: addComp.street,
+				 streetNumber: addComp.streetNumber,
+                 address: rs.address,
+				 business: rs.business
+			 };
+             callback(location);
+		 });
+     }
+
 
     window.onload = map_load;
 //    function showMenu(obj){

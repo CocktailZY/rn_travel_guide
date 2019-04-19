@@ -9,11 +9,11 @@ import {
     Platform, TouchableOpacity, Dimensions, Image, ScrollView, FlatList, TextInput,
     ActivityIndicator, TouchableWithoutFeedback, Keyboard, DeviceEventEmitter, Alert, Linking
 } from 'react-native';
-import {Header, Icon} from 'react-native-elements';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import Config from "./util/Config";
 import Global from "./util/Global";
 import FetchUtil from "./util/FetchUtil";
+import Header from "./common/Header";
 
 const {height, width} = Dimensions.get('window');
 const SCREEN = width < 600 ? 6 : 10;
@@ -59,18 +59,14 @@ export  default  class PlanCollectionDetail extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Header
-                    placement="left"
-                    leftComponent={
-                        <Icon
-                            name='arrow-left'
-                            type='font-awesome'
-                            color='#ffffff'
-                            onPress={() => this.props.navigation.goBack()}
-                        />
-                    }
-                    centerComponent={{text: '规划详情', style: {color: '#fff', fontSize: 18}}}
-                />
+				<Header
+					headLeftFlag={true}
+					onPressBackBtn={() => {
+						this.props.navigation.goBack();
+					}}
+					backTitle={'返回'}
+					title={'规划详情'}
+				/>
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}

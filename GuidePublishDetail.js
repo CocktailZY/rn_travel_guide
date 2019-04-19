@@ -12,6 +12,7 @@ import {
 import Header from "./common/Header";
 import Slider from "react-native-slider";
 import Icons from 'react-native-vector-icons/Ionicons';
+import ImagePickerManager from "react-native-image-picker";
 const {height, width} = Dimensions.get('window');
 
 export default class GuidePublishDetail extends Component {
@@ -23,7 +24,7 @@ export default class GuidePublishDetail extends Component {
 			tnxh: 3,
 			jsgs: 0.5,
 			zbms: 1,
-			uploadImgs: [1, 2, 3, 4, 5, 6],//上传的景区图片
+			uploadImgs: [],//上传的景区图片
 		};
 	}
 
@@ -36,11 +37,82 @@ export default class GuidePublishDetail extends Component {
 
 	}
 
+	openImagePicker = () => {
+		let photoOptions = {
+			//底部弹出框选项
+			title: '请选择',
+			cancelButtonTitle: '取消',
+			takePhotoButtonTitle: '拍照',
+			chooseFromLibraryButtonTitle: '打开相册',
+			cameraType: 'back',
+			quality: 1,
+			// maxWidth: 36,
+			// maxHeight: 36,
+			allowsEditing: false,
+			noData: false,
+			storageOptions: {
+				skipBackup: true,
+				path: 'file'
+			}
+		};
+
+		//打开图像库：
+		ImagePickerManager.showImagePicker(photoOptions, (response) => {
+			if (response.didCancel) {
+				//选择了取消
+			} else {
+				if (response.error) {
+					alert('您选择的图片异常，请更换有效图片再试！');
+					return;
+				}
+
+				let imageType;
+				if (response.fileName && response.fileName.indexOf('HEIC') == -1) {
+					imageType = response.fileName.substr(response.fileName.lastIndexOf('.') + 1);
+				} else {
+					imageType = response.uri.substr(response.uri.lastIndexOf('.') + 1);
+				}
+				const trueType = ['jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'gif', 'GIF'];
+				if (trueType.indexOf(imageType) > -1) {
+					//与上一节中的代码相同！
+					// DeviceEventEmitter.emit('changeLoading', 'true');
+					let formData = new FormData();
+					let file = {
+						uri: response.uri,
+						type: 'multipart/form-data',
+						name: response.fileName && response.fileName.indexOf('HEIC') == -1 ? response.fileName : 'image.png'
+					};
+					formData.append("file", file);
+					let url = Path.resetHeadImage + '?uuId=' + this.state.uuid + '&ticket=' + this.state.ticket + '&jidNode=' + this.state.basic.jidNode + '&userId=' + this.state.basic.userId;
+					fetch(url, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'multipart/form-data',
+						},
+						body: formData,
+					}).then((response) => response.json()).then((responseData) => {
+						console.log(responseData);
+						let item = responseData.data[0]
+						let tmpArr = {...this.state.uploadImgs};
+						tmpArr.push(item.data);
+						this.setState({uploadImgs: tmpArr});
+					}, () => {
+						alert('图片上传失败！');
+					}).catch((error) => {
+						alert('图片上传失败！');
+					});
+				} else {
+					alert('无效图片格式，仅支持“gif,jpeg,jpg,png”');
+				}
+			}
+		});
+	}
+
 	_renderImg = ({item, index}) => {
 		return (
 			<View style={styles.upBtn}>
 				<Image
-					source={require('./images/food.png')}
+					source={{uri:item}}
 					resizeMode={'contain'}
 					style={{width: 80, height: 80}}
 				/>
@@ -208,6 +280,7 @@ export default class GuidePublishDetail extends Component {
 							}else{
 								//打开上传照片
 								//判断图片类型是jpg
+								this.openImagePicker();
 							}
 						}} style={styles.upAddBtn}>
 							<Icons name={'ios-add'} size={36} color={'#d4d4d4'}/>
@@ -221,6 +294,9 @@ export default class GuidePublishDetail extends Component {
 					<View style={{padding:5}}>
 						<Text>{'请在景区地图上标注您的驻留位置'}</Text>
 						{/*地图区域*/}
+						<Text style={{marginTop:5}}>
+							{this.props.navigation.state.params.lng ? this.props.navigation.state.params.address : ''}
+						</Text>
 						<TouchableOpacity
 							style={[styles.btn,{marginTop:5}]}
 							onPress={()=>{

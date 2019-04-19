@@ -11,10 +11,11 @@ import {
     SectionList,
     Keyboard, FlatList
 } from "react-native";
-import {Header, Icon} from 'react-native-elements';
 import FetchUtil from './util/FetchUtil';
 import Config from './util/Config';
 import Global from "./util/Global";
+import Header from "./common/Header";
+import React from "react";
 let lastPresTime = 1;
 const ITEM_HEIGHT = 100; //item的高度
 const HEADER_HEIGHT = 20; //分组头部的高度
@@ -83,26 +84,14 @@ export default class PlanCollection extends Component {
         return (
             <View style={styles.container}>
                 <View style={{ backgroundColor: "#F5F5F5" }}>
-                    <Header
-                        placement="left"
-                        leftComponent={
-                            <Icon
-                                name='arrow-left'
-                                type='font-awesome'
-                                color='#ffffff'
-                                onPress={() => this.props.navigation.goBack()}
-                            />
-                        }
-                        centerComponent={{text: '收藏线路列表', style: {color: '#fff', fontSize: 18}}}
-                        rightComponent={
-                           {/* <Icon
-                                name='plus'
-                                type='font-awesome'
-                                color='#ffffff'
-                                onPress={() => {this.props.navigation.navigate('TopicPublish')}}
-                            />*/}
-                        }
-                    />
+					<Header
+						headLeftFlag={true}
+						onPressBackBtn={() => {
+							this.props.navigation.goBack();
+						}}
+						backTitle={'返回'}
+						title={'收藏线路列表'}
+					/>
                 </View>
                 <View style={{ flex: 1 }}>
                     <FlatList

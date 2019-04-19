@@ -12,7 +12,11 @@ import Header from "./common/Header";
 export default class MapView extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+        	lng:'',
+			lat:'',
+			address:''
+		};
     }
 
     componentDidMount() {
@@ -30,7 +34,11 @@ export default class MapView extends Component {
                 <Header
                     headLeftFlag={true}
                     onPressBackBtn={() => {
-                        this.props.navigation.goBack();
+                        this.props.navigation.navigate('GuidePublishDetail',{
+							lng:this.state.lng,
+							lat:this.state.lat,
+							address:this.state.address
+						});
                     }}
                     backTitle={'返回'}
                     title={'景区地图'}
@@ -38,6 +46,18 @@ export default class MapView extends Component {
                 <WebView
                     source={{uri: 'file:///android_asset/nearby.html'}}//file:///android_asset/nearby.html
                     style={{flex:1}}
+					geolocationEnabled={true}
+					javaScriptEnabled={true}
+					onMessage={(event) => {
+						console.log(event.nativeEvent.data);
+						let tmpPoint = event.nativeEvent.data;
+						let point = tmpPoint.split(',');
+						this.setState({
+							lng:point[0],
+							lat:point[1],
+							address:point[2]
+						})
+					}}
                 />
             </View>
         );
