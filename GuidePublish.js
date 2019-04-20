@@ -8,6 +8,8 @@ import {
     ScrollView, FlatList, TextInput
 } from "react-native";
 import Header from "./common/Header";
+import Config from "./util/Config";
+import FetchUtil from "./util/FetchUtil";
 
 export default class GuideList extends Component {
     constructor(props) {
@@ -15,9 +17,25 @@ export default class GuideList extends Component {
         this.state = {
             views: [],//推荐热门景点
             viewName: '',//手动输入框的景点名称
+            guideInfo:{
+                title:'',
+                context:"",
+                address:"",
+                lng:"",//经度
+                lat:'',//纬度
+                imageId:'',//上传图片的id
+                viewSpotId:'',//景点id
+            }
         };
     }
-
+    //发布游记
+    _svaeGuide(){
+        let url=Config.SAVE_COMMENT+"?token=lhy&userId=1";//+Global.user.id;
+        let param=this.state.guideInfo
+        FetchUtil.httpGet(url,param,(data)=>{
+           //跳转到列表页
+        });
+    }
     componentDidMount() {
 
         this.setState({
