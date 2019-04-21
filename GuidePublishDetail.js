@@ -324,20 +324,6 @@ export default class GuidePublishDetail extends Component {
 			</View>
 		);
 	}
-                    <View style={{padding:10}}>
-                        <TouchableOpacity onPress={() => {
-                            //点击确定
-                        }} style={styles.btn}>
-                            <Text style={{
-                                fontSize: 15,
-                                color: '#fff'
-                            }}>{'确认发布'}</Text>
-                        </TouchableOpacity>
-                    </View>
-                </ScrollView>
-            </View>
-        );
-    }
 }
 const styles = StyleSheet.create({
 	container: {

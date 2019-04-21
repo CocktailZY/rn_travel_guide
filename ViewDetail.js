@@ -92,7 +92,7 @@ export default class ViewDetail extends Component {
                             }}>地图导航</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => {
-                            alert('查看相关游记攻略');
+                            this.props.navigation.navigate('GuideList',{viewId:1})
                         }} style={[styles.btn,{marginTop: 22,marginBottom: 10}]}>
                             <Text style={{
                                 fontSize: 15,

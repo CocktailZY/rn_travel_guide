@@ -148,7 +148,7 @@ _getTypes(){
                             paddingBottom:10
                         }}>
                         <TouchableOpacity style={{flex: 1}} onPress={() => {
-                            // this.props.navigation.navigate('Topic')
+                            this.props.navigation.navigate('PlanPublish')
                         }}>
                             <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                                 <Icon
@@ -160,7 +160,7 @@ _getTypes(){
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity style={{flex: 1}} onPress={() => {
-                            // this.props.navigation.navigate('Food')
+                            this.props.navigation.navigate('PlanPublish')
                         }}>
                             <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                                 <MaterialCommunityIcons
@@ -172,7 +172,7 @@ _getTypes(){
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity style={{flex: 1}} onPress={() => {
-                            // this.props.navigation.navigate('Motion')
+                            this.props.navigation.navigate('PlanPublish')
                         }}>
                             <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                                 <Icons
