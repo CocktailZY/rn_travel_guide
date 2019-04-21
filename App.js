@@ -26,6 +26,7 @@ import ViewCollection from './ViewCollection';
 import PlanCollectionDetail from './PlanCollectionDetail';
 import PlanCollection from './PlanCollection';
 import MapView from './MapView';
+import MapGuide from './MapGuide';
 import PlanPublish from './PlanPublish';
 import PlanDetail from './PlanDetail';
 console.disableYellowBox = true;
@@ -91,11 +92,12 @@ const RootStack = createStackNavigator({
     PlanCollection:{ screen: PlanCollection},
     PlanCollectionDetail: { screen: PlanCollectionDetail},
     MapView: { screen: MapView},
+    MapGuide: { screen: MapGuide},
     PlanPublish: { screen: PlanPublish},
     PlanDetail: { screen: PlanDetail},
     GuideDetail: { screen: GuideDetail},
 }, {
-    initialRouteName: 'FootTab', // 默认显示界面
+    initialRouteName: 'Login', // 默认显示界面
     defaultNavigationOptions: {  // 屏幕导航的默认选项, 也可以在组件内用 static navigationOptions 设置(会覆盖此处的设置)
         // title:'消息',
         header: null,

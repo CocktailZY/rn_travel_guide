@@ -5,7 +5,8 @@ import {
     View,
     Image,
     TouchableOpacity, Dimensions,
-    ScrollView
+    ScrollView,
+    Modal
 } from "react-native";
 import Header from './common/Header';
 import FetchUtil from './util/FetchUtil';
@@ -20,7 +21,8 @@ export default class ViewDetail extends Component {
             viewSpotId:this.props.navigation.state.params.id,
             detailInfo: {
 
-            }
+            },
+            showMap: false,//景区内部构造图是否显示
         };
     }
 
@@ -76,15 +78,25 @@ export default class ViewDetail extends Component {
                     </View>
                     <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
                         <TouchableOpacity onPress={() => {
-                            this._saveViewCollection();
+                            this.setState({
+                                showMap: true
+                            })
                         }} style={styles.btn}>
+                            <Text style={{
+                                fontSize: 15,
+                                color: '#fff'
+                            }}>查看景区内部地图</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => {
+                            this._saveViewCollection();
+                        }} style={[styles.btn,{marginTop: 22}]}>
                             <Text style={{
                                 fontSize: 15,
                                 color: '#fff'
                             }}>加入收藏</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => {
-                            alert('地图导航');
+                            this.props.navigation.navigate('MapGuide',{end:this.state.detailInfo.name})
                         }} style={[styles.btn,{marginTop: 22}]}>
                             <Text style={{
                                 fontSize: 15,
@@ -101,6 +113,32 @@ export default class ViewDetail extends Component {
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
+                <Modal
+                    visible={this.state.showMap}//
+                    //显示是的动画默认none
+                    //从下面向上滑动slide
+                    //慢慢显示fade
+                    animationType={'slide'}
+                    //是否透明默认是不透明 false
+                    transparent={true}
+                    //关闭时调用
+                    onRequestClose={() => {
+                        this.setState({showMap: false})
+                    }}
+                >
+                    <View style={{flex: 1}}>
+                        <View style={{
+                            backgroundColor: 'rgba(0,0,0,0.5)',
+                            flex: 1,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            paddingLeft: 20,
+                            paddingRight: 20
+                        }}>
+                            <Image source={require('./images/default_img.png')} resizeMode={'contain'}/>
+                        </View>
+                    </View>
+                </Modal>
             </View>
         )
     }

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+        body, html {width: 100%;height: 100%; margin:0;font-family:"微软雅黑";}
+        #l-map{height:300px;width:100%;}
+        #r-result,#r-result table{width:100%;}
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.4"></script>
+    <title>驾车导航的结果面板</title>
+</head>
+<body>
+<div id="l-map"></div>
+<div id="r-result"></div>
+</body>
+</html>
+<script src="js/jquery.min.js"></script>
+<script type="text/javascript">
+    // 百度地图API功能
+    //异步调用百度js
+    var start = '' , end = '';
+    function map_load() {
+        var load = document.createElement("script");
+        load.src = "http://api.map.baidu.com/api?v=1.4&callback=map_init";
+        document.body.appendChild(load);
+    }
+    function map_init(start,end) {
+        var map = new BMap.Map("l-map");
+        map.centerAndZoom(new BMap.Point(116.404, 39.915), 14);
+
+        var driving = new BMap.DrivingRoute(map, {renderOptions: {map: map, panel: "r-result", autoViewport: true}});
+        console.log(driving);
+        driving.search(start,end);
+        // driving.search('故宫博物院','西单地铁站');
+    }
+
+    // window.onload = map_load;
+    $(function(){
+        map_load();
+        start = getUrlParam('start');
+        end = getUrlParam('end');
+    })
+
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+        if (r != null) return unescape(r[2]); return null; //返回参数值
+    }
+</script>
