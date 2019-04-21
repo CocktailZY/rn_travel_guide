@@ -14,6 +14,9 @@ import {
 } from "react-native";
 import Icons from "react-native-vector-icons/Ionicons";
 import Header from "./common/Header";
+import Config from "./util/Config";
+import Global from "./util/Global";
+import FetchUtil from "./util/FetchUtil";
 export default class GuideList extends Component {
     constructor(props) {
         super(props);
@@ -26,16 +29,9 @@ export default class GuideList extends Component {
     }
 
     componentDidMount() {
-        if (Platform.OS == "android") {
-            this.keyboardDidShowListener = Keyboard.addListener(
-                "keyboardDidHide",
-                () => {
-                    this._onBlurText();
-                }
-            );
-        }
+       this._getComments();
 
-        this.setState({
+       /* this.setState({
             views:[
                 {userName:'颐和园',title:'颐和园巴拉巴拉巴拉巴拉颐和园巴拉',createTime:'2019-04-14 10:38'},
                 {userName:'颐和园',title:'颐和园巴拉巴拉巴拉巴拉颐和园巴拉',createTime:'2019-04-14 10:38'},
@@ -46,7 +42,16 @@ export default class GuideList extends Component {
                 {userName:'颐和园',title:'颐和园巴拉巴拉巴拉巴拉颐和园巴拉',createTime:'2019-04-14 10:38'},
                 {userName:'颐和园',title:'颐和园巴拉巴拉巴拉巴拉颐和园巴拉',createTime:'2019-04-14 10:38'},
             ]
-        })
+        })*/
+    }
+    //查询评论
+    _getComments(){
+        let url=Config.GET_COMMENTS+"?token=lhy&userId=1";//+Global.user.id;
+        FetchUtil.httpGet(url,null,(data)=>{
+            this.setState({
+                views:data
+            });
+        });
     }
     componentWillUnmount() {
         if (Platform.OS == "android") {

@@ -7,7 +7,6 @@ import Icons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
-import Global from './util/Global';
 import Header from "./common/Header";
 
 const {height, width} = Dimensions.get('window');
@@ -36,13 +35,15 @@ export default class Collection extends Component {
                         this.props.navigation.goBack();
                     }}
                     backTitle={'返回'}
-                    title={'我收藏的'}
+                    title={'我的收藏'}
                 />
                 <View style={{flex:1,padding:10}}>
                     <TouchableWithoutFeedback
                         style={{flex: 1, marginTop: 10}}
                         onPress={() => {
-                            alert('我的收藏')
+                            this.props.navigation.navigate('ViewCollection',{
+                                type:1
+                            });
                         }}>
                         <View style={[styles.jobBtn, {
                             justifyContent: 'center',
@@ -57,7 +58,9 @@ export default class Collection extends Component {
                     <TouchableWithoutFeedback
                         style={{flex: 1, marginTop: 10}}
                         onPress={() => {
-                            alert('我的收藏')
+                            this.props.navigation.navigate('ViewCollection',{
+                                type:1
+                            });
                         }}>
                         <View style={[styles.jobBtn, {
                             justifyContent: 'center',
@@ -72,7 +75,9 @@ export default class Collection extends Component {
                     <TouchableWithoutFeedback
                         style={{flex: 1, marginTop: 10}}
                         onPress={() => {
-                            alert('我的收藏')
+                            this.props.navigation.navigate('PlanCollection',{
+                                type:2
+                            });
                         }}>
                         <View style={[styles.jobBtn, {
                             justifyContent: 'center',
