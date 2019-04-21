@@ -10,6 +10,7 @@ import {
 import Header from "./common/Header";
 import Config from "./util/Config";
 import FetchUtil from "./util/FetchUtil";
+import Global from "./util/Global";
 
 export default class GuideList extends Component {
     constructor(props) {
@@ -17,35 +18,70 @@ export default class GuideList extends Component {
         this.state = {
             views: [],//推荐热门景点
             viewName: '',//手动输入框的景点名称
-            guideInfo:{
-                title:'',
-                context:"",
-                address:"",
-                lng:"",//经度
-                lat:'',//纬度
-                imageId:'',//上传图片的id
-                viewSpotId:'',//景点id
-            }
+            pageNum:1,
+            selectViewId:"",//选择景点id
         };
     }
-    //发布游记
-    _svaeGuide(){
-        let url=Config.SAVE_COMMENT+"?token=lhy&userId=1";//+Global.user.id;
-        let param=this.state.guideInfo
+    //加载类型
+    _getViews(){
+        let url=Config.VIEWS+"?token=lhy";
+        let param={};
+        if(''==this.state.viewName){
+            param={
+                typeId:this.state.typeId,
+                pageNum:this.state.pageNum,
+                pageSize:5
+            };
+        }else{
+            param={
+                typeId:this.state.typeId,
+                name:this.state.viewName,
+                pageNum:this.state.pageNum,
+                pageSize:5
+            };
+        }
         FetchUtil.httpGet(url,param,(data)=>{
-           //跳转到列表页
+            this.setState({
+                views:data.recordList
+            });
+        })
+    }
+
+    //查询景点是否重在
+    _getViewByName(viewName){
+        let url=Config.VIEWS+"?token=lhy";
+        let param={};
+        if(viewName!=""){
+            let  param={
+                typeId:this.state.typeId,
+                name:this.state.viewName,
+                pageNum:this.state.pageNum,
+                pageSize:5
+            };
+        }
+        FetchUtil.httpGet(url,param,(data)=>{
+            if(data && data.length>0){
+                this.setState({
+                    selectViewId: data[0].id
+                });
+            }else{
+                aler("该景点不存在，请重新输入");
+                this.setState({
+                    viewName: ""
+                });
+            }
         });
     }
     componentDidMount() {
-
-        this.setState({
-            views:[
-                {viewName:'颐和园1',content:'颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园'},
-                {viewName:'颐和园2',content:'颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园'},
-                {viewName:'颐和园3',content:'颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园'},
-                {viewName:'颐和园4',content:'颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园'},
-            ]
-        })
+        _getViews();
+        // this.setState({
+        //     views:[
+        //         {viewName:'颐和园1',content:'颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园'},
+        //         {viewName:'颐和园2',content:'颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园'},
+        //         {viewName:'颐和园3',content:'颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园'},
+        //         {viewName:'颐和园4',content:'颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园'},
+        //     ]
+        // })
     }
 
     componentWillUnmount() {
@@ -72,28 +108,20 @@ export default class GuideList extends Component {
                 ]}
             >
                 <Image
-                    source={require('./images/food.png')}
-                    // source={{
-                    //     uri:
-                    //         Path.headImgNew +
-                    //         "?uuId=" +
-                    //         this.state.uuid +
-                    //         "&ticket=" +
-                    //         this.state.ticket +
-                    //         "&imageName=" +
-                    //         info.item.photoId +
-                    //         "&userId=" +
-                    //         this.state.basic.userId +
-                    //         "&imageId=" +
-                    //         info.item.photoId +
-                    //         "&sourceType=singleImage&jidNode=" +
-                    //         info.item.jid_node
-                    // }}
-                    //source={{uri: Path.headImg + '?fileName=' + info.item.photoId + '&uuId=' + this.state.uuid + '&userId=' + this.state.basic.userId + '&ticket=' + this.state.ticket}}
+                    source={
+                        item.list.lenght>0?
+                    {
+                        uri:
+                        Config.PREVIEWIMAGE +"?id=" +item.list[0].imageId
+
+                    }
+                    :
+                        require('./images/food.png')
+                    }
                     style={styles.headFriend}
                 />
                 <View style={styles.textFriend}>
-                    <Text style={{color: "#333",fontSize:18,marginBottom: 3}} numberOfLines={1}>{item.viewName}</Text>
+                    <Text style={{color: "#333",fontSize:18,marginBottom: 3}} numberOfLines={1}>{item.name}</Text>
                 </View>
             </TouchableOpacity>
         ); //5C5C5C
@@ -127,15 +155,22 @@ export default class GuideList extends Component {
                     <View style={{height:40,marginTop:10,borderColor:'#d4d4d4',borderWidth: 1,borderRadius: 4}}>
                         <TextInput
                             placeholder='景点名称'
-                            onChangeText={(text) => {this.setState({viewName:text})}}
+                            onChangeText={(text) => {
+                                    this._getViewByName(text);
+                                 }
+                            }
                             underlineColorAndroid={'transparent'}
                             value={this.state.viewName}
                         />
                     </View>
                     <TouchableOpacity onPress={() => {
-                        this.props.navigation.navigate("GuidePublishDetail", {
-                            id:'1'
-                        });
+                        if(this.state.selectViewId==''){
+                            alert('请选择景点或输入景点');
+                        }else{
+                            this.props.navigation.navigate("GuidePublishDetail", {
+                                id:this.state.selectViewId
+                            });
+                        }
                     }} style={styles.btn}>
                         <Text style={{
                             fontSize: 15,

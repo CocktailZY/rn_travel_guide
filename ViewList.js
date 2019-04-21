@@ -97,11 +97,16 @@ _getViews(){
                 ]}
             >
                 <Image
-                    source={{
-                        uri:
-                            Config.PREVIEWIMAGE +"?id=" +item.list[0].imageId
+                    source={
+                        item.list.lenght>0?
+                            {
+                                uri:
+                                    Config.PREVIEWIMAGE +"?id=" +item.list[0].imageId
 
-                    }}
+                            }
+                            :
+                            require('./images/food.png')
+                    }
                     style={styles.headFriend}
                 />
                 <View style={styles.textFriend}>

@@ -12,4 +12,5 @@ export default Config={
     SAVE_COLLECTION:BaseUrl+"collection/saveCollection",//收藏
     GET_COMMENTS:BaseUrl+"comment/listComments",//查邮寄
     SAVE_COMMENT:BaseUrl+"comment/saveComment",//保存邮寄
+    UPLOD_IMAGE:BaseUrl+"attachment/upload",//上传图片
 };

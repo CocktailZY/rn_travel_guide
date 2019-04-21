@@ -26,6 +26,7 @@ export default class PlanPublish extends Component {
             startTime: '',
             locationType: true,//true 为自动定位
             location: '',
+            type:this.props.navigate.state.param.type,//计划类型
             views: [
                 {chekced:true,name:'天安门',id:1},
                 {chekced:false,name:'天安门1',id:2},
@@ -37,6 +38,16 @@ export default class PlanPublish extends Component {
                 {chekced:false,name:'天安门1',id:8},
             ]
         };
+    }
+    //查询对应计划类型 且大于等于起始时间的线路
+    _getRoutes(){
+        let url=Config.GET_ROUTE+"?token=lhy&userId=1";//+Global.user.id;
+        let param={
+            stateTime:this.state.startTime
+        };
+        FetchUtil.httpGet(url,param,(data)=>{
+            //跳转到列表页
+        });
     }
 
     componentDidMount() {

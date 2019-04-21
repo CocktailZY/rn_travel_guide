@@ -19,12 +19,18 @@ export default class GuidePublishDetail extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+            viewSpotId:this.props.navigation.state.params.id,//选择景点id
 			title: '',//攻略标题
 			jdxc: 0.2,
 			tnxh: 3,
 			jsgs: 0.5,
 			zbms: 1,
 			uploadImgs: [],//上传的景区图片
+            context:"",
+            address:"",
+            lng:"",//经度
+            lat:'',//纬度
+            imageId:'',//上传图片的id
 		};
 	}
 
@@ -36,7 +42,18 @@ export default class GuidePublishDetail extends Component {
 	componentWillUnmount() {
 
 	}
-
+    //发布游记
+    _svaeGuide(){
+        let url=Config.SAVE_COMMENT+"?token=lhy&userId=1";//+Global.user.id;
+		if(this.state.uploadImgs.length<=0){
+			alert('请先上传图片');
+		}
+		this.state.imageId=this.state.uploadImgs.join(",");
+        let param=this.state;
+        FetchUtil.httpGet(url,param,(data)=>{
+            //跳转到列表页
+        });
+    }
 	openImagePicker = () => {
 		let photoOptions = {
 			//底部弹出框选项
@@ -83,7 +100,7 @@ export default class GuidePublishDetail extends Component {
 						name: response.fileName && response.fileName.indexOf('HEIC') == -1 ? response.fileName : 'image.png'
 					};
 					formData.append("file", file);
-					let url = Path.resetHeadImage + '?uuId=' + this.state.uuid + '&ticket=' + this.state.ticket + '&jidNode=' + this.state.basic.jidNode + '&userId=' + this.state.basic.userId;
+					let url = Config.UPLOD_IMAGE +"?token=lhy&userId=1";//+Global.user.id ;
 					fetch(url, {
 						method: 'POST',
 						headers: {
@@ -256,7 +273,9 @@ export default class GuidePublishDetail extends Component {
 								style={{textAlignVertical: 'top'}}
 								placeholder='分享您对景区的看法'
 								onChangeText={(text) => {
-									this.setState({title: text})
+									this.setState(
+                                        context.text
+									)
 								}}
 								underlineColorAndroid={'transparent'}
 								multiline={true}
@@ -313,6 +332,7 @@ export default class GuidePublishDetail extends Component {
 					<View style={{padding:5}}>
 						<TouchableOpacity onPress={() => {
 							//点击确定
+							this._svaeGuide();
 						}} style={styles.btn}>
 							<Text style={{
 								fontSize: 15,
