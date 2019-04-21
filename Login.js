@@ -39,11 +39,11 @@ export default class Login extends Component{
         else{
             let url=Config.LOGIN+"?token=lhy";
             let param={
-                userCode:this.state.userCode,
-                password:MD5.hex_md5(this.state.password)
+                userCode:this.state.name,
+                password:MD5.hex_md5(this.state.pwd)
             }
             FetchUtil.httpGet(url,param,(data)=>{
-                if(data.status){
+                if(!data.status){
                     Global['user']=data;
                     this.props.navigation.navigate('Home')
                 }else{
@@ -70,7 +70,7 @@ export default class Login extends Component{
                         placeholder='用户名'
                         onChangeText={(text) => this.setNameAndPwd('name',text)}
                         underlineColorAndroid={'transparent'}
-                        value={this.state.username}
+                        value={this.state.name}
                         style={styles.inputText}
                     />
                 </View>
@@ -87,7 +87,7 @@ export default class Login extends Component{
                         secureTextEntry={true}
                         onChangeText={(text) => this.setNameAndPwd('pwd',text)}
                         underlineColorAndroid={'transparent'}
-                        value={this.state.password}
+                        value={this.state.pwd}
                         style={styles.inputText}
                     />
                 </View>

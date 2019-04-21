@@ -1,13 +1,13 @@
 import React, {Component} from "react";
 import {
-    StyleSheet,
-    Text,
-    View,
-    Image,
-    TouchableOpacity,
-    ScrollView, TextInput,Dimensions,
-    WebView,
-    FlatList
+	StyleSheet,
+	Text,
+	View,
+	Image,
+	TouchableOpacity,
+	ScrollView, TextInput,Dimensions,
+	WebView,
+	FlatList
 } from "react-native";
 import Header from "./common/Header";
 import Slider from "react-native-slider";
@@ -310,6 +310,20 @@ export default class GuidePublishDetail extends Component {
 						</TouchableOpacity>
 					</View>
 
+					<View style={{padding:5}}>
+						<TouchableOpacity onPress={() => {
+							//点击确定
+						}} style={styles.btn}>
+							<Text style={{
+								fontSize: 15,
+								color: '#fff'
+							}}>{'确认发布'}</Text>
+						</TouchableOpacity>
+					</View>
+				</ScrollView>
+			</View>
+		);
+	}
                     <View style={{padding:10}}>
                         <TouchableOpacity onPress={() => {
                             //点击确定
