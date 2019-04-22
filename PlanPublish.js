@@ -18,39 +18,46 @@ import {
 } from "react-native";
 import Header from "./common/Header";
 import FetchUtil from "./util/FetchUtil";
+import Config from "./util/Config";
 const {height, width} = Dimensions.get('window');
 export default class PlanPublish extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            startTime: '',
+            pageNum:1,
+            startTime: '',//时间跳页取不到值
             locationType: true,//true 为自动定位
             location: '',
-            type:this.props.navigate.state.param.type,//计划类型
+            type:this.props.navigation.state.params.type,//计划类型
             views: [
-                {chekced:true,name:'天安门',id:1},
+              /*  {chekced:true,name:'天安门',id:1},
                 {chekced:false,name:'天安门1',id:2},
                 {chekced:false,name:'天安门1',id:3},
                 {chekced:false,name:'天安门1',id:4},
                 {chekced:false,name:'天安门1',id:5},
                 {chekced:false,name:'天安门1',id:6},
                 {chekced:false,name:'天安门1',id:7},
-                {chekced:false,name:'天安门1',id:8},
-            ]
+                {chekced:false,name:'天安门1',id:8},*/
+            ],
+            selectedViews:['北京天安门']//选者的景点跳页取不到值
         };
     }
-    //查询对应计划类型 且大于等于起始时间的线路
-    _getRoutes(){
-        let url=Config.GET_ROUTE+"?token=lhy&userId=1";//+Global.user.id;
+    //查询景点
+    _getViews(){
+        let url=Config.VIEWS+"?token=lhy";
         let param={
-            stateTime:this.state.startTime
+            pageNum:this.state.pageNum,
+            pageSize:20
         };
         FetchUtil.httpGet(url,param,(data)=>{
-            //跳转到列表页
-        });
+            this.setState({
+                views:data.recordList
+            });
+        })
     }
 
     componentDidMount() {
+        this._getViews();
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 let initialPosition = position.coords.latitude+','+position.coords.longitude;
@@ -176,7 +183,10 @@ export default class PlanPublish extends Component {
                     rightText={'提交'}
                     onPressRightBtn={()=>{
                         this.props.navigation.navigate('PlanDetail',{
-                            start:this.state.location
+                            start:this.state.location,
+                            startTime:'2019-04-22',//取不到值this.state.startTime
+                            selectedViews:this.state.selectedViews,//选中的景点
+                            type:this.state.type
                         })
                     }}
                 />
