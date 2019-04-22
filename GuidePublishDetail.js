@@ -29,10 +29,10 @@ export default class GuidePublishDetail extends Component {
 			zbms: 1,
 			uploadImgs: [],//上传的景区图片
             context:"",
-            address:"",
-            lng:"",//经度
-            lat:'',//纬度
-            imageId:'',//上传图片的id
+            address:"",//没有值
+            lng:"",//经度 没有值
+            lat:'',//纬度 没有值
+            imageId:'',//上传图片的id 没有值 上传不成功
 		};
 	}
 
@@ -47,14 +47,15 @@ export default class GuidePublishDetail extends Component {
     //发布游记
     _svaeGuide(){
         let url=Config.SAVE_COMMENT+"?token=lhy&userId=1";//+Global.user.id;
-		if(this.state.uploadImgs.length<=0){
+		if(this.state.imageId!=''){
 			alert('请先上传图片');
+		}else{
+            this.state.imageId=this.state.uploadImgs.join(",");
+            let param=this.state;
+            FetchUtil.httpGet(url,param,(data)=>{
+                //跳转到列表页
+            });
 		}
-		this.state.imageId=this.state.uploadImgs.join(",");
-        let param=this.state;
-        FetchUtil.httpGet(url,param,(data)=>{
-            //跳转到列表页
-        });
     }
 	openImagePicker = () => {
 		let photoOptions = {
@@ -111,10 +112,9 @@ export default class GuidePublishDetail extends Component {
 						body: formData,
 					}).then((response) => response.json()).then((responseData) => {
 						console.log(responseData);
-						let item = responseData.data[0]
-						let tmpArr = {...this.state.uploadImgs};
-						tmpArr.push(item.data);
-						this.setState({uploadImgs: tmpArr});
+						this.setState({
+                            imageId:responseData.id
+						})
 					}, () => {
 						alert('图片上传失败！');
 					}).catch((error) => {
@@ -275,14 +275,15 @@ export default class GuidePublishDetail extends Component {
 								style={{textAlignVertical: 'top'}}
 								placeholder='分享您对景区的看法'
 								onChangeText={(text) => {
-									this.setState(
-                                        context.text
+									this.setState({
+                                            context:text
+									}
 									)
 								}}
 								underlineColorAndroid={'transparent'}
 								multiline={true}
 								numberOfLines={5}
-								value={this.state.title}
+								value={this.state.context}
 							/>
 						</View>
 						{uploadImgs.length > 0 ? (

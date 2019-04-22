@@ -14,4 +14,5 @@ export default Config={
     SAVE_COMMENT:BaseUrl+"comment/saveComment",//保存邮寄
     UPLOD_IMAGE:BaseUrl+"attachment/uploadFile",//上传图片
     GET_ROUTES:BaseUrl+"route/getRoutesByPlanIds",//获取合适的线路
+    GET_VIEW_SPOT_BY_NAME:BaseUrl+"viewSport/getViewSpotByName",//根据景点名称查询景点
 };

@@ -16,49 +16,51 @@ export default class GuideList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            type:props.navigation.state.params.type,
             views: [],//推荐热门景点
             viewName: '',//手动输入框的景点名称
             pageNum:1,
             selectViewId:"",//选择景点id
         };
     }
-    //加载类型
+    //查询推介景点
     _getViews(){
         let url=Config.VIEWS+"?token=lhy";
         let param={
-                pageNum:this.state.pageNum,
-                pageSize:20
-            };
+
+            pageNum:this.state.pageNum,
+            pageSize:5
+        };
         FetchUtil.httpGet(url,param,(data)=>{
             this.setState({
                 views:data.recordList
             });
         })
     }
-
     //查询景点是否重在
-    _getViewByName(viewName){
-        let url=Config.VIEWS+"?token=lhy";
+    _getViewByName(viewName,callback){
+        let url=Config.GET_VIEW_SPOT_BY_NAME+"?token=lhy";
         let param={};
-        if(viewName!=""){
-            let  param={
-                pageNum:this.state.pageNum,
-                pageSize:20
+        if(viewName==""){
+           alert('请输入景点名称');
+        }else{
+            param={
+                name:this.state.viewName,
             };
+            FetchUtil.httpGet(url,param,(data)=>{
+                if(data && data.length>0){
+                    this.setState({
+                        selectViewId: data[0].id
+                    },()=>{
+                        callback()
+                    });
+                }else{
+                    alert("该景点不存在，请重新输入");
+                    this.setState({
+                        viewName: ""
+                    });
+                }
+            });
         }
-        FetchUtil.httpGet(url,param,(data)=>{
-            if(data && data.length>0){
-                this.setState({
-                    selectViewId: data[0].id
-                });
-            }else{
-                alert("该景点不存在，请重新输入");
-                this.setState({
-                    viewName: ""
-                });
-            }
-        });
     }
     componentDidMount() {
         this._getViews();
@@ -143,22 +145,25 @@ export default class GuideList extends Component {
                     <View style={{height:40,marginTop:10,borderColor:'#d4d4d4',borderWidth: 1,borderRadius: 4}}>
                         <TextInput
                             placeholder='景点名称'
-                            onChangeText={(text) => {
-                                    this._getViewByName(text);
-                                 }
-                            }
+                            onChangeText={(text)=>{
+                                this.setState({
+                                    viewName:text
+                                })
+                            }}
                             underlineColorAndroid={'transparent'}
                             value={this.state.viewName}
                         />
                     </View>
                     <TouchableOpacity onPress={() => {
-                        if(this.state.selectViewId==''){
-                            alert('请选择景点或输入景点');
-                        }else{
-                            this.props.navigation.navigate("GuidePublishDetail", {
-                                id:this.state.selectViewId
-                            });
-                        }
+                        this._getViewByName(this.state.viewName,()=>{
+                            if(this.state.selectViewId==''){
+                                alert('请选择景点或输入景点');
+                            }else{
+                                this.props.navigation.navigate("GuidePublishDetail", {
+                                    id:this.state.selectViewId
+                                });
+                            }
+                        })
                     }} style={styles.btn}>
                         <Text style={{
                             fontSize: 15,
