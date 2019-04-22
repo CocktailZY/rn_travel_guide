@@ -16,6 +16,7 @@ export default class GuideList extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            type:props.navigation.state.params.type,
             views: [],//推荐热门景点
             viewName: '',//手动输入框的景点名称
             pageNum:1,
@@ -25,21 +26,10 @@ export default class GuideList extends Component {
     //加载类型
     _getViews(){
         let url=Config.VIEWS+"?token=lhy";
-        let param={};
-        if(''==this.state.viewName){
-            param={
-                typeId:this.state.typeId,
+        let param={
                 pageNum:this.state.pageNum,
-                pageSize:5
+                pageSize:20
             };
-        }else{
-            param={
-                typeId:this.state.typeId,
-                name:this.state.viewName,
-                pageNum:this.state.pageNum,
-                pageSize:5
-            };
-        }
         FetchUtil.httpGet(url,param,(data)=>{
             this.setState({
                 views:data.recordList
@@ -53,10 +43,8 @@ export default class GuideList extends Component {
         let param={};
         if(viewName!=""){
             let  param={
-                typeId:this.state.typeId,
-                name:this.state.viewName,
                 pageNum:this.state.pageNum,
-                pageSize:5
+                pageSize:20
             };
         }
         FetchUtil.httpGet(url,param,(data)=>{
@@ -65,7 +53,7 @@ export default class GuideList extends Component {
                     selectViewId: data[0].id
                 });
             }else{
-                aler("该景点不存在，请重新输入");
+                alert("该景点不存在，请重新输入");
                 this.setState({
                     viewName: ""
                 });
@@ -73,7 +61,7 @@ export default class GuideList extends Component {
         });
     }
     componentDidMount() {
-        _getViews();
+        this._getViews();
         // this.setState({
         //     views:[
         //         {viewName:'颐和园1',content:'颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园巴拉巴拉巴拉巴拉颐和园'},

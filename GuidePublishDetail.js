@@ -14,7 +14,9 @@ import Slider from "react-native-slider";
 import Icons from 'react-native-vector-icons/Ionicons';
 import ImagePickerManager from "react-native-image-picker";
 const {height, width} = Dimensions.get('window');
-
+import Config from "./util/Config";
+import FetchUtil from "./util/FetchUtil";
+import Global from "./util/Global";
 export default class GuidePublishDetail extends Component {
 	constructor(props) {
 		super(props);
