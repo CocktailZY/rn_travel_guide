@@ -89,7 +89,6 @@ export default class GuideDetail extends Component {
                         {/* 评论列表 */}
                         <Text>{'评论列表'}</Text>
                         {/*<FlatList
-                            numColumns={3}
                             data={uploadImgs}
                             keyExtractor={(item, index) => String(index)}
                             renderItem={this._renderImg}

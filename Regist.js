@@ -34,10 +34,14 @@ export default class Regist extends Component{
     }
 
     setNameAndPwd = (key,value) => {
-        let tempBody = {};
+        console.log(key,value);
+        let tempBody = {...this.state.userInfo};
         tempBody[key] = value;
+        console.log(tempBody);
         this.setState({
             userInfo: tempBody
+        },()=>{
+            console.log(this.state.userInfo);
         })
     };
 
@@ -51,7 +55,6 @@ export default class Regist extends Component{
         else if(tmp.address.trim() == ''){alert('地址不可为空');}
         else if(tmp.qq.trim() == ''){alert('qq不可为空');}
         else if(tmp.birth.trim() == ''){alert('生日不可为空');}
-        else if(tmp.sex.trim() == ''){alert('性别不能为空');}
         else{
             //调注册接口
             let url=Config.REGISTER+"?token=lhy";
@@ -167,6 +170,8 @@ export default class Regist extends Component{
                                 tmpBody.birth = tmpBirth;
                                 this.setState({
                                     userInfo: tmpBody
+                                },()=>{
+                                    console.log(this.state.userInfo);
                                 })
                             }
                         });
