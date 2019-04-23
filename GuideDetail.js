@@ -11,26 +11,96 @@ import {
 import Header from "./common/Header";
 import Icon from "react-native-vector-icons/Feather";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
+import FetchUtil from "./util/FetchUtil";
+import Config from "./util/Config";
+import Global from "./util/Global";
 
 export default class GuideDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            guideInfo:this.props.navigation.state.params.guideInfo,
             showComment: false,//是否显示评论框
             commentPid: '', //评论父id
+            appreciateNum:0,
+            imageId:"",//评论图片id
+            context:"",//评论内容
+            commentList:[]//评论列表
         };
     }
 
     componentDidMount() {
-
-        this.setState({})
+        this._getGuideDetail(()=>{
+            this._getAppreciateNum();
+            this._commentList();
+        });
     }
-
+    //获取攻略的详情
+    _getGuideDetail(callback){
+        console.log(Global);
+            if(Global.user &&Global.user.id){
+                callback();
+            }else{
+                alert('请先登录');
+        }
+    }
     componentWillUnmount() {
 
     }
+    //点赞
+    _appreciate(){
+        let url=Config.SAVE_APPRECIATE+"?token=lhy&userId="+Global.user.id;
+        let param={
+            businessId:this.state.guideInfo.id
+        };
+        FetchUtil.httpGet(url,param,(data)=>{
+            //跳转到列表页
+            this._getAppreciateNum();
+        });
+    }
+    //获取点赞的个数
+    _getAppreciateNum(){
+        let url=Config.GET_APPRECIATE_NUM+"?token=lhy&userId="+Global.user.id;
+        let param={
+            businessId:this.state.guideInfo.id
+        };
+        FetchUtil.httpGet(url,param,(data)=>{
+            //跳转到列表页
+            this.setState({
+                appreciateNum:data
+            })
+        });
+    }
+    //评论
+    _comment(){
+        let url=Config.SAVE_COMMENT+"?token=lhy&userId="+Global.user.id;
+        let param={
+            pId:this.state.guideInfo.id,
+            imageId:this.state.imageId,
+            context:this.state.context
+        };
+        FetchUtil.httpGet(url,param,(data)=>{
+            //跳转到列表页
+            this._commentList();
+        });
+    }
+    //获取评论列表
+    _commentList(){
+        console.log(this.state)
+        let url=Config.List_DISCUSS+"?token=lhy&userId="+Global.user.id;
+        let param={
+            pId:this.state.guideInfo.id,
+        };
+        FetchUtil.httpGet(url,param,(data)=>{
+            //跳转到列表页
+            this.setState({
+                commentList:data
+            });
+        });
+    }
 
     render() {
+        const guideInfo=this.state.guideInfo
         return (
             <View style={styles.container}>
                 <Header
@@ -42,24 +112,28 @@ export default class GuideDetail extends Component {
                     title={'攻略详情'}
                 />
                 <View style={{flex:1,padding:10}}>
-                    <Text style={{fontSize:18,marginBottom: 10}}>{`张三在2019-04-21 16:29发布`}</Text>
-                    <Text style={{color:'#b5b5b5',marginBottom: 10}}>{'天安门真好'}</Text>
+                    <Text style={{fontSize:18,marginBottom: 10}}>{`发布时间：${guideInfo.createTime}  发布人：${guideInfo.user.userName}`}</Text>
+                    <Text style={{color:'#b5b5b5',marginBottom: 10}}>{guideInfo.context}</Text>
 
                     <View style={{flex: 1}}>
                         {/* 详情图片区 */}
                         <Text>{'详情图片区'}</Text>
-                        {/*<FlatList
-                            numColumns={3}
-                            data={uploadImgs}
-                            keyExtractor={(item, index) => String(index)}
-                            renderItem={this._renderImg}
-                        />*/}
+                        <Image
+                            source={{
+                                        uri:
+                                            Config.PREVIEWIMAGE +"?id=" +guideInfo.imageId
+
+                                    }
+                            }
+                            style={styles.headFriend}
+                        />
                     </View>
                     <View style={{flexDirection: 'row',height: 30}}>
                         <TouchableOpacity
                             style={{flexDirection: 'row', justifyContent: 'center',alignItems:'center'}}
                             onPress={()=>{
                                 // 点赞
+                                this._appreciate();
                             }}>
                             {/* 判断点赞状态 */}
                             <Icon
@@ -67,7 +141,7 @@ export default class GuideDetail extends Component {
                                 color='#009688'
                                 size={22}
                             />
-                            <Text style={{marginLeft:5}}>{'5'}</Text>
+                            <Text style={{marginLeft:5}}>{this.state.appreciateNum}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={{flexDirection: 'row',marginLeft: 30, justifyContent: 'center',alignItems:'center'}}
@@ -88,20 +162,21 @@ export default class GuideDetail extends Component {
                     <View>
                         {/* 评论列表 */}
                         <Text>{'评论列表'}</Text>
-                        {/*<FlatList
-                            data={uploadImgs}
+                        <FlatList
+                            numColumns={3}
+                            data={this.state.commentList}
                             keyExtractor={(item, index) => String(index)}
                             renderItem={this._renderImg}
-                        />*/}
+                        />
                     </View>
                     <View style={styles.commentBox}>
                         <TextInput
                             ref={'commentInput'}
                             style={styles.commentInput}
                             multiline={true}
-                            value={this.state.commentContent}
+                            value={this.state.content}
                             onChangeText={(text) => this.setState({
-                                commentContent: text
+                                content: text
                             })}
                             onBlur={() => {
                                 this.setState({
@@ -114,6 +189,7 @@ export default class GuideDetail extends Component {
                             underlineColorAndroid={'transparent'}/>
                         <TouchableOpacity style={styles.commentReplyBtn} onPress={() => {
                             //提交评论
+                            this._comment();
                         }}>
                             <Text style={{fontSize: 14, color: '#fff'}}>评论</Text>
                         </TouchableOpacity>

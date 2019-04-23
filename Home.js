@@ -148,9 +148,13 @@ _getTypes(){
                             paddingBottom:10
                         }}>
                         <TouchableOpacity style={{flex: 1}} onPress={() => {
-                            this.props.navigation.navigate('PlanPublish',{
-                                type:1
-                            })
+							if(Global.role != 'youke'){
+								this.props.navigation.navigate('PlanPublish',{
+									type:1
+								})
+							}else{
+								alert('游客模式不能进行该操作！');
+							}
                         }}>
                             <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                                 <Icon
@@ -162,9 +166,13 @@ _getTypes(){
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity style={{flex: 1}} onPress={() => {
-                            this.props.navigation.navigate('PlanPublish',{
-                                type:2
-                            })
+							if(Global.role != 'youke'){
+								this.props.navigation.navigate('PlanPublish',{
+									type:2
+								})
+							}else{
+								alert('游客模式不能进行该操作！');
+							}
                         }}>
                             <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                                 <MaterialCommunityIcons
@@ -176,9 +184,13 @@ _getTypes(){
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity style={{flex: 1}} onPress={() => {
-                            this.props.navigation.navigate('PlanPublish',{
-                                type:3
-                            })
+							if(Global.role != 'youke'){
+								this.props.navigation.navigate('PlanPublish',{
+									type:3
+								})
+							}else{
+								alert('游客模式不能进行该操作！');
+							}
                         }}>
                             <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                                 <Icons

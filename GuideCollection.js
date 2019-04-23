@@ -91,7 +91,7 @@ export default class PlanCollection extends Component {
                             this.props.navigation.goBack();
                         }}
                         backTitle={'返回'}
-                        title={'收藏线路列表'}
+                        title={'收藏攻略列表'}
                     />
                 </View>
                 <View style={{ flex: 1,padding:10 }}>

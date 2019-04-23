@@ -15,64 +15,72 @@ export default class Regist extends Component{
     constructor(props){
         super(props);
         this.state = {
-            userInfo: {
-                name: '',
-                pwd: '',
+                userCode: '',
+                password: '',
                 confirmPwd: '',
+                userName: '',
                 phone: '',
                 address: '',
                 qq: '',
-                birth: '',
+            	birthday: '',
                 sex: 0,//男 0 ，女 1
                 role:'user',
-            }
         }
     }
 
     componentDidMount() {
-
     }
-
+    //判断用户名是否重在
+_checkUserName(userCode,callback){
+    let url=Config.CHECK_USER_CODE+"?token=lhy";
+    let param={userCode:userCode};
+    console.log(param);
+    FetchUtil.httpGet(url,param,(data)=>{
+        if(data){
+            Alert.alert('提示', '用户名已经存在');
+        }else{
+            callback();
+        }
+    });
+}
     setNameAndPwd = (key,value) => {
-        console.log(key,value);
-        let tempBody = {...this.state.userInfo};
-        tempBody[key] = value;
+        let tempBody = {};
+        tempBody[key]=value;
         console.log(tempBody);
-        this.setState({
-            userInfo: tempBody
-        },()=>{
-            console.log(this.state.userInfo);
-        })
+        this.setState(tempBody)
     };
 
     _regist = () => {
-        console.log(this.state.userInfo);
-        let tmp = this.state.userInfo;
-        if(tmp.name.trim() == ''){alert('用户名不可为空');}
-        else if(tmp.pwd.trim() == ''){alert('密码不可为空');}
-        else if(tmp.pwd.trim() != tmp.confirmPwd.trim()){alert('密码不一致');}
+        console.log(this.state);
+        let tmp = this.state;
+        if(tmp.userCode.trim() == ''){alert('用户名不可为空');}
+        else if(tmp.password.trim() == ''){alert('密码不可为空');}
+        else if(tmp.password.trim() != tmp.confirmPwd.trim()){alert('密码不一致');}
         else if(tmp.phone.trim() == ''){alert('手机不可为空');}
+        else if(tmp.userName.trim() == ''){alert('姓名不可为空');}
         else if(tmp.address.trim() == ''){alert('地址不可为空');}
         else if(tmp.qq.trim() == ''){alert('qq不可为空');}
-        else if(tmp.birth.trim() == ''){alert('生日不可为空');}
+        else if(tmp.birthday.trim() == ''){alert('生日不可为空');}
         else{
             //调注册接口
-            let url=Config.REGISTER+"?token=lhy";
-            let param=this.state.userInfo;
-            FetchUtil.httpGet(url,param,(data)=>{
-                if(data.status){
-                    Global['user']=data;
-                    this.props.navigation.navigate('Home');
-                }else{
-                    Alert.alert('提示', '用户名密码错误');
-                }
+            this._checkUserName(this.state.userCode,()=>{
+                let url=Config.REGISTER+"?token=lhy";
+                let param=this.state;
+                console.log(param);
+                FetchUtil.httpGet(url,param,(data)=>{
+                    if(data){
+                        Global['user']=data;
+                        this.props.navigation.navigate('Home');
+                    }else{
+                        Alert.alert('提示', '用户名密码错误');
+                    }
+                });
             });
             //回调跳转登录页面
-            this.props.navigation.navigate('Home');
+            //this.props.navigation.navigate('Home');
         }
     };
     render(){
-        const { userInfo } = this.state;
         return (
             <View style={{flex:1,backgroundColor: '#e5e5e5',justifyContent: 'center', alignItems: 'center'}}>
                 <View style={styles.inputView}>
@@ -82,9 +90,9 @@ export default class Regist extends Component{
                     />
                     <TextInput
                         placeholder='用户名'
-                        onChangeText={(text) => this.setNameAndPwd('name',text)}
+                        onChangeText={(text) => this.setNameAndPwd('userCode',text)}
                         underlineColorAndroid={'transparent'}
-                        value={userInfo.name}
+                        value={this.state.userCode}
                         style={styles.inputText}
                     />
                 </View>
@@ -96,9 +104,9 @@ export default class Regist extends Component{
                     <TextInput
                         placeholder='密码'
                         secureTextEntry={true}
-                        onChangeText={(text) => this.setNameAndPwd('pwd',text)}
+                        onChangeText={(text) => this.setNameAndPwd('password',text)}
                         underlineColorAndroid={'transparent'}
-                        value={userInfo.pwd}
+                        value={this.state.password}
                         style={styles.inputText}
                     />
                 </View>
@@ -112,7 +120,20 @@ export default class Regist extends Component{
                         secureTextEntry={true}
                         onChangeText={(text) => this.setNameAndPwd('confirmPwd',text)}
                         underlineColorAndroid={'transparent'}
-                        value={userInfo.confirmPwd}
+                        value={this.state.confirmPwd}
+                        style={styles.inputText}
+                    />
+                </View>
+                <View style={styles.inputView}>
+                    <Image
+                        source={require('./images/icon/icon_user.png')}
+                        style={styles.icon}
+                    />
+                    <TextInput
+                        placeholder='姓名'
+                        onChangeText={(text) => this.setNameAndPwd('userName',text)}
+                        underlineColorAndroid={'transparent'}
+                        value={this.state.userName}
                         style={styles.inputText}
                     />
                 </View>
@@ -125,7 +146,7 @@ export default class Regist extends Component{
                         placeholder='手机'
                         onChangeText={(text) => this.setNameAndPwd('phone',text)}
                         underlineColorAndroid={'transparent'}
-                        value={userInfo.phone}
+                        value={this.state.phone}
                         style={styles.inputText}
                     />
                 </View>
@@ -138,7 +159,7 @@ export default class Regist extends Component{
                         placeholder='地址'
                         onChangeText={(text) => this.setNameAndPwd('address',text)}
                         underlineColorAndroid={'transparent'}
-                        value={userInfo.address}
+                        value={this.state.address}
                         style={styles.inputText}
                     />
                 </View>
@@ -151,7 +172,7 @@ export default class Regist extends Component{
                         placeholder='QQ'
                         onChangeText={(text) => this.setNameAndPwd('qq',text)}
                         underlineColorAndroid={'transparent'}
-                        value={userInfo.qq}
+                        value={this.state.qq}
                         style={styles.inputText}
                     />
                 </View>
@@ -166,12 +187,8 @@ export default class Regist extends Component{
                                 console.log(year,month,day);
                                 // 这里开始可以处理用户选好的年月日三个参数：year, month (0-11), day
                                 let tmpBirth = year + '-' + (month+1) + '-' + day;
-                                let tmpBody = {...userInfo};
-                                tmpBody.birth = tmpBirth;
                                 this.setState({
-                                    userInfo: tmpBody
-                                },()=>{
-                                    console.log(this.state.userInfo);
+                                    birthday: tmpBirth
                                 })
                             }
                         });
@@ -188,7 +205,7 @@ export default class Regist extends Component{
                         placeholder='生日'
                         editable={false}
                         underlineColorAndroid={'transparent'}
-                        value={userInfo.birth}
+                        value={this.state.birthday}
                         style={styles.inputText}
                     />
                 </TouchableOpacity>
@@ -199,12 +216,11 @@ export default class Regist extends Component{
                     marginTop: 13
                 }}>
                     <CheckBox
-                        value={userInfo.sex == 0 ? true : false}
+                        value={this.state.sex == 0 ? true : false}
                         onValueChange={(newValue) => {
-                            let tmpSex = {...userInfo};
-                            tmpSex.sex = newValue ? 0 : 1;
+                            let sex = newValue ? 0 : 1;
                             this.setState({
-                                userInfo: tmpSex
+                                sex: sex
                             })
                         }}
                     />
@@ -212,12 +228,11 @@ export default class Regist extends Component{
                         <Text>{'男'}</Text>
                     </View>
                     <CheckBox
-                        value={userInfo.sex == 1 ? true : false}
+                        value={this.state.sex == 1 ? true : false}
                         onValueChange={(newValue) => {
-                            let tmpSex = {...userInfo};
-                            tmpSex.sex = newValue ? 1 : 0;
+                            let sex = newValue ? 0 : 1;
                             this.setState({
-                                userInfo: tmpSex
+                                sex: sex
                             })
                         }}
                     />

@@ -81,7 +81,7 @@ export default class GuideList extends Component {
             <TouchableOpacity
                 onPress={() => {
                     this.props.navigation.navigate("GuideDetail", {
-                        guideInfo:item
+                        id:'1'
                     });
                 }}
                 style={{height:80,borderWidth:1,borderColor:'#d4d4d4',marginLeft: 10,marginRight: 10}}
@@ -93,7 +93,7 @@ export default class GuideList extends Component {
                     <Text
                         style={{ color: "#aaaaaa", fontSize: 12 }}
                         numberOfLines={3}
-                    >{`发布时间：${item.createTime}  发布人：${item.user.userName}`}</Text>
+                    >{`发布时间：${item.createTime}  发布人：${item.userName}`}</Text>
                 </View>
             </TouchableOpacity>
         ); //5C5C5C
@@ -110,7 +110,7 @@ export default class GuideList extends Component {
                         this.props.navigation.goBack();
                     }}
                     backTitle={'返回'}
-                    title={'游记信息'}
+                    title={'我评论的攻略'}
                 />
                 <View style={{padding:10}}>
                     <TouchableOpacity
@@ -123,8 +123,8 @@ export default class GuideList extends Component {
                             alignItems:'center'
                         }}
                         onPress={()=>{
-                        	if(Global.user && Global.user.id ){
-								this.props.navigation.navigate('GuidePublish');
+                        	if(Global.role != 'youke'){
+								this.props.navigation.navigate('GuidePublish')
 							}else{
                         		alert('游客模式不能进行该操作！');
 							}

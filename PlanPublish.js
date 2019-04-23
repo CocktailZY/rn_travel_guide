@@ -39,7 +39,7 @@ export default class PlanPublish extends Component {
                 {chekced:false,name:'天安门1',id:7},
                 {chekced:false,name:'天安门1',id:8},*/
             ],
-            selectedViews:['北京天安门']//选者的景点跳页取不到值
+            selectedViews:[]//选者的景点跳页取不到值
         };
     }
     //查询景点
@@ -50,6 +50,7 @@ export default class PlanPublish extends Component {
             pageSize:20
         };
         FetchUtil.httpGet(url,param,(data)=>{
+        	console.log(data);
             this.setState({
                 views:data.recordList
             });
@@ -99,7 +100,7 @@ export default class PlanPublish extends Component {
                         console.error(error);
                     });
             },
-            (error) => alert(error.message),
+            (error) => alert('获取当前定位超时，请重试'),
             {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
         );
 
@@ -127,14 +128,19 @@ export default class PlanPublish extends Component {
                 }}
                 onPress={() => {
                     let tmpviews = [...this.state.views];
+                    let selected = [...this.state.selectedViews];
                     console.log(tmpviews);
                     tmpviews.map((obj,ind)=>{
                         if(obj.id == item.id){
                             obj.checked = !obj.checked;
                         }
+                        if(obj.checked){
+							selected.push(obj.name);
+						}
                     })
                     this.setState({
-                        views: tmpviews
+                        views: tmpviews,
+						selectedViews: selected
                     })
                 }}>
                 <View style={{
@@ -150,17 +156,21 @@ export default class PlanPublish extends Component {
                         trackColor={'#ffffff'}
                         value={item.checked}
                         onValueChange={(newValue) => {
-                            console.log(newValue)
-                            let tmpviews = [...this.state.views];
-                            console.log(tmpviews);
-                            tmpviews.map((obj,ind)=>{
-                                if(obj.id == item.id){
-                                    obj.checked = !obj.checked;
-                                }
-                            })
-                            this.setState({
-                                views: tmpviews
-                            })
+							let tmpviews = [...this.state.views];
+							let selected = [...this.state.selectedViews];
+							console.log(tmpviews);
+							tmpviews.map((obj,ind)=>{
+								if(obj.id == item.id){
+									obj.checked = !obj.checked;
+								}
+								if(obj.checked){
+									selected.push(obj.name);
+								}
+							})
+							this.setState({
+								views: tmpviews,
+								selectedViews: selected
+							})
                         }}
                     />
                 </View>
@@ -182,12 +192,23 @@ export default class PlanPublish extends Component {
                     isText={true}
                     rightText={'提交'}
                     onPressRightBtn={()=>{
-                        this.props.navigation.navigate('PlanDetail',{
-                            start:this.state.location,
-                            startTime:'2019-04-22',//取不到值this.state.startTime
-                            selectedViews:this.state.selectedViews,//选中的景点
-                            type:this.state.type
-                        })
+                    	if(this.state.startTime == ''){
+                    		alert('出发时间为空！');
+						}
+						else if(this.state.location == ''){
+							alert('起点位置为空！');
+						}
+						else if(this.state.selectedViews.length == 0){
+							alert('没有选取景点！');
+						}
+						else {
+							this.props.navigation.navigate('PlanDetail',{
+								start:this.state.location,
+								startTime:this.state.startTime,//取不到值this.state.startTime
+								selectedViews:this.state.selectedViews,//选中的景点
+								type:this.state.type
+							})
+						}
                     }}
                 />
                 <View style={{flex:1,padding:10}}>

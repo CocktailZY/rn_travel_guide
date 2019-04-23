@@ -43,7 +43,7 @@ export default class My extends Component {
                     <TouchableWithoutFeedback
                         style={{flex: 1}}
                         onPress={() => {
-                            alert('我的信息')
+							this.props.navigation.navigate('MyInfo');
                         }}>
                         <View style={[styles.jobBtn, {
                             justifyContent: 'center',

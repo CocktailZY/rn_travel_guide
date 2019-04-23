@@ -12,19 +12,20 @@ import {
     SectionList,
     Keyboard, FlatList, Dimensions
 } from "react-native";
-import Header from "./common/Header";
+import Icons from "react-native-vector-icons/Ionicons";
 import FetchUtil from './util/FetchUtil';
 import Config from './util/Config';
+import Constant from './util/Constant';
 import Global from "./util/Global";
 let lastPresTime = 1;
 const ITEM_HEIGHT = 100; //item的高度
 const HEADER_HEIGHT = 20; //分组头部的高度
 const {height, width} = Dimensions.get('window');
-export default class ViewCollection extends Component {
+export default class ViewList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            type: this.props.navigation.state.params.type,
+            typeId: this.props.navigation.state.params.typeId,
             views: [],
             searchText: "",
             isSearch: false,
@@ -34,39 +35,62 @@ export default class ViewCollection extends Component {
     }
 
     componentDidMount() {
-        // if(Global.user && Global.user.id){
-            this._getViewCollection();
-        // }else{
-        //     this.props.navigation.navigate('Login');
-        // }
-
+        this._getViews();
     }
     componentWillUnmount() {
 
     }
     //加载类型
-    _getViewCollection(){
-        let url=Config.GET_COLLECTIONS+"?token=lhy&userId=1"//+Global.user.id;
-        let param={
-            type:this.state.type,
-            pageNum:this.state.pageNum,
-            pageSize:Global.pageSize
-        };
-        FetchUtil.httpGet(url,param,(data)=>{
-            console.log(data);
-            this.setState({
-                views:data
-            });
-        })
-    }
+_getViews(){
+     let url=Config.VIEWS+"?token=lhy";
+    let param={};
+     if(''==this.state.searchText){
+         param={
+             typeId:this.state.typeId,
+             pageNum:this.state.pageNum,
+             pageSize:Global.pageSize
+         };
+     }else{
+         param={
+             typeId:this.state.typeId,
+             name:this.state.searchText,
+             pageNum:this.state.pageNum,
+             pageSize:Global.pageSize
+         };
+     }
+    FetchUtil.httpGet(url,param,(data)=>{
+        this.setState({
+            views:data.recordList
+        });
+    })
+}
+    _onBlurText = () => {
+        this._searchInputBox.blur();
+    };
+    _setSearchText = text => {
+        this.setState({
+            searchText: text
+        },()=>{
+            //输入完内容去检索
+            this._getViews();
+        });
+    };
+
+    _searchFriend = () => {
+        this._searchInputBox.blur();
+        if (this.state.searchText.replace(/(^\s*)|(\s*$)/g, "") == "") {
+            alert('搜索内容不能为空！');
+        }
+        //调接口
+    };
+
     _renderItem = ({item,index}) => {
         return (
             <TouchableOpacity
                 onPress={() => {
-
-                    // this.props.navigation.navigate("ViewDetail", {
-                    //     id:item.id
-                    // });
+                    this.props.navigation.navigate("ViewDetail", {
+                        id:item.id
+                    });
                 }}
                 style={[
                     styles.friendList,
@@ -74,14 +98,14 @@ export default class ViewCollection extends Component {
             >
                 <Image
                     source={
-
-                        item.list.length==0?
-                            require('./images/old_build.png')
-                        :
+                        item.list.lenght>0?
                             {
                                 uri:
                                     Config.PREVIEWIMAGE +"?id=" +item.list[0].imageId
+
                             }
+                            :
+                            require('./images/food.png')
                     }
                     style={styles.headFriend}
                 />
@@ -98,19 +122,38 @@ export default class ViewCollection extends Component {
 
 
     render() {
+        const { showAlert, tipMsg } = this.state;
         return (
             <View style={styles.container}>
                 <View style={{ backgroundColor: "#F5F5F5" }}>
-                    <Header
-                        headLeftFlag={true}
-                        onPressBackBtn={() => {
-                            this.props.navigation.goBack();
-                        }}
-                        backTitle={'返回'}
-                        title={'收藏景点列表'}
-                    />
+                    <View style={styles.searchBox}>
+                        <View style={{ flex: 1 }}>
+                            <TextInput
+                                ref={TextInput => (this._searchInputBox = TextInput)}
+                                style={styles.searchInputBox}
+                                placeholderTextColor={"#CCCCCC"}
+                                placeholder={"搜索..."}
+                                underlineColorAndroid={"transparent"}
+                                multiline={false}
+                                onChangeText={text => this._setSearchText(text)}
+                                autoFocus={true}
+                                returnKeyType={"search"}
+                                onSubmitEditing={this._searchFriend}
+                                value={this.state.searchText}
+                            />
+                        </View>
+                        <TouchableOpacity onPress={this._searchFriend}>
+                            <View style={{ width: 25, height: 30, justifyContent: "center" }}>
+                                <Icons
+                                    name={"ios-search"}
+                                    size={25}
+                                    color={"#CCCCCC"}
+                                />
+                            </View>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-                <View style={{ flex: 1,padding:10 }}>
+                <View style={{ flex: 1 }}>
                     <FlatList
                         keyExtractor={(item, index) => String(index)}
                         data={this.state.views}
@@ -131,7 +174,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#FFFFFF"
     },
     itemTitleView: {flex: 1, flexDirection: 'row', alignItems: 'center'},
-    itemTitleText: {fontSize: 18, fontWeight: 'bold', marginLeft: 5, width: (width - 30) * 0.9},
+  itemTitleText: {fontSize: 18, fontWeight: 'bold', marginLeft: 5, width: (width - 30) * 0.9},
     itemBottomText: {fontSize: 13, color: '#b5b5b5'},
     friendList: {
         flexDirection: "row",

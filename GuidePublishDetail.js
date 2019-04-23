@@ -7,6 +7,7 @@ import {
 	TouchableOpacity,
 	ScrollView, TextInput,Dimensions,
 	WebView,
+    DeviceEventEmitter,
 	FlatList
 } from "react-native";
 import Header from "./common/Header";
@@ -31,14 +32,22 @@ export default class GuidePublishDetail extends Component {
             context:"",
             address:"",//没有值
             lng:"",//经度 没有值
-            lat:'',//纬度 没有值
+            lat:"",//纬度 没有值
             imageId:'',//上传图片的id 没有值 上传不成功
 		};
 	}
 
 	componentDidMount() {
+		console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=');
+        this.refreshEvent = DeviceEventEmitter.addListener('mapView', (params) => {
+        	console.log(params);
+            this.setState({
+                address:params.address,//没有值
+                lng:params.lng,//经度 没有值
+                lat:params.lat,//纬度 没有值
+            })
+        });
 
-		this.setState({})
 	}
 
 	componentWillUnmount() {
@@ -46,14 +55,19 @@ export default class GuidePublishDetail extends Component {
 	}
     //发布游记
     _svaeGuide(){
-        let url=Config.SAVE_COMMENT+"?token=lhy&userId=1";//+Global.user.id;
-		if(this.state.imageId!=''){
+        let url=Config.SAVE_COMMENT+"?token=lhy&userId="+Global.user.id;
+    	if(this.state.title==''){ alert('请先输入标题');}
+        if(this.state.context==''){ alert('请先输入评论');}
+		else if(this.state.imageId==''){
 			alert('请先上传图片');
-		}else{
-            this.state.imageId=this.state.uploadImgs.join(",");
+		}else if(this.state.lat==''||this.state.lng==''||this.state.address==''){ alert('请先查看地图位置');}
+		else{
             let param=this.state;
             FetchUtil.httpGet(url,param,(data)=>{
                 //跳转到列表页
+				if(data){
+                    this.props.navigation.navigate("GuideList");
+				}
             });
 		}
     }
@@ -112,9 +126,17 @@ export default class GuidePublishDetail extends Component {
 						body: formData,
 					}).then((response) => response.json()).then((responseData) => {
 						console.log(responseData);
-						this.setState({
-                            imageId:responseData.id
-						})
+						if(responseData.code==200){
+							this.setState({
+								imageId:responseData.data.id
+							},()=>{
+                                alert('上传成功');
+							});
+                            console.log("++++++++++++++++++++++++++");
+                            console.log(this.state.imageId);
+						}else{
+							alert('上传失败');
+						}
 					}, () => {
 						alert('图片上传失败！');
 					}).catch((error) => {
@@ -131,10 +153,21 @@ export default class GuidePublishDetail extends Component {
 		return (
 			<View style={styles.upBtn}>
 				<Image
-					source={{uri:item}}
+                    source={
+                        item.imageId?
+                            {
+                                uri:
+                                    Config.PREVIEWIMAGE +"?id=" + item.imageId
+                            }
+                            :
+                            require('./images/food.png')
+                    }
 					resizeMode={'contain'}
 					style={{width: 80, height: 80}}
 				/>
+                <text>item.context</text>
+                <text>item.createTime</text>
+                <text>item.user.userName</text>
 			</View>
 		)
 	}

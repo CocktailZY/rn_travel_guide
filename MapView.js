@@ -5,6 +5,7 @@ import {
     View,
     Image,
     TouchableOpacity,
+    DeviceEventEmitter,
     ScrollView, WebView
 } from "react-native";
 import Header from "./common/Header";
@@ -34,11 +35,13 @@ export default class MapView extends Component {
                 <Header
                     headLeftFlag={true}
                     onPressBackBtn={() => {
-                        this.props.navigation.navigate('GuidePublishDetail',{
-							lng:this.state.lng,
-							lat:this.state.lat,
-							address:this.state.address
-						});
+                        console.log(this.state);
+                        DeviceEventEmitter.emit('mapView',{
+                            lng:this.state.lng,
+                            lat:this.state.lat,
+                            address:this.state.address
+                        });
+                        this.props.navigation.goBack();
                     }}
                     backTitle={'返回'}
                     title={'景区地图'}
