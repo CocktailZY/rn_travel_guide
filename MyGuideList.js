@@ -17,7 +17,7 @@ import Header from "./common/Header";
 import Config from "./util/Config";
 import Global from "./util/Global";
 import FetchUtil from "./util/FetchUtil";
-export default class GuideList extends Component {
+export default class MyGuideList extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -30,23 +30,10 @@ export default class GuideList extends Component {
 
     componentDidMount() {
        this._getComments();
-
-       /* this.setState({
-            views:[
-                {userName:'颐和园',title:'颐和园巴拉巴拉巴拉巴拉颐和园巴拉',createTime:'2019-04-14 10:38'},
-                {userName:'颐和园',title:'颐和园巴拉巴拉巴拉巴拉颐和园巴拉',createTime:'2019-04-14 10:38'},
-                {userName:'颐和园',title:'颐和园巴拉巴拉巴拉巴拉颐和园巴拉',createTime:'2019-04-14 10:38'},
-                {userName:'颐和园',title:'颐和园巴拉巴拉巴拉巴拉颐和园巴拉',createTime:'2019-04-14 10:38'},
-                {userName:'颐和园',title:'颐和园巴拉巴拉巴拉巴拉颐和园巴拉',createTime:'2019-04-14 10:38'},
-                {userName:'颐和园',title:'颐和园巴拉巴拉巴拉巴拉颐和园巴拉',createTime:'2019-04-14 10:38'},
-                {userName:'颐和园',title:'颐和园巴拉巴拉巴拉巴拉颐和园巴拉',createTime:'2019-04-14 10:38'},
-                {userName:'颐和园',title:'颐和园巴拉巴拉巴拉巴拉颐和园巴拉',createTime:'2019-04-14 10:38'},
-            ]
-        })*/
     }
-    //查询攻略
+    //查询我的攻略列表
     _getComments(){
-        let url=Config.GET_COMMENTS+"?token=lhy&userId=1";//+Global.user.id;
+        let url=Config.GET_COMMENTS+"?token=lhy&userId="+Global.user.id;
         FetchUtil.httpGet(url,null,(data)=>{
             this.setState({
                 views:data

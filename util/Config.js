@@ -1,4 +1,4 @@
-const BaseUrl="http://192.168.0.40:8080/lyms/";
+const BaseUrl="http://192.168.1.3:8080/lyms/";
 //const BaseUrl="http://121.196.201.35:8080/lyms/";
 export default Config={
     LOGIN:BaseUrl+"login/login",//登陆
@@ -12,6 +12,9 @@ export default Config={
     PLAN_DETAIL:BaseUrl+"plan/getPlanById",//查询路线的详情
     SAVE_COLLECTION:BaseUrl+"collection/saveCollection",//收藏
     GET_COMMENTS:BaseUrl+"comment/listComments",//查邮寄
+    listCommentsByDiscuss:BaseUrl+"comment/listCommentsByDiscuss",//查我评论过的
+    listCommentsByAppreciate:BaseUrl+"comment/listCommentsByAppreciate",//查点过站的
+    listCommentsByids:BaseUrl+"comment/listCommentsByids",//查我浏览过的
     SAVE_COMMENT:BaseUrl+"comment/saveComment",//保存邮寄
     UPLOD_IMAGE:BaseUrl+"attachment/uploadFile",//上传图片
     GET_ROUTES:BaseUrl+"route/getRoutesByPlanIds",//获取合适的线路

@@ -46,7 +46,7 @@ export default class GuideList extends Component {
     }
     //查询攻略
     _getComments(){
-        let url=Config.GET_COMMENTS+"?token=lhy&userId=1";//+Global.user.id;
+        let url=Config.GET_COMMENTS+"?token=lhy";//+Global.user.id;
         FetchUtil.httpGet(url,null,(data)=>{
             this.setState({
                 views:data

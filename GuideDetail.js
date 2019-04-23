@@ -37,7 +37,7 @@ export default class GuideDetail extends Component {
     }
     //获取攻略的详情
     _getGuideDetail(callback){
-        console.log(Global);
+
             if(Global.user &&Global.user.id){
                 callback();
             }else{

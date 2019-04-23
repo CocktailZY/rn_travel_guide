@@ -11,29 +11,40 @@ import Header from "./common/Header";
 import Icons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome';
-
+import Global from './util/Global';
 export default class GuideList extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			userInfo: {
-				name: '张三',
-				phone: '13112345678',
-				address: '北京市长安街天安门',
-				qq: '12345678',
-				birthday: '203-05-23',
-				sex: 0,//男 0 ，女 1
+				name: "",
+				phone: "",
+				address: "",
+				qq: "",
+				birthday: "",
+				sex:0,//男 0 ，女 1
 			}
 		};
 	}
 
 	componentDidMount() {
+        if(Global.user &&Global.user.id){
+        	this.setState({
+                userInfo:{
+                    name: Global.user.userName,
+                    phone: Global.user.phone,
+                    address: Global.user.address,
+                    qq:  Global.user.qq,
+                    birthday: Global.user.birthday,
+                    sex: Global.user.sex,//男 0 ，女 1
+                }
+			})
 
-		// this.setState({
-		// 	userInfo:{}
-		// })
+        }else{
+            this.props.navigation.navigate('Login');
+            alert('请先登录');
+        }
 	}
-
 	componentWillUnmount() {
 
 	}
