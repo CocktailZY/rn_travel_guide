@@ -17,7 +17,7 @@ import Header from "./common/Header";
 import Config from "./util/Config";
 import Global from "./util/Global";
 import FetchUtil from "./util/FetchUtil";
-export default class GuideList extends Component {
+export default class MyCommentGuideList extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -44,13 +44,15 @@ export default class GuideList extends Component {
             ]
         })*/
     }
-    //查询攻略
+    //查询我评论过的攻略
     _getComments(){
-        let url=Config.GET_COMMENTS+"?token=lhy&userId=1";//+Global.user.id;
+        let url=Config.listCommentsByDiscuss+"?token=lhy&userId="+Global.user.id;
         FetchUtil.httpGet(url,null,(data)=>{
-            this.setState({
-                views:data
-            });
+            if(data){
+                this.setState({
+                    views:data
+                });
+            }
         });
     }
     componentWillUnmount() {

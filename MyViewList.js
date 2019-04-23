@@ -35,32 +35,17 @@ export default class ViewList extends Component {
     }
 
     componentDidMount() {
-        this._getViews();
+        this.listCommentsByids();
     }
     componentWillUnmount() {
 
     }
-    //加载类型
-_getViews(){
-     let url=Config.VIEWS+"?token=lhy";
-    let param={};
-     if(''==this.state.searchText){
-         param={
-             typeId:this.state.typeId,
-             pageNum:this.state.pageNum,
-             pageSize:Global.pageSize
-         };
-     }else{
-         param={
-             typeId:this.state.typeId,
-             name:this.state.searchText,
-             pageNum:this.state.pageNum,
-             pageSize:Global.pageSize
-         };
-     }
-    FetchUtil.httpGet(url,param,(data)=>{
+    //加载我浏览过的类型
+    listCommentsByids(){
+     let url=Config.listCommentsByids+"?token=lhy&ids=";//需要加参
+    FetchUtil.httpGet(url,null,(data)=>{
         this.setState({
-            views:data.recordList
+            views:data
         });
     })
 }

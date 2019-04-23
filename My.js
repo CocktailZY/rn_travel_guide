@@ -24,10 +24,6 @@ export default class My extends Component {
 
     }
 
-    _searchView = () => {
-        //调模糊查询景点接口
-    };
-
     render() {
         return (
             <View style={{flex: 1, backgroundColor: '#ffffff'}}>
@@ -72,7 +68,7 @@ export default class My extends Component {
                     <TouchableWithoutFeedback
                         style={{flex: 1}}
                         onPress={() => {
-                            alert('我评论的攻略')
+                            this.props.navigation.navigate('MyCommentGuideList');
                         }}>
                         <View style={[styles.jobBtn, {
                             justifyContent: 'center',
@@ -87,7 +83,7 @@ export default class My extends Component {
                     <TouchableWithoutFeedback
                         style={{flex: 1}}
                         onPress={() => {
-                            alert('我点赞的攻略')
+                            this.props.navigation.navigate('MyZanGuideList');
                         }}>
                         <View style={[styles.jobBtn, {
                             justifyContent: 'center',
@@ -102,7 +98,7 @@ export default class My extends Component {
                     <TouchableWithoutFeedback
                         style={{flex: 1}}
                         onPress={() => {
-                            alert('我发布的攻略')
+                            this.props.navigation.navigate('MyGuideList');
                         }}>
                         <View style={[styles.jobBtn, {
                             justifyContent: 'center',
