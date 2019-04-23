@@ -25,10 +25,16 @@ import GuidePublishDetail from './GuidePublishDetail';
 import ViewCollection from './ViewCollection';
 import PlanCollectionDetail from './PlanCollectionDetail';
 import PlanCollection from './PlanCollection';
+import GuideCollection from './GuideCollection';
 import MapView from './MapView';
 import MapGuide from './MapGuide';
 import PlanPublish from './PlanPublish';
 import PlanDetail from './PlanDetail';
+import MyInfo from './MyInfo';
+import MyCommentGuideList from './MyCommentGuideList';
+import MyGuideList from './MyGuideList';
+import MyViewList from './MyViewList';
+import MyZanGuideList from './MyZanGuideList';
 console.disableYellowBox = true;
 console.warn("YellowBox is disabled.");
 
@@ -96,8 +102,14 @@ const RootStack = createStackNavigator({
     PlanPublish: { screen: PlanPublish},
     PlanDetail: { screen: PlanDetail},
     GuideDetail: { screen: GuideDetail},
+	GuideCollection: { screen: GuideCollection},
+	MyInfo: { screen: MyInfo},
+	MyCommentGuideList: { screen: MyCommentGuideList},
+	MyGuideList: { screen: MyGuideList},
+	MyZanGuideList: { screen: MyZanGuideList},
+	MyViewList: { screen: MyViewList},
 }, {
-    initialRouteName: 'Login', // 默认显示界面
+    initialRouteName: 'FootTab', // 默认显示界面
     defaultNavigationOptions: {  // 屏幕导航的默认选项, 也可以在组件内用 static navigationOptions 设置(会覆盖此处的设置)
         // title:'消息',
         header: null,

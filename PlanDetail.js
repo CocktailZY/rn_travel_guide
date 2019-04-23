@@ -60,7 +60,7 @@ export default class PlanDetail extends Component {
                     title={'计划明细'}
                 />
                 <View style={{flex:1,padding:10}}>
-                    <Text style={{fontSize:18,marginBottom: 10}}>{`出发地：${this.state.start}`}</Text>
+                    <Text style={{fontSize:18,marginBottom: 10}}>{`出发地：${this.state.startLocal}`}</Text>
                     {/* FlatList路线列表 */}
                 </View>
 

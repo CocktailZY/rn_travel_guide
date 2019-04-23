@@ -22,7 +22,7 @@ export default class Regist extends Component{
                 phone: '',
                 address: '',
                 qq: '',
-            birthday: '',
+            	birthday: '',
                 sex: 0,//男 0 ，女 1
                 role:'user',
         }

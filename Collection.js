@@ -58,7 +58,7 @@ export default class Collection extends Component {
                     <TouchableWithoutFeedback
                         style={{flex: 1, marginTop: 10}}
                         onPress={() => {
-                            this.props.navigation.navigate('ViewCollection',{
+                            this.props.navigation.navigate('GuideCollection',{
                                 type:1
                             });
                         }}>
