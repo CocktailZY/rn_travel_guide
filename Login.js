@@ -43,7 +43,7 @@ export default class Login extends Component{
                 password:MD5.hex_md5(this.state.pwd)
             }
             FetchUtil.httpGet(url,param,(data)=>{
-                if(!data.status){
+                if(data.status){
                     Global['user']=data;
                     this.props.navigation.navigate('Home')
                 }else{

@@ -3,6 +3,7 @@ const BaseUrl="http://192.168.0.40:8080/lyms/";
 export default Config={
     LOGIN:BaseUrl+"login/login",//登陆
     REGISTER:BaseUrl+"user/saveUser",//登陆注册接口
+    CHECK_USER_CODE:BaseUrl+"user/checkUserCode",//登陆注册接口
     TYPE:BaseUrl+"type/listTypes",//加载景点类型
     VIEWS:BaseUrl+"viewSport/pageViewSpots",//加载景点
     PREVIEWIMAGE:BaseUrl+"attachment/previewImage",//预览图片
