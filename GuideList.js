@@ -122,7 +122,14 @@ export default class GuideList extends Component {
                             justifyContent:'center',
                             alignItems:'center'
                         }}
-                        onPress={()=>{this.props.navigation.navigate('GuidePublish')}}
+                        onPress={()=>{
+                        	if(Global.role != 'youke'){
+								this.props.navigation.navigate('GuidePublish')
+							}else{
+                        		alert('游客模式不能进行该操作！');
+							}
+
+                        }}
                     >
                         <Text style={{fontSize:20,color:'#d4d4d4'}}>{'点击此处快速发布游记'}</Text>
                     </TouchableOpacity>

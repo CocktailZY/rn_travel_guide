@@ -153,7 +153,10 @@ export default class Login extends Component{
                         <Text>{'记住密码'}</Text>
                     </View>
                     <View style={{justifyContent: 'center',paddingRight: 10}}>
-                        <Text onPress={()=>{this.props.navigation.navigate('FootTab')}}>{'我是游客'}</Text>
+                        <Text onPress={()=>{
+							Global.role = 'youke';
+                        	this.props.navigation.navigate('FootTab');
+                        }}>{'我是游客'}</Text>
                     </View>
                 </View>
             </View>
