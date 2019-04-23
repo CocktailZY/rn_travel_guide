@@ -1,5 +1,5 @@
-// const BaseUrl="http://192.168.0.40:8080/lyms/";
-const BaseUrl="http://121.196.201.35:8080/lyms/";
+const BaseUrl="http://192.168.0.40:8080/lyms/";
+//const BaseUrl="http://121.196.201.35:8080/lyms/";
 export default Config={
     LOGIN:BaseUrl+"login/login",//登陆
     REGISTER:BaseUrl+"user/saveUser",//登陆注册接口
@@ -16,4 +16,8 @@ export default Config={
     UPLOD_IMAGE:BaseUrl+"attachment/uploadFile",//上传图片
     GET_ROUTES:BaseUrl+"route/getRoutesByPlanIds",//获取合适的线路
     GET_VIEW_SPOT_BY_NAME:BaseUrl+"viewSport/getViewSpotByName",//根据景点名称查询景点
+    DISCUSS:BaseUrl+"discuss/saveDiscuss",//根据保持评论sa
+    List_DISCUSS:BaseUrl+"discuss/listDiscusses",//加载评论列表
+    SAVE_APPRECIATE:BaseUrl+"appreciate/saveAppreciate",//点赞
+    GET_APPRECIATE_NUM:BaseUrl+"appreciate/getAppreciateNum",//根据保持评论
 };

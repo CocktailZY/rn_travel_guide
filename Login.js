@@ -10,8 +10,8 @@ export default class Login extends Component{
     constructor(props){
         super(props);
         this.state = {
-            name: '',
-            pwd: '',
+            name: 'admin',
+            pwd: '1',
             confirmText: '',
             confirm: ''+Math.floor(Math.random()*10)+Math.floor(Math.random()*10)+Math.floor(Math.random()*10)+Math.floor(Math.random()*10),
             autoLogin: true
@@ -44,7 +44,7 @@ export default class Login extends Component{
             }
             FetchUtil.httpGet(url,param,(data)=>{
                 if(data.status){
-                    Global['user']=data;
+                    Global['user']=data.user;
                     this.props.navigation.navigate('Home')
                 }else{
                     Alert.alert('提示', '用户名密码错误');
