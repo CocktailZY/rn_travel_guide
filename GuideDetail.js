@@ -33,6 +33,9 @@ export default class GuideDetail extends Component {
         this._getGuideDetail(()=>{
             this._getAppreciateNum();
             this._commentList();
+            let temp={};
+            let guideId=this.state.guideInfo.id;
+            Global.guideIds.push(guideId);
         });
     }
     //获取攻略的详情
