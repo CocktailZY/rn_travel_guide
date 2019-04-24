@@ -10,7 +10,8 @@ import {
     BackHandler,
     TextInput,
     SectionList,
-    Keyboard, FlatList
+    Keyboard, FlatList,
+    DeviceEventEmitter
 } from "react-native";
 import Icons from "react-native-vector-icons/Ionicons";
 import Header from "./common/Header";
@@ -30,7 +31,7 @@ export default class GuideList extends Component {
 
     componentDidMount() {
        this._getComments();
-
+        DeviceEventEmitter.addListener('refreshGuideList',()=>this._getComments);
        /* this.setState({
             views:[
                 {userName:'颐和园',title:'颐和园巴拉巴拉巴拉巴拉颐和园巴拉',createTime:'2019-04-14 10:38'},

@@ -109,7 +109,7 @@ const RootStack = createStackNavigator({
 	MyZanGuideList: { screen: MyZanGuideList},
 	MyViewList: { screen: MyViewList},
 }, {
-    initialRouteName: 'FootTab', // 默认显示界面
+    initialRouteName: 'Login', // 默认显示界面
     defaultNavigationOptions: {  // 屏幕导航的默认选项, 也可以在组件内用 static navigationOptions 设置(会覆盖此处的设置)
         // title:'消息',
         header: null,

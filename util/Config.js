@@ -1,5 +1,7 @@
 const BaseUrl="http://192.168.1.3:8080/lyms/";
-//const BaseUrl="http://121.196.201.35:8080/lyms/";
+// const BaseUrl="http://192.168.0.40:8080/lyms/";
+// const BaseUrl="http://192.168.0.105:8080/lyms/";
+// const BaseUrl="http://121.196.201.35:8080/lyms/";
 export default Config={
     LOGIN:BaseUrl+"login/login",//登陆
     REGISTER:BaseUrl+"user/saveUser",//登陆注册接口

@@ -19,29 +19,23 @@ export default class GuideDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            guideInfo:this.props.navigation.state.params.guideInfo,
+            guideInfo:props.navigation.state.params.guideInfo,
             showComment: false,//是否显示评论框
             commentPid: '', //评论父id
             appreciateNum:0,
             imageId:"",//评论图片id
             context:"",//评论内容
-            commentList:[]//评论列表
+            commentList:[],//评论列表
+            image:Config.PREVIEWIMAGE +"?id=" +props.navigation.state.params.guideInfo.imageId
         };
     }
 
     componentDidMount() {
-        this._getGuideDetail(()=>{
+        if(Global.user && Global.user.id){
             this._getAppreciateNum();
             this._commentList();
-        });
-    }
-    //获取攻略的详情
-    _getGuideDetail(callback){
-
-            if(Global.user &&Global.user.id){
-                callback();
-            }else{
-                alert('请先登录');
+        }else{
+            alert('请先登录');
         }
     }
     componentWillUnmount() {
@@ -100,7 +94,7 @@ export default class GuideDetail extends Component {
     }
 
     render() {
-        const guideInfo=this.state.guideInfo
+        const { guideInfo, image } = this.state;
         return (
             <View style={styles.container}>
                 <Header
@@ -112,20 +106,16 @@ export default class GuideDetail extends Component {
                     title={'攻略详情'}
                 />
                 <View style={{flex:1,padding:10}}>
-                    <Text style={{fontSize:18,marginBottom: 10}}>{`发布时间：${guideInfo.createTime}  发布人：${guideInfo.user.userName}`}</Text>
+                    <Text style={{fontSize:16,marginBottom: 10}}>{`发布时间：${guideInfo.createTime}`}</Text>
+                    <Text style={{fontSize:16,marginBottom: 10}}>{`发布人：${guideInfo.user.userName}`}</Text>
                     <Text style={{color:'#b5b5b5',marginBottom: 10}}>{guideInfo.context}</Text>
 
-                    <View style={{flex: 1}}>
+                    <View style={{flex: 1,justifyContent:'center',alignItems:'center'}}>
                         {/* 详情图片区 */}
-                        <Text>{'详情图片区'}</Text>
                         <Image
-                            source={{
-                                        uri:
-                                            Config.PREVIEWIMAGE +"?id=" +guideInfo.imageId
-
-                                    }
-                            }
-                            style={styles.headFriend}
+                            source={{uri:image}}
+                            resizeMode={'contain'}
+                            style={{width:200,height:300}}
                         />
                     </View>
                     <View style={{flexDirection: 'row',height: 30}}>
@@ -141,7 +131,7 @@ export default class GuideDetail extends Component {
                                 color='#009688'
                                 size={22}
                             />
-                            <Text style={{marginLeft:5}}>{this.state.appreciateNum}</Text>
+                            <Text style={{marginLeft:5}}>{this.state.appreciateNum?this.state.appreciateNum:0}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={{flexDirection: 'row',marginLeft: 30, justifyContent: 'center',alignItems:'center'}}
@@ -194,6 +184,14 @@ export default class GuideDetail extends Component {
                             <Text style={{fontSize: 14, color: '#fff'}}>评论</Text>
                         </TouchableOpacity>
                     </View>
+                    <TouchableOpacity onPress={() => {
+                        alert('加入收藏');
+                    }} style={styles.btn}>
+                        <Text style={{
+                            fontSize: 15,
+                            color: '#fff'
+                        }}>加入收藏</Text>
+                    </TouchableOpacity>
                 </View>
 
             </View>
@@ -209,8 +207,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         padding: 5,
-        paddingLeft: 15,
-        paddingRight: 15,
         borderTopColor: '#d7d7d7',
         borderTopWidth: 1,
     },
@@ -235,5 +231,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginLeft: 10,
     },
+    btn: {
+        borderRadius: 4,
+        backgroundColor: '#009688',
+        height: 40,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 22,
+    }
 
 });
