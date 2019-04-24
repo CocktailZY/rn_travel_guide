@@ -29,8 +29,12 @@ export default class MyCommentGuideList extends Component {
     }
 
     componentDidMount() {
-       this._getComments();
-
+        if(Global.user &&Global.user.id){
+            this._getComments();
+        }else{
+            this.props.navigation.navigate('Login');
+            alert('请先登录');
+        }
        /* this.setState({
             views:[
                 {userName:'颐和园',title:'颐和园巴拉巴拉巴拉巴拉颐和园巴拉',createTime:'2019-04-14 10:38'},
@@ -56,11 +60,7 @@ export default class MyCommentGuideList extends Component {
         });
     }
     componentWillUnmount() {
-        if (Platform.OS == "android") {
-            this.keyboardDidShowListener.remove();
-        }
     }
-
     _onBlurText = () => {
         // this._searchInputBox.blur();
     };

@@ -124,11 +124,17 @@ export default class GuideList extends Component {
                             alignItems:'center'
                         }}
                         onPress={()=>{
-                        	if(Global.user && Global.user.id ){
+                            if(Global.user &&Global.user.id){
+                                this.props.navigation.navigate('GuidePublish');
+                            }else{
+                                this.props.navigation.navigate('Login');
+                                alert('游客模式不能进行该操作！');
+                            }
+                        	/*if(Global.user && Global.user.id ){
 								this.props.navigation.navigate('GuidePublish');
 							}else{
                         		alert('游客模式不能进行该操作！');
-							}
+							}*/
 
                         }}
                     >

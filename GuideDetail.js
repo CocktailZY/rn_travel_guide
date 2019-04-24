@@ -34,6 +34,9 @@ export default class GuideDetail extends Component {
         if(Global.user && Global.user.id){
             this._getAppreciateNum();
             this._commentList();
+            let temp={};
+            let guideId=this.state.guideInfo.id;
+            Global.guideIds.push(guideId);
         }else{
             alert('请先登录');
         }

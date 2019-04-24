@@ -9,6 +9,7 @@ import {
     ScrollView, WebView
 } from "react-native";
 import Header from "./common/Header";
+import Global from "./util/Global";
 
 export default class MapView extends Component {
     constructor(props) {
@@ -21,8 +22,12 @@ export default class MapView extends Component {
     }
 
     componentDidMount() {
-
-        this.setState({})
+        if(Global.user &&Global.user.id){
+           // this._getComments();
+        }else{
+            this.props.navigation.navigate('Login');
+            alert('请先登录');
+        }
     }
 
     componentWillUnmount() {

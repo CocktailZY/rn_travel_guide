@@ -53,7 +53,7 @@ export default class My extends Component {
                     <TouchableWithoutFeedback
                         style={{flex: 1}}
                         onPress={() => {
-                            alert('我搜索过的景点')
+                            this.props.navigation.navigate('MyViewList');
                         }}>
                         <View style={[styles.jobBtn, {
                             justifyContent: 'center',

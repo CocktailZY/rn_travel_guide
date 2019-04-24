@@ -35,19 +35,27 @@ export default class ViewList extends Component {
     }
 
     componentDidMount() {
-        this.listCommentsByids();
+        if(Global.user &&Global.user.id){
+            this.listCommentsByids();
+        }else{
+            this.props.navigation.navigate('Login');
+            alert('请先登录');
+        }
     }
     componentWillUnmount() {
 
     }
     //加载我浏览过的类型
     listCommentsByids(){
-     let url=Config.listCommentsByids+"?token=lhy&ids=";//需要加参
-    FetchUtil.httpGet(url,null,(data)=>{
-        this.setState({
-            views:data
-        });
-    })
+        if(Global.guideIds && Global.guideIds.length>0){
+            let ids=Global.guideIds.join(",");
+            let url=Config.listCommentsByids+"?token=lhy&ids="+ids;//需要加参
+            FetchUtil.httpGet(url,null,(data)=>{
+                this.setState({
+                    views:data
+                });
+            });
+        }
 }
     _onBlurText = () => {
         this._searchInputBox.blur();

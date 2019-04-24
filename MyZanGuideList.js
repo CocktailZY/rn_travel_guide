@@ -29,7 +29,12 @@ export default class GuideList extends Component {
     }
 
     componentDidMount() {
-       this._getComments();
+        if(Global.user &&Global.user.id){
+            this._getComments();
+        }else{
+            this.props.navigation.navigate('Login');
+            alert('请先登录');
+        }
 
        /* this.setState({
             views:[
@@ -56,9 +61,6 @@ export default class GuideList extends Component {
         });
     }
     componentWillUnmount() {
-        if (Platform.OS == "android") {
-            this.keyboardDidShowListener.remove();
-        }
     }
 
     _onBlurText = () => {
