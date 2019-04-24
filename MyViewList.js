@@ -35,7 +35,13 @@ export default class ViewList extends Component {
     }
 
     componentDidMount() {
-        this.listCommentsByids();
+        if(Global.user &&Global.user.id){
+            this.listCommentsByids();
+        }else{
+            this.props.navigation.navigate('Login');
+            alert('请先登录');
+        }
+
     }
     componentWillUnmount() {
 
