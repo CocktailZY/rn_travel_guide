@@ -60,11 +60,7 @@ export default class MyCommentGuideList extends Component {
         });
     }
     componentWillUnmount() {
-        if (Platform.OS == "android") {
-            this.keyboardDidShowListener.remove();
-        }
     }
-
     _onBlurText = () => {
         // this._searchInputBox.blur();
     };

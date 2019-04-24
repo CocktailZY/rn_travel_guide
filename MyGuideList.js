@@ -47,9 +47,6 @@ export default class MyGuideList extends Component {
         });
     }
     componentWillUnmount() {
-        if (Platform.OS == "android") {
-            this.keyboardDidShowListener.remove();
-        }
     }
 
     _onBlurText = () => {
