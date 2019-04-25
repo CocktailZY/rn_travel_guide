@@ -21,6 +21,7 @@ export default class GuideList extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			viewSpotId:props.navigation.state.params?props.navigation.state.params.viewId:"",
 			views: [],
 			searchText: "",
 			isSearch: false,
@@ -48,6 +49,9 @@ export default class GuideList extends Component {
 	//查询攻略
 	_getComments(){
 		let url=Config.GET_COMMENTS+"?token=lhy&orderType="+this.state.orderType;//+Global.user.id;
+		if(this.state.viewSpotId !=null){
+			url+="&viewSpotId="+this.state.viewSpotId;
+		}
 		FetchUtil.httpGet(url,null,(data)=>{
 			this.setState({
 				views:data

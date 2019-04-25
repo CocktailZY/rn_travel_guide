@@ -66,6 +66,7 @@ export default class GuidePublishDetail extends Component {
             FetchUtil.httpGet(url,param,(data)=>{
                 //跳转到列表页
 				if(data){
+					DeviceEventEmitter.emit('refreshGuideList');
                     this.props.navigation.navigate("GuideList");
 				}
             });
@@ -127,8 +128,11 @@ export default class GuidePublishDetail extends Component {
 					}).then((response) => response.json()).then((responseData) => {
 						console.log(responseData);
 						if(responseData.code==200){
+							let tmpImage = [...this.state.uploadImgs];
+							tmpImage.push({imageId:responseData.data.id});
 							this.setState({
-								imageId:responseData.data.id
+								imageId:responseData.data.id,
+								uploadImgs:tmpImage
 							},()=>{
                                 alert('上传成功');
 							});
@@ -165,9 +169,6 @@ export default class GuidePublishDetail extends Component {
 					resizeMode={'contain'}
 					style={{width: 80, height: 80}}
 				/>
-                <text>item.context</text>
-                <text>item.createTime</text>
-                <text>item.user.userName</text>
 			</View>
 		)
 	}
@@ -350,7 +351,7 @@ export default class GuidePublishDetail extends Component {
 						<Text>{'请在景区地图上标注您的驻留位置'}</Text>
 						{/*地图区域*/}
 						<Text style={{marginTop:5}}>
-							{this.props.navigation.state.params.lng ? this.props.navigation.state.params.address : ''}
+							{this.state.lng ? this.state.address : ''}
 						</Text>
 						<TouchableOpacity
 							style={[styles.btn,{marginTop:5}]}
