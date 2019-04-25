@@ -85,6 +85,9 @@ export default class GuideDetail extends Component {
 		};
 		FetchUtil.httpGet(url,param,(data)=>{
 			//跳转到列表页
+			this.setSate({
+				context:""
+			});
 			this._commentList();
 		});
 	}
@@ -198,9 +201,11 @@ export default class GuideDetail extends Component {
 							style={styles.commentInput}
 							multiline={true}
 							value={this.state.content}
-							onChangeText={(text) => this.setState({
-								content: text
-							})}
+							onChangeText={(text) =>{
+                                this.setState({
+                                    context: text
+                                });
+							} }
 							onBlur={() => {
 								this.setState({
 									commentPid: null,
