@@ -53,7 +53,7 @@ export default class GuidePublishDetail extends Component {
 	componentWillUnmount() {
 
 	}
-    //发布游记
+    //发布攻略
     _svaeGuide(){
         let url=Config.SAVE_COMMENT+"?token=lhy&userId="+Global.user.id;
     	if(this.state.title==''){ alert('请先输入标题');}

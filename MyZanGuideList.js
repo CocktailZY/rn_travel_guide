@@ -135,7 +135,7 @@ export default class GuideList extends Component {
 
                         }}
                     >
-                        <Text style={{fontSize:20,color:'#d4d4d4'}}>{'点击此处快速发布游记'}</Text>
+                        <Text style={{fontSize:20,color:'#d4d4d4'}}>{'点击此处快速发布攻略'}</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={{

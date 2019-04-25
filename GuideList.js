@@ -110,7 +110,7 @@ export default class GuideList extends Component {
                         this.props.navigation.goBack();
                     }}
                     backTitle={'返回'}
-                    title={'游记信息'}
+                    title={'攻略信息'}
                 />
                 <View style={{padding:10}}>
                     <TouchableOpacity
@@ -137,7 +137,7 @@ export default class GuideList extends Component {
 
                         }}
                     >
-                        <Text style={{fontSize:20,color:'#d4d4d4'}}>{'点击此处快速发布游记'}</Text>
+                        <Text style={{fontSize:20,color:'#d4d4d4'}}>{'点击此处快速发布攻略'}</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={{

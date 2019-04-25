@@ -109,7 +109,7 @@ export default class ViewDetail extends Component {
                             <Text style={{
                                 fontSize: 15,
                                 color: '#fff'
-                            }}>查看游记</Text>
+                            }}>查看攻略</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
