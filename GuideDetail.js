@@ -85,7 +85,7 @@ export default class GuideDetail extends Component {
 		};
 		FetchUtil.httpGet(url,param,(data)=>{
 			//跳转到列表页
-			this.setSate({
+			this.setState({
 				context:""
 			});
 			this._commentList();

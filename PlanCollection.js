@@ -34,7 +34,12 @@ export default class PlanCollection extends Component {
     }
 
     componentDidMount() {
-        this._getViewCollection();
+        if(Global.user && Global.user.id){
+            this._getViewCollection();
+        }else{
+            this.props.navigation.navigate('Login');
+            alert("请先登录")
+        }
     }
     componentWillUnmount() {
 
@@ -49,7 +54,7 @@ export default class PlanCollection extends Component {
         };
         FetchUtil.httpGet(url,param,(data)=>{
             this.setState({
-                views:data
+                views:data?data:[]
             });
         });
     };

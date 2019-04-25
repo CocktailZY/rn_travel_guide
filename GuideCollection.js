@@ -34,23 +34,30 @@ export default class PlanCollection extends Component {
     }
 
     componentDidMount() {
-        this._getViewCollection();
+        if(Global.user && Global.user.id){
+            this._getViewCollection();
+        }else{
+            this.props.navigation.navigate('Login');
+            alert("请先登录")
+        }
+
     }
     componentWillUnmount() {
 
     }
-    //加载类型
+    //加载攻略收藏类型
     _getViewCollection(){
-        let url=Config.GET_COLLECTIONS+"?token=lhy&userId=1";//+Global.user.id;
+        let url=Config.GET_COLLECTIONS+"?token=lhy&userId="+Global.user.id;
         let param={
             type:this.state.type,
             pageNum:this.state.pageNum,
             pageSize:Global.pageSize
         };
         FetchUtil.httpGet(url,param,(data)=>{
-            this.setState({
-                views:data
-            });
+                this.setState({
+                    views:data?data:[]
+                });
+
         });
     };
     _renderItem = ({item,index}) => {

@@ -148,11 +148,12 @@ _getTypes(){
                             paddingBottom:10
                         }}>
                         <TouchableOpacity style={{flex: 1}} onPress={() => {
-							if(Global.role != 'youke'){
+							if(Global.user && Global.user.id){
 								this.props.navigation.navigate('PlanPublish',{
 									type:1
 								})
 							}else{
+                                this.props.navigation.navigate('Login');
 								alert('游客模式不能进行该操作！');
 							}
                         }}>
@@ -166,11 +167,12 @@ _getTypes(){
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity style={{flex: 1}} onPress={() => {
-							if(Global.role != 'youke'){
+							if(Global.user && Global.user.id){
 								this.props.navigation.navigate('PlanPublish',{
 									type:2
 								})
 							}else{
+                                this.props.navigation.navigate('Login');
 								alert('游客模式不能进行该操作！');
 							}
                         }}>
@@ -184,11 +186,12 @@ _getTypes(){
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity style={{flex: 1}} onPress={() => {
-							if(Global.role != 'youke'){
+							if(Global.user && Global.user.id){
 								this.props.navigation.navigate('PlanPublish',{
 									type:3
 								})
 							}else{
+                                this.props.navigation.navigate('Login');
 								alert('游客模式不能进行该操作！');
 							}
                         }}>
