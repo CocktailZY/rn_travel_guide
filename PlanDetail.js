@@ -33,7 +33,7 @@ export default class PlanDetail extends Component {
     }
     //查询对应计划类型 且大于等于起始时间的线路
     _getRoutes(){
-        let url=Config.GET_ROUTES+"?token=lhy&userId=1";//+Global.user.id;
+        let url=Config.GET_ROUTES+"?token=lhy&userId="+Global.user.id;//+Global.user.id;
         let viewNmae=[...this.state.selectedViews];
         this.setState({
             destination:viewNmae.join(','),
@@ -44,6 +44,11 @@ export default class PlanDetail extends Component {
                 //查询会线路数据
                 console.log("++++++++++++++++++++++++++++++++++++");
                 console.log(data);
+                if(data.length == 0){
+                	alert('没有查到相关出行计划')
+				}else{
+
+				}
 
             });
         });

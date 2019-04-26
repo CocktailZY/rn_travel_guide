@@ -25,7 +25,6 @@ export default class ViewList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            typeId: this.props.navigation.state.params.typeId,
             views: [],
             searchText: "",
             isSearch: false,
@@ -129,7 +128,7 @@ export default class ViewList extends Component {
                                 underlineColorAndroid={"transparent"}
                                 multiline={false}
                                 onChangeText={text => this._setSearchText(text)}
-                                autoFocus={true}
+                                autoFocus={false}
                                 returnKeyType={"search"}
                                 onSubmitEditing={this._searchFriend}
                                 value={this.state.searchText}
@@ -153,6 +152,9 @@ export default class ViewList extends Component {
                         renderItem={this._renderItem}
                         refreshing={false}
                         ItemSeparatorComponent={() => <View style={{height:10}}/>}
+						ListEmptyComponent={() => <View style={{height: 100, justifyContent: 'center', alignItems: 'center'}}>
+							<Text style={{fontSize: 16, color: '#999'}}>暂无数据</Text>
+						</View>}
                         showsVerticalScrollIndicator={false}
                         showsHorizontalScrollIndicator={false}
                     />

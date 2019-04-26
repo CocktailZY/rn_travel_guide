@@ -107,6 +107,9 @@ export default class PlanCollection extends Component {
                         renderItem={this._renderItem}
                         refreshing={false}
                         ItemSeparatorComponent={() => <View style={{height:10}}/>}
+						ListEmptyComponent={() => <View style={{height: 100, justifyContent: 'center', alignItems: 'center'}}>
+							<Text style={{fontSize: 16, color: '#999'}}>暂无数据</Text>
+						</View>}
                         showsVerticalScrollIndicator={false}
                         showsHorizontalScrollIndicator={false}
                     />
