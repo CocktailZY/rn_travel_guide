@@ -24,7 +24,7 @@ export default class GuideDetail extends Component {
 			commentPid: '', //评论父id
 			appreciateNum:0,
 			imageId:"",//评论图片id
-			context:"",//评论内容
+			content:"",//评论内容
 			commentList:[]//评论列表
 		};
 	}
@@ -81,12 +81,13 @@ export default class GuideDetail extends Component {
 		let param={
 			pId:this.state.guideInfo.id,
 			imageId:this.state.imageId,
-			context:this.state.context
+			context:this.state.content
 		};
 		FetchUtil.httpGet(url,param,(data)=>{
 			//跳转到列表页
 			this.setState({
-				context:""
+				content:"",
+				showComment:false
 			});
 			this._commentList();
 		});
@@ -112,7 +113,7 @@ export default class GuideDetail extends Component {
 				<View style={{justifyContent: 'center'}}>
 					<View style={{flexDirection:'row'}}>
 						<View style={{flex:1}}>
-							<Text style={{marginBottom: 5}} numberOfLines={1}>{item.user.userName}</Text>
+							<Text style={{marginBottom: 5}} numberOfLines={1}>{`${item.user.userName}发表：`}</Text>
 						</View>
 						<View style={{flex:1,justifyContent:'flex-end'}}>
 							<Text style={{color: '#a4b0be', fontSize: 12}}>{item.createTime}</Text>
@@ -124,10 +125,27 @@ export default class GuideDetail extends Component {
 				</View>
 			</View>
 		)
+	};
+	_saveViewCollection(){
+		if(Global.user &&Global.user.id){
+			let url=Config.SAVE_COLLECTION+"?token=lhy&userId="+Global.user.id;//+Global.user.id;
+			let param={
+				businessId:this.state.guideInfo.id,
+				type:3
+			};
+			FetchUtil.httpGet(url,param,(data)=>{
+				if(data){
+					alert("收藏攻略成功");
+				}
+
+			})
+		}else{
+			alert('游客模式不能进行该操作！');
+		}
 	}
 
 	render() {
-		const guideInfo=this.state.guideInfo
+		const guideInfo=this.state.guideInfo;
 		return (
 			<View style={styles.container}>
 				<Header
@@ -168,7 +186,7 @@ export default class GuideDetail extends Component {
 								color='#009688'
 								size={22}
 							/>
-							<Text style={{marginLeft:5}}>{this.state.appreciateNum}</Text>
+							<Text style={{marginLeft:5}}>{this.state.appreciateNum ? this.state.appreciateNum:0}</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
 							style={{flexDirection: 'row',marginLeft: 30, justifyContent: 'center',alignItems:'center'}}
@@ -186,7 +204,7 @@ export default class GuideDetail extends Component {
 							<Text style={{marginLeft:5}}>{'评论'}</Text>
 						</TouchableOpacity>
 					</View>
-					<View>
+					<View style={{flex:1}}>
 						{/* 评论列表 */}
 						<Text>{'评论列表'}</Text>
 						<FlatList
@@ -203,7 +221,7 @@ export default class GuideDetail extends Component {
 							value={this.state.content}
 							onChangeText={(text) =>{
                                 this.setState({
-                                    context: text
+									content: text
                                 });
 							} }
 							onBlur={() => {
@@ -222,6 +240,14 @@ export default class GuideDetail extends Component {
 							<Text style={{fontSize: 14, color: '#fff'}}>评论</Text>
 						</TouchableOpacity>
 					</View>
+					<TouchableOpacity onPress={() => {
+						this._saveViewCollection();
+					}} style={[styles.btn]}>
+						<Text style={{
+							fontSize: 15,
+							color: '#fff'
+						}}>加入收藏</Text>
+					</TouchableOpacity>
 				</View>
 
 			</View>
@@ -263,5 +289,13 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		marginLeft: 10,
 	},
-
+	btn: {
+		borderRadius: 4,
+		backgroundColor: '#009688',
+		height: 40,
+		justifyContent: 'center',
+		alignItems: 'center',
+		paddingLeft: 5,
+		paddingRight: 5,
+	}
 });

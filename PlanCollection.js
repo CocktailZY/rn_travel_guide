@@ -10,7 +10,8 @@ import {
     BackHandler,
     TextInput,
     SectionList,
-    Keyboard, FlatList, Dimensions
+    Keyboard, FlatList, Dimensions,
+	TouchableHighlight
 } from "react-native";
 import Header from "./common/Header";
 import FetchUtil from './util/FetchUtil';
