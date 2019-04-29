@@ -49,7 +49,7 @@ export default class ViewList extends Component {
     	console.log(Global);
         if(Global.guideIds && Global.guideIds.length>0){
             let ids=Global.guideIds.join(",");
-            let url=Config.listCommentsByids+"?token=lhy&ids="+ids;//需要加参
+            let url=Config.listViewByids+"?token=lhy&ids="+ids;//需要加参
             FetchUtil.httpGet(url,null,(data)=>{
             	console.log(data);
                 this.setState({
@@ -100,13 +100,13 @@ export default class ViewList extends Component {
                         // item.list.lenght>0?
                             {
                                 uri:
-                                    Config.PREVIEWIMAGE +"?id=" +item.imageId
+                                    Config.PREVIEWIMAGE +"?id=" +item.list[0].imageId
 
                             }
                             // :
                             // require('./images/food.png')
                     }
-                    style={{width:100,height:200}}
+                    style={styles.headFriend}
                     resizeMode={'contain'}
                 />
                 <View style={styles.textFriend}>
@@ -182,7 +182,11 @@ const styles = StyleSheet.create({
     friendList: {
         flexDirection: "row",
         marginLeft: 10,
-        height: ITEM_HEIGHT
+        // height: ITEM_HEIGHT,
+		justifyContent:'center',
+		alignItems:'center',
+		paddingBottom: 10,
+		paddingTop: 10,
     },
     headFriend: {
         width: 100,

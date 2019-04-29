@@ -44,7 +44,7 @@ export default class ViewDetail extends Component {
         });
     };
     _saveViewCollection(){
-        let url=Config.SAVE_COLLECTION+"?token=lhy&userId=1"//+Global.user.id;
+        let url=Config.SAVE_COLLECTION+"?token=lhy&userId="+Global.user.id;//+Global.user.id;
         let param={
             businessId:this.state.viewSpotId,
             type:1

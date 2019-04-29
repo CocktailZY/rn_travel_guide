@@ -39,7 +39,6 @@ export  default  class PlanCollectionDetail extends Component {
     };
 
     componentWillUnmount() {
-        this.keyboardDidShowListener.remove();
         commentPage = 1;
     }
 
@@ -51,7 +50,7 @@ export  default  class PlanCollectionDetail extends Component {
         FetchUtil.httpGet(url,param,(data)=>{
         	if(data){
 				this.setState({
-					routeList:data.list,
+					routeList:data.routes,
 					planInfo:data
 				});
 			}
@@ -67,7 +66,7 @@ export  default  class PlanCollectionDetail extends Component {
 						this.props.navigation.goBack();
 					}}
 					backTitle={'返回'}
-					title={'规划详情'}
+					title={'路线详情'}
 				/>
                 <ScrollView
                     showsVerticalScrollIndicator={false}

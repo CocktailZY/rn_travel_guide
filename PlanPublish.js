@@ -26,9 +26,9 @@ export default class PlanPublish extends Component {
         this.state = {
             pageNum:1,
             startTime: '',//时间跳页取不到值
-            locationType: true,//true 为自动定位
+            locationType: false,//true 为自动定位
             location: '',
-            type:this.props.navigation.state.params.type,//计划类型
+            type:props.navigation.state.params.type,//路线类型
             views: [
               /*  {chekced:true,name:'天安门',id:1},
                 {chekced:false,name:'天安门1',id:2},
@@ -59,51 +59,6 @@ export default class PlanPublish extends Component {
 
     componentDidMount() {
         this._getViews();
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                let initialPosition = position.coords.latitude+','+position.coords.longitude;
-                console.log(position);
-                let url = 'https://api.map.baidu.com/geocoder/v2/?output=json';
-                let data = {
-                    ak: 'IHUAG9ZfCOzg290s0Sb5sStev5iqhfAs',
-                    location: initialPosition,
-                    mcode:'7B:E1:EE:4B:B5:CE:B0:10:9C:2D:13:5F:63:6A:E2:F7:3C:F4:EE:46;com.travel_guide'
-                };
-                if(data){
-                    let param="";
-                    for(let i in data){
-                        param+='&'+i +"="+data[i];
-                    }
-                    //  param=param.replace('&',"?");
-                    url+=param;
-                }
-                fetch(url, {
-                    method: 'GET',
-                    credentials: 'include',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-                    }
-                }) .then((response) => response.json())
-                    .then((data) => {
-                        console.log(data)
-                        if(data){
-                            this.setState({
-                                location: data.result.formatted_address
-                            });
-                        }else{
-                            Alert.alert('提示', '网络链接出错');
-                        }
-                    })
-                    .catch((error) => {
-                        Alert.alert('提示', '网络链接出错');
-                        console.error(error);
-                    });
-            },
-            (error) => alert('获取当前定位超时，请重试'),
-            {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-        );
-
     }
 
     componentWillUnmount() {
@@ -179,6 +134,52 @@ export default class PlanPublish extends Component {
     };
 
     render() {
+		if(this.state.locationType){
+			navigator.geolocation.getCurrentPosition(
+				(position) => {
+					let initialPosition = position.coords.latitude+','+position.coords.longitude;
+					console.log(position);
+					let url = 'https://api.map.baidu.com/geocoder/v2/?output=json';
+					let data = {
+						ak: 'IHUAG9ZfCOzg290s0Sb5sStev5iqhfAs',
+						location: initialPosition,
+						mcode:'7B:E1:EE:4B:B5:CE:B0:10:9C:2D:13:5F:63:6A:E2:F7:3C:F4:EE:46;com.travel_guide'
+					};
+					if(data){
+						let param="";
+						for(let i in data){
+							param+='&'+i +"="+data[i];
+						}
+						//  param=param.replace('&',"?");
+						url+=param;
+					}
+					fetch(url, {
+						method: 'GET',
+						credentials: 'include',
+						headers: {
+							'Accept': 'application/json',
+							'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+						}
+					}) .then((response) => response.json())
+						.then((data) => {
+							console.log(data)
+							if(data){
+								this.setState({
+									location: data.result.formatted_address
+								});
+							}else{
+								Alert.alert('提示', '网络链接出错');
+							}
+						})
+						.catch((error) => {
+							Alert.alert('提示', '网络链接出错');
+							console.error(error);
+						});
+				},
+				(error) => alert('获取当前定位超时，请重试'),
+				{enableHighAccuracy: false, timeout: 30000, maximumAge: 1000}
+			);
+		}
         return (
             <View style={styles.container}>
                 <Header
@@ -187,7 +188,7 @@ export default class PlanPublish extends Component {
                         this.props.navigation.goBack();
                     }}
                     backTitle={'返回'}
-                    title={'发布计划'}
+                    title={'路线查询'}
                     headRightFlag={true}
                     isText={true}
                     rightText={'提交'}
@@ -202,6 +203,9 @@ export default class PlanPublish extends Component {
 							alert('没有选取景点！');
 						}
 						else {
+							this.setState({
+								selectedViews:[]
+							})
 							this.props.navigation.navigate('PlanDetail',{
 								start:this.state.location,
 								startTime:this.state.startTime,//取不到值this.state.startTime
@@ -217,7 +221,8 @@ export default class PlanPublish extends Component {
                             DatePickerAndroid.open({
                                 // 要设置默认值为今天的话，使用`new Date()`即可。
                                 // 下面显示的会是2020年5月25日。月份是从0开始算的。
-                                date: new Date()
+                                date: new Date(),
+								minDate: new Date(),
                             }).then(({action, year, month, day})=>{
                                 if (action !== DatePickerAndroid.dismissedAction) {
                                     console.log(year,month,day);
