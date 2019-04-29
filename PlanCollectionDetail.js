@@ -25,7 +25,7 @@ export  default  class PlanCollectionDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            planId: '',//props.navigation.state.params.planId,
+            planId: props.navigation.state.params.planId,
             planInfo: {},
             routeList: [],//评论列表
             inviteContent: '',//评论全部内容
@@ -49,10 +49,12 @@ export  default  class PlanCollectionDetail extends Component {
             id:this.state.planId
         };
         FetchUtil.httpGet(url,param,(data)=>{
-            this.setState({
-                routeList:data.list,
-                planInfo:data
-            });
+        	if(data){
+				this.setState({
+					routeList:data.list,
+					planInfo:data
+				});
+			}
         })
     };
 

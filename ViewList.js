@@ -89,9 +89,11 @@ _getViews(){
         this._searchInputBox.blur();
         if (this.state.searchText.replace(/(^\s*)|(\s*$)/g, "") == "") {
             alert('搜索内容不能为空！');
-        }
-        //调接口
-		this._getViews();
+        }else{
+			//调接口
+			this._getViews();
+		}
+
     };
 
     _renderItem = ({item,index}) => {

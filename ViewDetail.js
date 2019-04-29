@@ -18,7 +18,7 @@ export default class ViewDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            viewSpotId:this.props.navigation.state.params.id,
+            viewSpotId:props.navigation.state.params.id,
             detailInfo: {
 
             },
@@ -29,6 +29,8 @@ export default class ViewDetail extends Component {
     componentDidMount() {
         // alert(this.props.navigation.state.params.id);
         this._getViewById();
+		Global.guideIds.push(this.state.viewSpotId);
+		console.log(Global);
     }
     _getViewById(){
         let url=Config.VIEWSDETAIL+"?token=lhy";
@@ -50,7 +52,9 @@ export default class ViewDetail extends Component {
         FetchUtil.httpGet(url,param,(data)=>{
             if(data){
                 alert("收藏景点成功");
-            }
+            }else{
+				alert("已经收藏过该景点");
+			}
 
         })
     }

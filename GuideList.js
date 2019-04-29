@@ -10,7 +10,8 @@ import {
 	BackHandler,
 	TextInput,
 	SectionList,
-	Keyboard, FlatList
+	Keyboard, FlatList,
+	DeviceEventEmitter
 } from "react-native";
 import Icons from "react-native-vector-icons/Ionicons";
 import Header from "./common/Header";
@@ -25,13 +26,14 @@ export default class GuideList extends Component {
 			views: [],
 			searchText: "",
 			isSearch: false,
-			orderType:1, //1时间排序  2：点赞数培训
+			orderType:1, //2时间排序  1：点赞数培训
 			searchContent: "", //上次搜索内容记录
 		};
 	}
 
 	componentDidMount() {
-		this._getComments();
+		DeviceEventEmitter.addListener('refreshGuideList',()=>{this._getComments('')});
+		this._getComments(this.state.viewSpotId);
 
 		/* this.setState({
 			 views:[
@@ -47,10 +49,10 @@ export default class GuideList extends Component {
 		 })*/
 	}
 	//查询攻略
-	_getComments(){
+	_getComments(viewSpotId){
 		let url=Config.GET_COMMENTS+"?token=lhy&orderType="+this.state.orderType;//+Global.user.id;
-		if(this.state.viewSpotId !=null){
-			url+="&viewSpotId="+this.state.viewSpotId;
+		if(viewSpotId !=null){
+			url+="&viewSpotId="+viewSpotId;
 		}
 		FetchUtil.httpGet(url,null,(data)=>{
 			this.setState({
@@ -74,8 +76,10 @@ export default class GuideList extends Component {
 		this._searchInputBox.blur();
 		if (this.state.searchText.replace(/(^\s*)|(\s*$)/g, "") == "") {
 			alert('搜索内容不能为空！');
+		}else{
+			//调接口
+			this._getComments();
 		}
-		//调接口
 	};
 
 	_renderItem = ({item,index}) => {
@@ -139,7 +143,7 @@ export default class GuideList extends Component {
 
 						}}
 					>
-						<Text style={{fontSize:20,color:'#d4d4d4'}}>{'点击此处快速发布游记'}</Text>
+						<Text style={{fontSize:20,color:'#d4d4d4'}}>{'点击此处快速发布攻略'}</Text>
 					</TouchableOpacity>
 				</View>
 				<View style={{
@@ -152,7 +156,7 @@ export default class GuideList extends Component {
 				}}>
 					<TouchableOpacity onPress={() => {
 						this.setState({
-							orderType:2
+							orderType:1
 						},()=>{
 							this._getComments();
 						});
@@ -164,7 +168,7 @@ export default class GuideList extends Component {
 					</TouchableOpacity>
 					<TouchableOpacity onPress={() => {
 						this.setState({
-							orderType:1
+							orderType:2
 						},()=>{
 							this._getComments();
 						});

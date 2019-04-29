@@ -30,19 +30,13 @@ export default class GuideDetail extends Component {
 	}
 
 	componentDidMount() {
-		this._getGuideDetail(()=>{
+		if(Global.user &&Global.user.id){
 			this._getAppreciateNum();
 			this._commentList();
 			let temp={};
 			let guideId=this.state.guideInfo.id;
 			Global.guideIds.push(guideId);
-		});
-	}
-	//获取攻略的详情
-	_getGuideDetail(callback){
-
-		if(Global.user &&Global.user.id){
-			callback();
+			console.log(Global);
 		}else{
 			this.props.navigation.navigate('Login');
 			alert('请先登录');
@@ -136,6 +130,8 @@ export default class GuideDetail extends Component {
 			FetchUtil.httpGet(url,param,(data)=>{
 				if(data){
 					alert("收藏攻略成功");
+				}else{
+					alert("已经收藏过该景点");
 				}
 
 			})
@@ -145,7 +141,7 @@ export default class GuideDetail extends Component {
 	}
 
 	render() {
-		const guideInfo=this.state.guideInfo;
+		const { guideInfo } = this.state;
 		return (
 			<View style={styles.container}>
 				<Header
@@ -160,17 +156,13 @@ export default class GuideDetail extends Component {
 					<Text style={{fontSize:18,marginBottom: 10}}>{`发布时间：${guideInfo.createTime}  发布人：${guideInfo.user.userName}`}</Text>
 					<Text style={{color:'#b5b5b5',marginBottom: 10}}>{guideInfo.context}</Text>
 
-					<View style={{flex: 1}}>
+					<View style={{flex:1,justifyContent:'center', alignItems:'center'}}>
 						{/* 详情图片区 */}
-						<Text>{'详情图片区'}</Text>
+						{/*<Text>{'详情图片区'}</Text>*/}
 						<Image
-							source={{
-								uri:
-									Config.PREVIEWIMAGE +"?id=" +guideInfo.imageId
-
-							}
-							}
-							style={styles.headFriend}
+							source={{uri:Config.PREVIEWIMAGE +"?id=" +guideInfo.imageId}}
+							style={{width:100,height:200}}
+							resizeMode={'contain'}
 						/>
 					</View>
 					<View style={{flexDirection: 'row',height: 30}}>
@@ -213,33 +205,36 @@ export default class GuideDetail extends Component {
 							renderItem={this._renderComment}
 						/>
 					</View>
-					<View style={styles.commentBox}>
-						<TextInput
-							ref={'commentInput'}
-							style={styles.commentInput}
-							multiline={true}
-							value={this.state.content}
-							onChangeText={(text) =>{
-                                this.setState({
-									content: text
-                                });
-							} }
-							onBlur={() => {
-								this.setState({
-									commentPid: null,
-									// commentContent: '',
-									placeholder: '请输入评论内容'
-								})
-							}}
-							placeholder={this.state.placeholder}
-							underlineColorAndroid={'transparent'}/>
-						<TouchableOpacity style={styles.commentReplyBtn} onPress={() => {
-							//提交评论
-							this._comment();
-						}}>
-							<Text style={{fontSize: 14, color: '#fff'}}>评论</Text>
-						</TouchableOpacity>
-					</View>
+					{this.state.showComment ? (
+						<View style={styles.commentBox}>
+							<TextInput
+								ref={'commentInput'}
+								style={styles.commentInput}
+								multiline={true}
+								value={this.state.content}
+								onChangeText={(text) =>{
+									this.setState({
+										content: text
+									});
+								} }
+								onBlur={() => {
+									this.setState({
+										commentPid: null,
+										// commentContent: '',
+										placeholder: '请输入评论内容'
+									})
+								}}
+								placeholder={this.state.placeholder}
+								underlineColorAndroid={'transparent'}/>
+							<TouchableOpacity style={styles.commentReplyBtn} onPress={() => {
+								//提交评论
+								this._comment();
+							}}>
+								<Text style={{fontSize: 14, color: '#fff'}}>评论</Text>
+							</TouchableOpacity>
+						</View>
+					) : null}
+
 					<TouchableOpacity onPress={() => {
 						this._saveViewCollection();
 					}} style={[styles.btn]}>

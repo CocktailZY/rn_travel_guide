@@ -46,10 +46,12 @@ export default class ViewList extends Component {
     }
     //加载我浏览过的类型
     listCommentsByids(){
+    	console.log(Global);
         if(Global.guideIds && Global.guideIds.length>0){
             let ids=Global.guideIds.join(",");
             let url=Config.listCommentsByids+"?token=lhy&ids="+ids;//需要加参
             FetchUtil.httpGet(url,null,(data)=>{
+            	console.log(data);
                 this.setState({
                     views:data
                 });
@@ -72,13 +74,18 @@ export default class ViewList extends Component {
         this._searchInputBox.blur();
         if (this.state.searchText.replace(/(^\s*)|(\s*$)/g, "") == "") {
             alert('搜索内容不能为空！');
-        }
-        //调接口
+        }else{
+			//调接口
+			this._getViews();
+		}
+
     };
 
     _renderItem = ({item,index}) => {
+
         return (
             <TouchableOpacity
+
                 onPress={() => {
                     this.props.navigation.navigate("ViewDetail", {
                         id:item.id
@@ -90,16 +97,17 @@ export default class ViewList extends Component {
             >
                 <Image
                     source={
-                        item.list.lenght>0?
+                        // item.list.lenght>0?
                             {
                                 uri:
-                                    Config.PREVIEWIMAGE +"?id=" +item.list[0].imageId
+                                    Config.PREVIEWIMAGE +"?id=" +item.imageId
 
                             }
-                            :
-                            require('./images/food.png')
+                            // :
+                            // require('./images/food.png')
                     }
-                    style={styles.headFriend}
+                    style={{width:100,height:200}}
+                    resizeMode={'contain'}
                 />
                 <View style={styles.textFriend}>
                     <Text style={{color: "#333",fontSize:18,marginBottom: 3}} numberOfLines={1}>{item.name}</Text>

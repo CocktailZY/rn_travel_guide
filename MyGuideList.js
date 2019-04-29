@@ -62,8 +62,10 @@ export default class MyGuideList extends Component {
         this._searchInputBox.blur();
         if (this.state.searchText.replace(/(^\s*)|(\s*$)/g, "") == "") {
             alert('搜索内容不能为空！');
-        }
-        //调接口
+        }else{
+			//调接口
+			this._getComments();
+		}
     };
 
     _renderItem = ({item,index}) => {

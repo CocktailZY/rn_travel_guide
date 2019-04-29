@@ -223,26 +223,9 @@ export default class PlanPublish extends Component {
                                     console.log(year,month,day);
                                     // 这里开始可以处理用户选好的年月日三个参数：year, month (0-11), day
                                     let tmpBirth = year + '-' + (month+1) + '-' + day;
-                                    // this.setState({
-                                    //     startTime: tmpBirth
-                                    // },()=>{
-                                        try {
-                                            TimePickerAndroid.open({
-                                                hour: new Date().getHours(),
-                                                minute: new Date().getMinutes(),
-                                                is24Hour: true, // Will display '2 PM'
-                                            }).then(({action, hour, minute})=>{
-                                                if (action !== TimePickerAndroid.dismissedAction) {
-                                                    let tempBody = (hour < 10 ? ('0'+hour) : hour)+':'+(minute < 10 ? ('0'+minute) : minute);
-                                                    this.setState({
-                                                        startTime: tmpBirth + ' ' +tempBody
-                                                    })
-                                                }
-                                            })
-                                        } catch ({code, message}) {
-                                            console.warn('Cannot open time  picker', message);
-                                        }
-                                    // })
+                                    this.setState({
+                                        startTime: tmpBirth
+                                    })
                                 }
                             });
 
