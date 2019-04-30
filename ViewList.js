@@ -110,7 +110,7 @@ _getViews(){
             >
                 <Image
                     source={
-                        item.list.lenght>0?
+                        item.list.length>0?
                             {
                                 uri:
                                     Config.PREVIEWIMAGE +"?id=" +item.list[0].imageId
