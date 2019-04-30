@@ -47,7 +47,7 @@ export default class ViewCollection extends Component {
     }
     //加载类型
     _getViewCollection(){
-        let url=Config.GET_COLLECTIONS+"?token=lhy&userId=1"//+Global.user.id;
+        let url=Config.GET_COLLECTIONS+"?token=lhy&userId="+Global.user.id;
         let param={
             type:this.state.type,
             pageNum:this.state.pageNum,
