@@ -54,10 +54,11 @@ export default class PlanDetail extends Component {
             });
         });
     }
-	_saveViewCollection(planId){
+	_saveViewCollection(planId,id){
 		let url=Config.SAVE_COLLECTION+"?token=lhy&userId="+Global.user.id;//+Global.user.id;
 		let param={
 			businessId:planId,
+			routeId: id,
 			type:2
 		};
 		FetchUtil.httpGet(url,param,(data)=>{
@@ -83,7 +84,6 @@ export default class PlanDetail extends Component {
 				}}>
 				<View style={{
 					flex:1,
-					height:80,
 				}}>
 					<Text style={{color:'#009688',fontSize: 16}}>
 						{`${item.startTime}`}
@@ -100,7 +100,7 @@ export default class PlanDetail extends Component {
 					</Text>
 				</View>
 				<TouchableOpacity onPress={() => {
-					this._saveViewCollection(item.planId);
+					this._saveViewCollection(item.planId,item.id);
 				}} style={[styles.btn]}>
 					<Text style={{
 						fontSize: 15,

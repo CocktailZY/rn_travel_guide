@@ -60,11 +60,12 @@ export default class PlanCollection extends Component {
         });
     };
     _renderItem = ({item,index}) => {
+    	console.log(item);
         return (
             <TouchableHighlight
                 activeOpacity={1}
                 underlayColor='#FFFFFF'
-                style={{backgroundColor: '#FFFFFF'}}
+                style={{backgroundColor: '#FFFFFF',borderBottomWidth: 1,borderBottomColor: '#d4d4d4'}}
                 onPress={() => {
                     this.props.navigation.navigate('PlanCollectionDetail', {
                         planId: item.id//文章详情
@@ -73,14 +74,16 @@ export default class PlanCollection extends Component {
                 <View style={[styles.flex1, {padding: 8}]}>
                     <View style={styles.itemTitleView}>
                         {/*<Image source={require('../../images/icon_talk.png')} style={{width: 30, height: 30}}/>*/}
-                        <Text style={styles.itemTitleText} numberOfLines={1}>{item.name}</Text>
+                        <Text style={styles.itemTitleText} numberOfLines={1}>{item.describle}</Text>
                     </View>
-                    <View style={styles.bottomSeparator}></View>
-                    <View style={{flexDirection: 'row'}}>
-                        <View style={{width: 80}}>
-                            <Text style={styles.itemBottomText} numberOfLines={1}>{item.createTimer}</Text>
-                        </View>
-                    </View>
+					<View style={{flex:1, flexDirection:'row',marginTop:10}}>
+						<View style={{flex:1}}>
+							<Text style={[styles.itemBottomText,{marginRight:30}]}>{item.name}</Text>
+						</View>
+						<View style={{flex:1,alignItems: 'flex-end'}}>
+							<Text style={styles.itemBottomText}>{item.createTime}</Text>
+						</View>
+					</View>
                 </View>
             </TouchableHighlight>
         )
