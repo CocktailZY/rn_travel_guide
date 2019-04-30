@@ -22,7 +22,7 @@ export default class GuidePublishDetail extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-            viewSpotId:this.props.navigation.state.params.id,//选择景点id
+            viewSpotId:props.navigation.state.params.id,//选择景点id
 			title: '',//攻略标题
 			jdxc: 0.2,
 			tnxh: 3,

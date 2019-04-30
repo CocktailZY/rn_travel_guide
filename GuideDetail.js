@@ -19,7 +19,7 @@ export default class GuideDetail extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			guideInfo:this.props.navigation.state.params.guideInfo,
+			guideInfo:props.navigation.state.params.guideInfo,
 			showComment: false,//是否显示评论框
 			commentPid: '', //评论父id
 			appreciateNum:0,

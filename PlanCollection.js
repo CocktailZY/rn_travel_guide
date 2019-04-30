@@ -25,7 +25,7 @@ export default class PlanCollection extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            type: this.props.navigation.state.params.type,
+            type: props.navigation.state.params.type,
             views: [],
             searchText: "",
             isSearch: false,
@@ -68,7 +68,7 @@ export default class PlanCollection extends Component {
                 style={{backgroundColor: '#FFFFFF',borderBottomWidth: 1,borderBottomColor: '#d4d4d4'}}
                 onPress={() => {
                     this.props.navigation.navigate('PlanCollectionDetail', {
-                        planId: item.id//文章详情
+                        planId: item.routes[0].id//路线id
                     });
                 }}>
                 <View style={[styles.flex1, {padding: 8}]}>

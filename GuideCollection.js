@@ -58,10 +58,11 @@ export default class PlanCollection extends Component {
 			pageSize: Global.pageSize
 		};
 		FetchUtil.httpGet(url, param, (data) => {
-			this.setState({
-				views: data.length > 0 ? data : []
-			});
-
+			if(data){
+                this.setState({
+                    views: data.length > 0 ? data : []
+                });
+			}
 		});
 	};
 

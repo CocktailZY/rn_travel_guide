@@ -126,15 +126,15 @@ _getTypes(){
                                 }} loop>
                             <View style={styles.slide}>
                                 <Image resizeMode='stretch' style={styles.image}
-                                       source={require('./images/banner1.jpg')}/>
+                                       source={require('./images/img_1649.jpg')}/>
                             </View>
                             <View style={styles.slide}>
                                 <Image resizeMode='stretch' style={styles.image}
-                                       source={require('./images/banner3.jpg')}/>
+                                       source={require('./images/img_1651.jpg')}/>
                             </View>
                             <View style={styles.slide}>
                                 <Image resizeMode='stretch' style={styles.image}
-                                       source={require('./images/banner2.jpg')}/>
+                                       source={require('./images/img_1654.jpg')}/>
                             </View>
                         </Swiper>
                     </View>

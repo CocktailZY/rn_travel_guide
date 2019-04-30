@@ -24,7 +24,7 @@ export default class ViewCollection extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            type: this.props.navigation.state.params.type,
+            type: props.navigation.state.params.type,
             views: [],
             searchText: "",
             isSearch: false,
@@ -118,6 +118,9 @@ export default class ViewCollection extends Component {
                         renderItem={this._renderItem}
                         refreshing={false}
                         ItemSeparatorComponent={() => <View style={{height:10}}/>}
+                        ListEmptyComponent={() => <View style={{height: 100, justifyContent: 'center', alignItems: 'center'}}>
+                            <Text style={{fontSize: 16, color: '#999'}}>暂无数据</Text>
+                        </View>}
                         showsVerticalScrollIndicator={false}
                         showsHorizontalScrollIndicator={false}
                     />
