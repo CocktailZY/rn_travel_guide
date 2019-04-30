@@ -23,6 +23,8 @@ export default class ViewDetail extends Component {
 
             },
             showMap: false,//景区内部构造图是否显示
+            mapId:''//景区地图照片
+
         };
     }
 
@@ -39,7 +41,8 @@ export default class ViewDetail extends Component {
         };
         FetchUtil.httpGet(url,param,(data)=>{
             this.setState({
-                detailInfo:data
+                detailInfo:data,
+                mapId:data.mapId
             });
         });
     };
@@ -139,7 +142,10 @@ export default class ViewDetail extends Component {
                             paddingLeft: 20,
                             paddingRight: 20
                         }}>
-                            <Image source={require('./images/default_img.png')} resizeMode={'contain'}/>
+                            <Image source={
+                               /* {url: Config.PREVIEWIMAGE +"?id=" +this.state.mapId}*/
+                                require('./images/default_img.png')
+                            } resizeMode={'contain'}/>
                         </View>
                     </View>
                 </Modal>

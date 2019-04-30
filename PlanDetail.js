@@ -46,7 +46,8 @@ export default class PlanDetail extends Component {
                 console.log("++++++++++++++++++++++++++++++++++++");
                 console.log(data);
                 if(data.length == 0){
-                	alert('没有查到相关出行路线')
+                    this.props.navigation.goBack();
+                	alert('没有查到相关出行路线，请重新选择')
 				}else{
 					this.setState({plans:data})
 				}
