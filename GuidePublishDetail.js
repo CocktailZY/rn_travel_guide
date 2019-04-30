@@ -38,8 +38,8 @@ export default class GuidePublishDetail extends Component {
 	}
 
 	componentDidMount() {
+		console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=');
         this.refreshEvent = DeviceEventEmitter.addListener('mapView', (params) => {
-            console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=');
         	console.log(params);
             this.setState({
                 address:params.address,//没有值
@@ -53,7 +53,7 @@ export default class GuidePublishDetail extends Component {
 	componentWillUnmount() {
 
 	}
-    //发布游记
+    //发布攻略
     _svaeGuide(){
         let url=Config.SAVE_COMMENT+"?token=lhy&userId="+Global.user.id;
     	if(this.state.title==''){ alert('请先输入标题');}
@@ -128,18 +128,16 @@ export default class GuidePublishDetail extends Component {
 					}).then((response) => response.json()).then((responseData) => {
 						console.log(responseData);
 						if(responseData.code==200){
-							let tmpImages = [...this.state.uploadImgs];
-							let tmpId = responseData.data.id;
-                            tmpImages.push({imageId:tmpId,url:Config.PREVIEWIMAGE +"?id=" + tmpId})
+							let tmpImage = [...this.state.uploadImgs];
+							tmpImage.push({imageId:responseData.data.id});
 							this.setState({
-								imageId:tmpId,
-                                uploadImgs: tmpImages
+								imageId:responseData.data.id,
+								uploadImgs:tmpImage
 							},()=>{
                                 alert('上传成功');
 							});
                             console.log("++++++++++++++++++++++++++");
                             console.log(this.state.imageId);
-                            console.log(Config.PREVIEWIMAGE +"?id=" + this.state.imageId);
 						}else{
 							alert('上传失败');
 						}
@@ -156,14 +154,14 @@ export default class GuidePublishDetail extends Component {
 	}
 
 	_renderImg = ({item, index}) => {
-		console.log(item);
 		return (
 			<View style={styles.upBtn}>
 				<Image
                     source={
                         item.imageId?
                             {
-                                uri:item.url
+                                uri:
+                                    Config.PREVIEWIMAGE +"?id=" + item.imageId
                             }
                             :
                             require('./images/food.png')
@@ -171,9 +169,6 @@ export default class GuidePublishDetail extends Component {
 					resizeMode={'contain'}
 					style={{width: 80, height: 80}}
 				/>
-                {/*<text>item.context</text>
-                <text>item.createTime</text>
-                <text>item.user.userName</text>*/}
 			</View>
 		)
 	}
@@ -356,7 +351,7 @@ export default class GuidePublishDetail extends Component {
 						<Text>{'请在景区地图上标注您的驻留位置'}</Text>
 						{/*地图区域*/}
 						<Text style={{marginTop:5}}>
-							{this.state.address}
+							{this.state.lng ? this.state.address : ''}
 						</Text>
 						<TouchableOpacity
 							style={[styles.btn,{marginTop:5}]}

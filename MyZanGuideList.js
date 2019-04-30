@@ -76,8 +76,10 @@ export default class GuideList extends Component {
         this._searchInputBox.blur();
         if (this.state.searchText.replace(/(^\s*)|(\s*$)/g, "") == "") {
             alert('搜索内容不能为空！');
-        }
-        //调接口
+        }else{
+			//调接口
+			this._getComments();
+		}
     };
 
     _renderItem = ({item,index}) => {
@@ -135,7 +137,7 @@ export default class GuideList extends Component {
 
                         }}
                     >
-                        <Text style={{fontSize:20,color:'#d4d4d4'}}>{'点击此处快速发布游记'}</Text>
+                        <Text style={{fontSize:20,color:'#d4d4d4'}}>{'点击此处快速发布攻略'}</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={{

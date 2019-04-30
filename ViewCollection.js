@@ -34,11 +34,12 @@ export default class ViewCollection extends Component {
     }
 
     componentDidMount() {
-        // if(Global.user && Global.user.id){
+        if(Global.user && Global.user.id){
             this._getViewCollection();
-        // }else{
-        //     this.props.navigation.navigate('Login');
-        // }
+        }else{
+            this.props.navigation.navigate('Login');
+            alert("请先登录")
+        }
 
     }
     componentWillUnmount() {
@@ -55,7 +56,7 @@ export default class ViewCollection extends Component {
         FetchUtil.httpGet(url,param,(data)=>{
             console.log(data);
             this.setState({
-                views:data
+                views:data?data:[]
             });
         })
     }

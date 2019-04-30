@@ -1,7 +1,6 @@
-const BaseUrl="http://192.168.1.3:8080/lyms/";
-// const BaseUrl="http://192.168.0.40:8080/lyms/";
-// const BaseUrl="http://192.168.0.105:8080/lyms/";
-// const BaseUrl="http://121.196.201.35:8080/lyms/";
+// const BaseUrl="http://192.168.81.13:8080/lyms/";
+const BaseUrl="http://192.168.0.105:8080/lyms/";
+//const BaseUrl="http://121.196.201.35:8080/lyms/";
 export default Config={
     LOGIN:BaseUrl+"login/login",//登陆
     REGISTER:BaseUrl+"user/saveUser",//登陆注册接口
@@ -11,12 +10,14 @@ export default Config={
     PREVIEWIMAGE:BaseUrl+"attachment/previewImage",//预览图片
     VIEWSDETAIL:BaseUrl+"viewSport/getViewSpotById",//预览图片
     GET_COLLECTIONS:BaseUrl+"collection/pageCollections",//查询我的景点的收藏
-    PLAN_DETAIL:BaseUrl+"plan/getPlanById",//查询路线的详情
+    PLAN_DETAIL:BaseUrl+"plan/getPlanById",//查询计划的详情
+    ROUTE_DETAIL:BaseUrl+"route/getRouteById",//查询路线的详情
     SAVE_COLLECTION:BaseUrl+"collection/saveCollection",//收藏
     GET_COMMENTS:BaseUrl+"comment/listComments",//查邮寄
     listCommentsByDiscuss:BaseUrl+"comment/listCommentsByDiscuss",//查我评论过的
     listCommentsByAppreciate:BaseUrl+"comment/listCommentsByAppreciate",//查点过站的
     listCommentsByids:BaseUrl+"comment/listCommentsByids",//查我浏览过的
+    listViewByids:BaseUrl+"viewSport/getViewSpotByIds",//查我浏览过的景点
     SAVE_COMMENT:BaseUrl+"comment/saveComment",//保存邮寄
     UPLOD_IMAGE:BaseUrl+"attachment/uploadFile",//上传图片
     GET_ROUTES:BaseUrl+"route/getRoutesByPlanIds",//获取合适的线路

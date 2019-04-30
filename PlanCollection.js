@@ -10,7 +10,8 @@ import {
     BackHandler,
     TextInput,
     SectionList,
-    Keyboard, FlatList, Dimensions
+    Keyboard, FlatList, Dimensions,
+	TouchableHighlight
 } from "react-native";
 import Header from "./common/Header";
 import FetchUtil from './util/FetchUtil';
@@ -34,7 +35,12 @@ export default class PlanCollection extends Component {
     }
 
     componentDidMount() {
-        this._getViewCollection();
+        if(Global.user && Global.user.id){
+            this._getViewCollection();
+        }else{
+            this.props.navigation.navigate('Login');
+            alert("请先登录")
+        }
     }
     componentWillUnmount() {
 
@@ -49,16 +55,17 @@ export default class PlanCollection extends Component {
         };
         FetchUtil.httpGet(url,param,(data)=>{
             this.setState({
-                views:data
+                views:data?data:[]
             });
         });
     };
     _renderItem = ({item,index}) => {
+    	console.log(item);
         return (
             <TouchableHighlight
                 activeOpacity={1}
                 underlayColor='#FFFFFF'
-                style={{backgroundColor: '#FFFFFF'}}
+                style={{backgroundColor: '#FFFFFF',borderBottomWidth: 1,borderBottomColor: '#d4d4d4'}}
                 onPress={() => {
                     this.props.navigation.navigate('PlanCollectionDetail', {
                         planId: item.id//文章详情
@@ -67,14 +74,16 @@ export default class PlanCollection extends Component {
                 <View style={[styles.flex1, {padding: 8}]}>
                     <View style={styles.itemTitleView}>
                         {/*<Image source={require('../../images/icon_talk.png')} style={{width: 30, height: 30}}/>*/}
-                        <Text style={styles.itemTitleText} numberOfLines={1}>{item.name}</Text>
+                        <Text style={styles.itemTitleText} numberOfLines={1}>{item.describle}</Text>
                     </View>
-                    <View style={styles.bottomSeparator}></View>
-                    <View style={{flexDirection: 'row'}}>
-                        <View style={{width: 80}}>
-                            <Text style={styles.itemBottomText} numberOfLines={1}>{item.createTimer}</Text>
-                        </View>
-                    </View>
+					<View style={{flex:1, flexDirection:'row',marginTop:10}}>
+						<View style={{flex:1}}>
+							<Text style={[styles.itemBottomText,{marginRight:30}]}>{item.name}</Text>
+						</View>
+						<View style={{flex:1,alignItems: 'flex-end'}}>
+							<Text style={styles.itemBottomText}>{item.createTime}</Text>
+						</View>
+					</View>
                 </View>
             </TouchableHighlight>
         )
@@ -101,6 +110,9 @@ export default class PlanCollection extends Component {
                         renderItem={this._renderItem}
                         refreshing={false}
                         ItemSeparatorComponent={() => <View style={{height:10}}/>}
+						ListEmptyComponent={() => <View style={{height: 100, justifyContent: 'center', alignItems: 'center'}}>
+							<Text style={{fontSize: 16, color: '#999'}}>暂无数据</Text>
+						</View>}
                         showsVerticalScrollIndicator={false}
                         showsHorizontalScrollIndicator={false}
                     />

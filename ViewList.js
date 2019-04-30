@@ -25,7 +25,7 @@ export default class ViewList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            typeId: this.props.navigation.state.params.typeId,
+            typeId: props.navigation.state.params ? props.navigation.state.params.typeId : '',
             views: [],
             searchText: "",
             isSearch: false,
@@ -51,12 +51,21 @@ _getViews(){
              pageSize:Global.pageSize
          };
      }else{
-         param={
-             typeId:this.state.typeId,
-             name:this.state.searchText,
-             pageNum:this.state.pageNum,
-             pageSize:Global.pageSize
-         };
+		 if ('' == this.state.typeId){
+			 param={
+				 name:this.state.searchText,
+				 pageNum:this.state.pageNum,
+				 pageSize:Global.pageSize
+			 };
+		 }else{
+			 param={
+				 typeId:this.state.typeId,
+				 name:this.state.searchText,
+				 pageNum:this.state.pageNum,
+				 pageSize:Global.pageSize
+			 };
+		 }
+
      }
     FetchUtil.httpGet(url,param,(data)=>{
         this.setState({
@@ -80,8 +89,11 @@ _getViews(){
         this._searchInputBox.blur();
         if (this.state.searchText.replace(/(^\s*)|(\s*$)/g, "") == "") {
             alert('搜索内容不能为空！');
-        }
-        //调接口
+        }else{
+			//调接口
+			this._getViews();
+		}
+
     };
 
     _renderItem = ({item,index}) => {

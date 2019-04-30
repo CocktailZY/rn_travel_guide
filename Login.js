@@ -19,7 +19,10 @@ export default class Login extends Component{
     }
 
     componentDidMount() {
-        console.log(this.state.confirm)
+        console.log(this.state.confirm);
+		this.setState({
+			confirmText: this.state.confirm
+		})
     }
 
     setNameAndPwd = (key,value) => {

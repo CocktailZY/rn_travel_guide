@@ -33,7 +33,7 @@ export default class PlanList extends Component {
                         this.props.navigation.goBack();
                     }}
                     backTitle={'返回'}
-                    title={'出行计划'}
+                    title={'路线计划'}
                 />
 
             </View>

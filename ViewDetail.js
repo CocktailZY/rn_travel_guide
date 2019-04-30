@@ -18,7 +18,7 @@ export default class ViewDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            viewSpotId:this.props.navigation.state.params.id,
+            viewSpotId:props.navigation.state.params.id,
             detailInfo: {
 
             },
@@ -29,6 +29,8 @@ export default class ViewDetail extends Component {
     componentDidMount() {
         // alert(this.props.navigation.state.params.id);
         this._getViewById();
+		Global.guideIds.push(this.state.viewSpotId);
+		console.log(Global);
     }
     _getViewById(){
         let url=Config.VIEWSDETAIL+"?token=lhy";
@@ -42,7 +44,7 @@ export default class ViewDetail extends Component {
         });
     };
     _saveViewCollection(){
-        let url=Config.SAVE_COLLECTION+"?token=lhy&userId=1"//+Global.user.id;
+        let url=Config.SAVE_COLLECTION+"?token=lhy&userId="+Global.user.id;//+Global.user.id;
         let param={
             businessId:this.state.viewSpotId,
             type:1
@@ -50,7 +52,9 @@ export default class ViewDetail extends Component {
         FetchUtil.httpGet(url,param,(data)=>{
             if(data){
                 alert("收藏景点成功");
-            }
+            }else{
+				alert("已经收藏过该景点");
+			}
 
         })
     }
@@ -104,12 +108,12 @@ export default class ViewDetail extends Component {
                             }}>地图导航</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => {
-                            this.props.navigation.navigate('GuideList',{viewId:1})
+                            this.props.navigation.navigate('GuideList',{viewId:this.state.viewSpotId})
                         }} style={[styles.btn,{marginTop: 22,marginBottom: 10}]}>
                             <Text style={{
                                 fontSize: 15,
                                 color: '#fff'
-                            }}>查看游记</Text>
+                            }}>查看攻略</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>

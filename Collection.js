@@ -59,7 +59,7 @@ export default class Collection extends Component {
                         style={{flex: 1, marginTop: 10}}
                         onPress={() => {
                             this.props.navigation.navigate('GuideCollection',{
-                                type:1
+                                type:3
                             });
                         }}>
                         <View style={[styles.jobBtn, {
