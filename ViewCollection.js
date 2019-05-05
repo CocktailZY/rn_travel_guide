@@ -64,10 +64,9 @@ export default class ViewCollection extends Component {
         return (
             <TouchableOpacity
                 onPress={() => {
-
-                    // this.props.navigation.navigate("ViewDetail", {
-                    //     id:item.id
-                    // });
+                    this.props.navigation.navigate("ViewDetail", {
+                        id:item.id
+                    });
                 }}
                 style={[
                     styles.friendList,

@@ -143,6 +143,7 @@ export default class ViewDetail extends Component {
                             paddingRight: 20
                         }}>
                             <Image source={
+                                this.state.detailInfo.mapId ? {uri: Config.PREVIEWIMAGE +"?id=" +this.state.mapId} :
                                /* {url: Config.PREVIEWIMAGE +"?id=" +this.state.mapId}*/
                                 require('./images/default_img.png')
                             } resizeMode={'contain'}/>

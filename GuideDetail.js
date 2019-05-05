@@ -337,9 +337,9 @@ export default class GuideDetail extends Component {
 							</TouchableOpacity>
 						</View>
 					) : null}
-					<View style={{flex:1,backgroundColor:'tomato'}}>
+					<View style={{height:500}}>
 						<WebView
-							source={{uri: 'file:///android_asset/nearby.html?title='+guideInfo.address+'&point='+guideInfo.lng+','+guideInfo.lat}}//file:///android_asset/nearby.html
+							source={{uri: 'file:///android_asset/nearby.html?title='+encodeURI(guideInfo.address)+'&point='+guideInfo.lng+','+guideInfo.lat}}//file:///android_asset/nearby.html
 							style={{flex:1}}
 							geolocationEnabled={true}
 							javaScriptEnabled={true}
