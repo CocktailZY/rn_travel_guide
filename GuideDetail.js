@@ -6,7 +6,7 @@ import {
 	Image,
 	TouchableOpacity,
 	ScrollView, FlatList,
-	TextInput
+	TextInput, WebView
 } from "react-native";
 import Header from "./common/Header";
 import Icon from "react-native-vector-icons/Feather";
@@ -14,6 +14,7 @@ import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import FetchUtil from "./util/FetchUtil";
 import Config from "./util/Config";
 import Global from "./util/Global";
+import Slider from "react-native-slider";
 
 export default class GuideDetail extends Component {
 	constructor(props) {
@@ -109,7 +110,7 @@ export default class GuideDetail extends Component {
 						<View style={{flex:1}}>
 							<Text style={{marginBottom: 5}} numberOfLines={1}>{`${item.user.userName}发表：`}</Text>
 						</View>
-						<View style={{flex:1,justifyContent:'flex-end'}}>
+						<View style={{flex:1,alignItems:'flex-end'}}>
 							<Text style={{color: '#a4b0be', fontSize: 12}}>{item.createTime}</Text>
 						</View>
 					</View>
@@ -152,8 +153,11 @@ export default class GuideDetail extends Component {
 					backTitle={'返回'}
 					title={'攻略详情'}
 				/>
-				<View style={{flex:1,padding:10}}>
-					<Text style={{fontSize:18,marginBottom: 10}}>{`发布时间：${guideInfo.createTime}  发布人：${guideInfo.user.userName}`}</Text>
+				<ScrollView style={{flex:1,padding:10}} showsVerticalScrollIndicator={false}>
+					<Text style={{fontSize:18,marginBottom: 10}}>{`攻略标题：${guideInfo.title}`}</Text>
+					<View style={{borderTopWidth: 1, borderTopColor: '#d4d4d4', marginTop: 10}}/>
+					<Text style={{fontSize:16,marginBottom: 10}}>{`发布时间：${guideInfo.createTime}`}</Text>
+					<Text style={{fontSize:16,marginBottom: 10}}>{`发布人：${guideInfo.user.userName}`}</Text>
 					<Text style={{color:'#b5b5b5',marginBottom: 10}}>{guideInfo.context}</Text>
 
 					<View style={{flex:1,justifyContent:'center', alignItems:'center'}}>
@@ -196,7 +200,106 @@ export default class GuideDetail extends Component {
 							<Text style={{marginLeft:5}}>{'评论'}</Text>
 						</TouchableOpacity>
 					</View>
-					<View style={{flex:1}}>
+					<View style={{borderTopWidth: 1, borderTopColor: '#d4d4d4', marginTop: 10}}/>
+					<View style={{flex: 1, padding: 10}}>
+						<Text>{'您对景区的评分'}</Text>
+						<View style={{padding: 5}}>
+							<View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+								<Text style={{marginRight: 10}}>{'景点行程'}</Text>
+								<View
+									style={{
+										flexDirection: 'row',
+										flex: 1,
+										justifyContent: 'center',
+										alignItems: 'center'
+									}}>
+									<Text style={{marginRight: 10}}>{'0'}</Text>
+									<Slider
+										style={{flex: 1}}
+										minimumTrackTintColor={'#009688'}
+										thumbTintColor={'#009688'}
+										value={parseFloat(guideInfo.wayScore)}
+										minimumValue={0}
+										step={1}
+										maximumValue={5}
+										disabled={true}
+									/>
+									<Text style={{marginLeft: 10}}>{guideInfo.wayScore}</Text>
+								</View>
+							</View>
+							<View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+								<Text style={{marginRight: 10}}>{'体能消耗'}</Text>
+								<View
+									style={{
+										flexDirection: 'row',
+										flex: 1,
+										justifyContent: 'center',
+										alignItems: 'center'
+									}}>
+									<Text style={{marginRight: 10}}>{'0'}</Text>
+									<Slider
+										style={{flex: 1}}
+										minimumTrackTintColor={'#009688'}
+										thumbTintColor={'#009688'}
+										value={parseFloat(guideInfo.fitnessScore)}
+										minimumValue={0}
+										step={1}
+										maximumValue={5}
+										disabled={true}
+									/>
+									<Text style={{marginLeft: 10}}>{guideInfo.fitnessScore}</Text>
+								</View>
+							</View>
+							<View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+								<Text style={{marginRight: 10}}>{'景色感受'}</Text>
+								<View
+									style={{
+										flexDirection: 'row',
+										flex: 1,
+										justifyContent: 'center',
+										alignItems: 'center'
+									}}>
+									<Text style={{marginRight: 10}}>{'0'}</Text>
+									<Slider
+										style={{flex: 1}}
+										minimumTrackTintColor={'#009688'}
+										thumbTintColor={'#009688'}
+										value={parseFloat(guideInfo.feelScore)}
+										minimumValue={0}
+										step={1}
+										maximumValue={5}
+										disabled={true}
+									/>
+									<Text style={{marginLeft: 10}}>{guideInfo.feelScore}</Text>
+								</View>
+							</View>
+							<View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+								<Text style={{marginRight: 10}}>{'周边美食'}</Text>
+								<View
+									style={{
+										flexDirection: 'row',
+										flex: 1,
+										justifyContent: 'center',
+										alignItems: 'center'
+									}}>
+									<Text style={{marginRight: 10}}>{'0'}</Text>
+									<Slider
+										style={{flex: 1}}
+										minimumTrackTintColor={'#009688'}
+										thumbTintColor={'#009688'}
+										value={parseFloat(guideInfo.foodScore)}
+										minimumValue={0}
+										step={1}
+										maximumValue={5}
+										disabled={true}
+									/>
+									<Text style={{marginLeft: 10}}>{guideInfo.foodScore}</Text>
+								</View>
+							</View>
+						</View>
+					</View>
+					<View style={{borderTopWidth: 1, borderTopColor: '#d4d4d4', marginTop: 10}}/>
+					<View style={{flex:1,paddingTop:10,paddingBottom: 10}}>
 						{/* 评论列表 */}
 						<Text>{'评论列表'}</Text>
 						<FlatList
@@ -234,7 +337,17 @@ export default class GuideDetail extends Component {
 							</TouchableOpacity>
 						</View>
 					) : null}
-
+					<View style={{flex:1,backgroundColor:'tomato'}}>
+						<WebView
+							source={{uri: 'file:///android_asset/nearby.html?title='+guideInfo.address+'&point='+guideInfo.lng+','+guideInfo.lat}}//file:///android_asset/nearby.html
+							style={{flex:1}}
+							geolocationEnabled={true}
+							javaScriptEnabled={true}
+							onMessage={(event) => {
+								console.log(event.nativeEvent.data);
+							}}
+						/>
+					</View>
 					<TouchableOpacity onPress={() => {
 						this._saveViewCollection();
 					}} style={[styles.btn]}>
@@ -243,7 +356,7 @@ export default class GuideDetail extends Component {
 							color: '#fff'
 						}}>加入收藏</Text>
 					</TouchableOpacity>
-				</View>
+				</ScrollView>
 
 			</View>
 		);
@@ -292,5 +405,6 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		paddingLeft: 5,
 		paddingRight: 5,
+		marginBottom: 15
 	}
 });

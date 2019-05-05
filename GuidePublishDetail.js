@@ -24,10 +24,10 @@ export default class GuidePublishDetail extends Component {
 		this.state = {
             viewSpotId:props.navigation.state.params.id,//选择景点id
 			title: '',//攻略标题
-			jdxc: 0.2,
-			tnxh: 3,
-			jsgs: 0.5,
-			zbms: 1,
+			wayScore: 0.2,
+			fitnessScore: 3,
+			feelScore: 0.5,
+			foodScore: 1,
 			uploadImgs: [],//上传的景区图片
             context:"",
             address:"",//没有值
@@ -62,7 +62,8 @@ export default class GuidePublishDetail extends Component {
 			alert('请先上传图片');
 		}else if(this.state.lat==''||this.state.lng==''||this.state.address==''){ alert('请先查看地图位置');}
 		else{
-            let param=this.state;
+            let param={...this.state};
+            console.log(param);
             FetchUtil.httpGet(url,param,(data)=>{
                 //跳转到列表页
 				if(data){
@@ -222,13 +223,13 @@ export default class GuidePublishDetail extends Component {
 										style={{flex: 1}}
 										minimumTrackTintColor={'#009688'}
 										thumbTintColor={'#009688'}
-										value={this.state.jdxc}
+										value={this.state.wayScore}
 										minimumValue={0}
 										step={1}
 										maximumValue={5}
-										onValueChange={value => this.setState({jdxc: value})}
+										onValueChange={value => this.setState({wayScore: value})}
 									/>
-									<Text style={{marginLeft: 10}}>{this.state.jdxc}</Text>
+									<Text style={{marginLeft: 10}}>{this.state.wayScore}</Text>
 								</View>
 							</View>
 							<View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
@@ -245,13 +246,13 @@ export default class GuidePublishDetail extends Component {
 										style={{flex: 1}}
 										minimumTrackTintColor={'#009688'}
 										thumbTintColor={'#009688'}
-										value={this.state.tnxh}
+										value={this.state.fitnessScore}
 										minimumValue={0}
 										step={1}
 										maximumValue={5}
-										onValueChange={value => this.setState({tnxh: value})}
+										onValueChange={value => this.setState({fitnessScore: value})}
 									/>
-									<Text style={{marginLeft: 10}}>{this.state.tnxh}</Text>
+									<Text style={{marginLeft: 10}}>{this.state.fitnessScore}</Text>
 								</View>
 							</View>
 							<View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
@@ -268,13 +269,13 @@ export default class GuidePublishDetail extends Component {
 										style={{flex: 1}}
 										minimumTrackTintColor={'#009688'}
 										thumbTintColor={'#009688'}
-										value={this.state.jsgs}
+										value={this.state.feelScore}
 										minimumValue={0}
 										step={1}
 										maximumValue={5}
-										onValueChange={value => this.setState({jsgs: value})}
+										onValueChange={value => this.setState({feelScore: value})}
 									/>
-									<Text style={{marginLeft: 10}}>{this.state.jsgs}</Text>
+									<Text style={{marginLeft: 10}}>{this.state.feelScore}</Text>
 								</View>
 							</View>
 							<View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
@@ -291,13 +292,13 @@ export default class GuidePublishDetail extends Component {
 										style={{flex: 1}}
 										minimumTrackTintColor={'#009688'}
 										thumbTintColor={'#009688'}
-										value={this.state.zbms}
+										value={this.state.foodScore}
 										minimumValue={0}
 										step={1}
 										maximumValue={5}
-										onValueChange={value => this.setState({zbms: value})}
+										onValueChange={value => this.setState({foodScore: value})}
 									/>
-									<Text style={{marginLeft: 10}}>{this.state.zbms}</Text>
+									<Text style={{marginLeft: 10}}>{this.state.foodScore}</Text>
 								</View>
 							</View>
 						</View>
