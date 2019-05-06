@@ -15,102 +15,108 @@ import FetchUtil from "./util/FetchUtil";
 import Config from "./util/Config";
 import Global from "./util/Global";
 import Slider from "react-native-slider";
+import MapViewForDetail from "./MapViewForDetail";
 
 export default class GuideDetail extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			guideInfo:props.navigation.state.params.guideInfo,
+			guideInfo: props.navigation.state.params.guideInfo,
 			showComment: false,//是否显示评论框
 			commentPid: '', //评论父id
-			appreciateNum:0,
-			imageId:"",//评论图片id
-			content:"",//评论内容
-			commentList:[]//评论列表
+			appreciateNum: 0,
+			imageId: "",//评论图片id
+			content: "",//评论内容
+			commentList: []//评论列表
 		};
 	}
 
 	componentDidMount() {
-		if(Global.user &&Global.user.id){
+		if (Global.user && Global.user.id) {
 			this._getAppreciateNum();
 			this._commentList();
 			// let temp={};
 			// let guideId=this.state.guideInfo.id;
 			// Global.guideIds.push(guideId);
 			// console.log(Global);
-		}else{
+		} else {
 			this.props.navigation.navigate('Login');
 			alert('请先登录');
 		}
 	}
+
 	componentWillUnmount() {
 
 	}
+
 	//点赞
-	_appreciate(){
-		let url=Config.SAVE_APPRECIATE+"?token=lhy&userId="+Global.user.id;
-		let param={
-			businessId:this.state.guideInfo.id
+	_appreciate() {
+		let url = Config.SAVE_APPRECIATE + "?token=lhy&userId=" + Global.user.id;
+		let param = {
+			businessId: this.state.guideInfo.id
 		};
-		FetchUtil.httpGet(url,param,(data)=>{
+		FetchUtil.httpGet(url, param, (data) => {
 			//跳转到列表页
 			this._getAppreciateNum();
 		});
 	}
+
 	//获取点赞的个数
-	_getAppreciateNum(){
-		let url=Config.GET_APPRECIATE_NUM+"?token=lhy&userId="+Global.user.id;
-		let param={
-			businessId:this.state.guideInfo.id
+	_getAppreciateNum() {
+		let url = Config.GET_APPRECIATE_NUM + "?token=lhy&userId=" + Global.user.id;
+		let param = {
+			businessId: this.state.guideInfo.id
 		};
-		FetchUtil.httpGet(url,param,(data)=>{
+		FetchUtil.httpGet(url, param, (data) => {
 			//跳转到列表页
 			this.setState({
-				appreciateNum:data
+				appreciateNum: data
 			})
 		});
 	}
+
 	//评论
-	_comment(){
-		let url=Config.DISCUSS+"?token=lhy&userId="+Global.user.id;
-		let param={
-			pId:this.state.guideInfo.id,
-			imageId:this.state.imageId,
-			context:this.state.content
+	_comment() {
+		let url = Config.DISCUSS + "?token=lhy&userId=" + Global.user.id;
+		let param = {
+			pId: this.state.guideInfo.id,
+			imageId: this.state.imageId,
+			context: this.state.content
 		};
-		FetchUtil.httpGet(url,param,(data)=>{
+		FetchUtil.httpGet(url, param, (data) => {
 			//跳转到列表页
 			this.setState({
-				content:"",
-				showComment:false
+				content: "",
+				showComment: false
 			});
 			this._commentList();
 		});
 	}
+
 	//获取评论列表
-	_commentList(){
+	_commentList() {
 		console.log(this.state)
-		let url=Config.List_DISCUSS+"?token=lhy&userId="+Global.user.id;
-		let param={
-			pId:this.state.guideInfo.id,
+		let url = Config.List_DISCUSS + "?token=lhy&userId=" + Global.user.id;
+		let param = {
+			pId: this.state.guideInfo.id,
 		};
-		FetchUtil.httpGet(url,param,(data)=>{
+		FetchUtil.httpGet(url, param, (data) => {
 			//跳转到列表页
 			this.setState({
-				commentList:data
+				commentList: data
 			});
 		});
 	}
 
-	_renderComment = ({item,index}) => {
+	_renderComment = ({item, index}) => {
 		return (
 			<View key={index} style={{flex: 1, paddingLeft: 10}}>
 				<View style={{justifyContent: 'center'}}>
-					<View style={{flexDirection:'row'}}>
-						<View style={{flex:1}}>
+					<View style={{flexDirection: 'row'}}>
+						<View style={{flex: 1}}>
 							<Text style={{marginBottom: 5}} numberOfLines={1}>{`${item.user.userName}发表：`}</Text>
 						</View>
-						<View style={{flex:1,alignItems:'flex-end'}}>
+						<View style={{flex: 1, alignItems: 'flex-end'}}>
 							<Text style={{color: '#a4b0be', fontSize: 12}}>{item.createTime}</Text>
 						</View>
 					</View>
@@ -121,28 +127,29 @@ export default class GuideDetail extends Component {
 			</View>
 		)
 	};
-	_saveViewCollection(){
-		if(Global.user &&Global.user.id){
-			let url=Config.SAVE_COLLECTION+"?token=lhy&userId="+Global.user.id;//+Global.user.id;
-			let param={
-				businessId:this.state.guideInfo.id,
-				type:3
+
+	_saveViewCollection() {
+		if (Global.user && Global.user.id) {
+			let url = Config.SAVE_COLLECTION + "?token=lhy&userId=" + Global.user.id;//+Global.user.id;
+			let param = {
+				businessId: this.state.guideInfo.id,
+				type: 3
 			};
-			FetchUtil.httpGet(url,param,(data)=>{
-				if(data){
+			FetchUtil.httpGet(url, param, (data) => {
+				if (data) {
 					alert("收藏攻略成功");
-				}else{
+				} else {
 					alert("已经收藏过该景点");
 				}
 
 			})
-		}else{
+		} else {
 			alert('游客模式不能进行该操作！');
 		}
 	}
 
 	render() {
-		const { guideInfo } = this.state;
+		const {guideInfo} = this.state;
 		return (
 			<View style={styles.container}>
 				<Header
@@ -153,26 +160,26 @@ export default class GuideDetail extends Component {
 					backTitle={'返回'}
 					title={'攻略详情'}
 				/>
-				<ScrollView style={{flex:1,padding:10}} showsVerticalScrollIndicator={false}>
-					<Text style={{fontSize:18,marginBottom: 10}}>{`攻略标题：${guideInfo.title}`}</Text>
+				<ScrollView style={{flex: 1, padding: 10}} showsVerticalScrollIndicator={false}>
+					<Text style={{fontSize: 18, marginBottom: 10}}>{`攻略标题：${guideInfo.title}`}</Text>
 					<View style={{borderTopWidth: 1, borderTopColor: '#d4d4d4', marginTop: 10}}/>
-					<Text style={{fontSize:16,marginBottom: 10}}>{`发布时间：${guideInfo.createTime}`}</Text>
-					<Text style={{fontSize:16,marginBottom: 10}}>{`发布人：${guideInfo.user.userName}`}</Text>
-					<Text style={{color:'#b5b5b5',marginBottom: 10}}>{guideInfo.context}</Text>
+					<Text style={{fontSize: 16, marginBottom: 10}}>{`发布时间：${guideInfo.createTime}`}</Text>
+					<Text style={{fontSize: 16, marginBottom: 10}}>{`发布人：${guideInfo.user.userName}`}</Text>
+					<Text style={{color: '#b5b5b5', marginBottom: 10}}>{guideInfo.context}</Text>
 
-					<View style={{flex:1,justifyContent:'center', alignItems:'center'}}>
+					<View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
 						{/* 详情图片区 */}
 						{/*<Text>{'详情图片区'}</Text>*/}
 						<Image
-							source={{uri:Config.PREVIEWIMAGE +"?id=" +guideInfo.imageId}}
-							style={{width:100,height:200}}
+							source={{uri: Config.PREVIEWIMAGE + "?id=" + guideInfo.imageId}}
+							style={{width: 100, height: 200}}
 							resizeMode={'contain'}
 						/>
 					</View>
-					<View style={{flexDirection: 'row',height: 30}}>
+					<View style={{flexDirection: 'row', height: 30}}>
 						<TouchableOpacity
-							style={{flexDirection: 'row', justifyContent: 'center',alignItems:'center'}}
-							onPress={()=>{
+							style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}
+							onPress={() => {
 								// 点赞
 								this._appreciate();
 							}}>
@@ -182,11 +189,17 @@ export default class GuideDetail extends Component {
 								color='#009688'
 								size={22}
 							/>
-							<Text style={{marginLeft:5}}>{this.state.appreciateNum ? this.state.appreciateNum:0}</Text>
+							<Text
+								style={{marginLeft: 5}}>{this.state.appreciateNum ? this.state.appreciateNum : 0}</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
-							style={{flexDirection: 'row',marginLeft: 30, justifyContent: 'center',alignItems:'center'}}
-							onPress={()=>{
+							style={{
+								flexDirection: 'row',
+								marginLeft: 30,
+								justifyContent: 'center',
+								alignItems: 'center'
+							}}
+							onPress={() => {
 								// 评论
 								this.setState({
 									showComment: true
@@ -197,7 +210,7 @@ export default class GuideDetail extends Component {
 								color='#009688'
 								size={22}
 							/>
-							<Text style={{marginLeft:5}}>{'评论'}</Text>
+							<Text style={{marginLeft: 5}}>{'评论'}</Text>
 						</TouchableOpacity>
 					</View>
 					<View style={{borderTopWidth: 1, borderTopColor: '#d4d4d4', marginTop: 10}}/>
@@ -299,7 +312,7 @@ export default class GuideDetail extends Component {
 						</View>
 					</View>
 					<View style={{borderTopWidth: 1, borderTopColor: '#d4d4d4', marginTop: 10}}/>
-					<View style={{flex:1,paddingTop:10,paddingBottom: 10}}>
+					<View style={{flex: 1, paddingTop: 10, paddingBottom: 10}}>
 						{/* 评论列表 */}
 						<Text>{'评论列表'}</Text>
 						<FlatList
@@ -315,11 +328,11 @@ export default class GuideDetail extends Component {
 								style={styles.commentInput}
 								multiline={true}
 								value={this.state.content}
-								onChangeText={(text) =>{
+								onChangeText={(text) => {
 									this.setState({
 										content: text
 									});
-								} }
+								}}
 								onBlur={() => {
 									this.setState({
 										commentPid: null,
@@ -337,17 +350,8 @@ export default class GuideDetail extends Component {
 							</TouchableOpacity>
 						</View>
 					) : null}
-					<View style={{height:500}}>
-						<WebView
-							source={{uri: 'file:///android_asset/nearby.html?title='+encodeURI(guideInfo.address)+'&point='+guideInfo.lng+','+guideInfo.lat}}//file:///android_asset/nearby.html
-							style={{flex:1}}
-							geolocationEnabled={true}
-							javaScriptEnabled={true}
-							onMessage={(event) => {
-								console.log(event.nativeEvent.data);
-							}}
-						/>
-					</View>
+					<View style={{borderTopWidth: 1, borderTopColor: '#d4d4d4', marginTop: 10}}/>
+					<MapViewForDetail address={guideInfo.address} point={`${guideInfo.lng},${guideInfo.lat}`}/>
 					<TouchableOpacity onPress={() => {
 						this._saveViewCollection();
 					}} style={[styles.btn]}>

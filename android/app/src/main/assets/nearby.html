@@ -30,21 +30,35 @@
 <script src="js/jquery.min.js"></script>
 <script src="css/bootstarp/js/bootstrap.min.js"></script>
  <script type="text/javascript">
+	 var markerArr = [
+		 { title: "名称：天安门", point: "116.38,39.9", address: "北京市", detail: '北京市-东城区-长安街'}
+	 ];
      $(function(){
         var mapHeight= window.screen.availHeight;
         $("#map").css("min-height",mapHeight);
+        var flag = true;
+		 document.addEventListener('message', function(msg) {
+			 flag = false;
+			 console.log(msg.data);
+			 alert(msg.data);
+			 markerArr[0].title = '名称：'+ msg.data.split('|')[0];
+			 markerArr[0].point = msg.data.split('|')[1];
+			 map_load();
+		 });
+		 if(flag){
+			 map_load();
+         }
      })
-    var markerArr = [
-        { title: "名称：天安门", point: "116.38,39.9", address: "北京市", detail: '北京市-东城区-长安街'}
-    ];
      var map; //Map实例
 	 var marker;
     function map_init() {
         map = new BMap.Map("map");
-        //第1步：设置地图中心点，大同市
-        var point = new BMap.Point(116.38, 39.9);
+        //第1步：设置地图中心点，北京市
+        var xpoint = markerArr[0].point.split(',')[0];
+        var ypoint = markerArr[0].point.split(',')[1];
+        var point = new BMap.Point(parseFloat(xpoint), parseFloat(ypoint));
         //第2步：初始化地图,设置中心点坐标和地图级别。
-        map.centerAndZoom(point, 13);
+        map.centerAndZoom(point, 17);
         //第3步：启用滚轮放大缩小
         map.enableScrollWheelZoom(true);
         //第4步：向地图中添加缩放控件
@@ -122,12 +136,12 @@
          html.push('<table cellspacing="0" style="table-layout:fixed;width:100%;font:12px arial,simsun,sans-serif"><tbody>');
          html.push('<tr>');
          html.push('<td style="vertical-align:top;line-height:16px;width:38px;white-space:nowrap;word-break:keep-all">地址:</td>');
-         html.push('<td style="vertical-align:top;line-height:16px">' + poi.address + ' </td>');
+         html.push('<td style="vertical-align:top;line-height:16px">' + poi.point + ' </td>');
          html.push('</tr>');
-         html.push('<tr>');
-         html.push('<td style="vertical-align:top;line-height:16px;width:38px;white-space:nowrap;word-break:keep-all">位置:</td>');
-         html.push('<td style="vertical-align:top;line-height:16px">' + poi.detail + ' </td>');
-         html.push('</tr>');
+         // html.push('<tr>');
+         // html.push('<td style="vertical-align:top;line-height:16px;width:38px;white-space:nowrap;word-break:keep-all">位置:</td>');
+         // html.push('<td style="vertical-align:top;line-height:16px">' + poi.detail + ' </td>');
+         // html.push('</tr>');
          html.push('</tbody></table>');
          var infoWindow = new BMap.InfoWindow(html.join(""), { title: title, width: 200 });
 
@@ -164,8 +178,14 @@
 		 });
      }
 
+	 function GetQueryString(name)
+	 {
+		 var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+		 var r = window.location.search.substr(1).match(reg);
+		 if(r!=null)return  unescape(r[2]); return null;
+	 }
 
-    window.onload = map_load;
+    // window.onload = map_load;
 //    function showMenu(obj){
 //        $(obj).previousSbiling
 //	}
