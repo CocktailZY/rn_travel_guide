@@ -10,8 +10,8 @@ export default class Login extends Component{
     constructor(props){
         super(props);
         this.state = {
-            name: 'admin',
-            pwd: '1',
+            name: '',
+            pwd: '',
             confirmText: '',
             confirm: ''+Math.floor(Math.random()*10)+Math.floor(Math.random()*10)+Math.floor(Math.random()*10)+Math.floor(Math.random()*10),
             autoLogin: true
@@ -19,10 +19,10 @@ export default class Login extends Component{
     }
 
     componentDidMount() {
-        console.log(this.state.confirm);
-		this.setState({
-			confirmText: this.state.confirm
-		})
+        //console.log(this.state.confirm);
+		//this.setState({
+		//	confirmText: this.state.confirm
+		//})
     }
 
     setNameAndPwd = (key,value) => {

@@ -73,21 +73,29 @@ export default class ViewDetail extends Component {
                     title={'景点信息'}
                 />
                 <ScrollView>
-                    <View style={{flex:2,padding:8,justifyContent: 'center', alignItems: 'center'}}>
-                        <Text>{
-                            this.state.detailInfo.name
-                        }</Text>
-                    </View>
-                    <View style={{flex:2,padding:8,justifyContent: 'center', alignItems: 'center'}}>
-                        <Text>{
-                            this.state.detailInfo.address
-                        }</Text>
-                    </View>
+					<View style={{flex:2}}>
+						<View style={{flex:1,padding:8,justifyContent: 'center', alignItems: 'center'}}>
+							<Text>{
+								this.state.detailInfo.name
+							}</Text>
+						</View>
+						<View style={{flex:1,padding:8,justifyContent: 'center', alignItems: 'center'}}>
+							<Text>{
+								this.state.detailInfo.address
+							}</Text>
+						</View>
+						<View style={{flex:1,padding:8,justifyContent: 'center', alignItems: 'center'}}>
+							<Text>{
+								this.state.detailInfo.describle
+							}</Text>
+						</View>
+					</View>
                     <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
                         <TouchableOpacity onPress={() => {
-                            this.setState({
-                                showMap: true
-                            })
+                            // this.setState({
+                            //     showMap: true
+                            // })
+							this.props.navigation.navigate('MapView');
                         }} style={styles.btn}>
                             <Text style={{
                                 fontSize: 15,
