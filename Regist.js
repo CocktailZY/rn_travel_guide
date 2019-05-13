@@ -72,7 +72,7 @@ export default class Regist extends Component{
 						Global['user']=data;
 						this.props.navigation.navigate('Home');
 					}else{
-						Alert.alert('提示', '用户名密码错误');
+						Alert.alert('提示', '注册失败！用户名可能重复');
 					}
 				});
 			});
